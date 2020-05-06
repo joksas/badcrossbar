@@ -10,5 +10,5 @@ def apply(r, resistances, r_i):
 
 def fill_resistances(r, resistances):
     num_resistances = int(r.shape[0]/3)
-    np.fill_diagonal(r[:num_resistances, :num_resistances], resistances.flatten())
+    np.fill_diagonal(r[:num_resistances, :num_resistances], -resistances.flatten())
     return r
