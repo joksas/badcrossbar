@@ -17,5 +17,4 @@ def fill_r(resistances, r_i):
     r = lil_matrix(r_shape)
     r = kvl(r, resistances, r_i)
     r = kcl(r)
-    r = same_branches(r)
     return r
