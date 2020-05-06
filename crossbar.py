@@ -13,8 +13,7 @@ def currents(voltages, resistances, r_i=0):
 
 
 def fill_r(resistances, r_i):
-    num_resistances = resistances.size
-    r_shape = tuple(3*num_resistances for _ in range(2))
+    r_shape = tuple(3*resistances.size for _ in range(2))
     r = lil_matrix(r_shape)
     r = kvl.apply(r, resistances, r_i)
     r = kcl(r)

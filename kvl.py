@@ -9,6 +9,5 @@ def apply(r, resistances, r_i):
 
 
 def fill_resistances(r, resistances):
-    num_resistances = resistances.size
-    np.fill_diagonal(r[:num_resistances, :num_resistances], -resistances.flatten())
+    np.fill_diagonal(r[:resistances.size, :resistances.size], -resistances.flatten())
     return r
