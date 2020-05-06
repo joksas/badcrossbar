@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def apply(r, resistances):
     r = fill_left(r, resistances)
     r = fill_right(r, resistances)
@@ -18,7 +19,9 @@ def fill_left(r, resistances):
     devices[row*num_columns+column, row*num_columns+column] = 1
 
     # same branches
-    horizontal[num_columns-1::num_columns, num_columns-1::num_columns] = -1
-    devices[num_columns-1::num_columns, num_columns-1::num_columns] = 1
+    row = np.arange(num_columns-1, resistances.size, num_columns)
+    column = np.arange(num_columns-1, resistances.size, num_columns)
+    horizontal[row, column] = -1
+    devices[row, column] = 1
 
     return r
