@@ -1,4 +1,5 @@
 import numpy as np
+from crossbar import display
 
 
 def currents(i, resistances, extract_all=False):
@@ -39,6 +40,8 @@ def reshaped_currents(i, resistances):
 
 
 def reduced_resistances(resistances, voltages):
+    original_shape = resistances.shape
+
     # find rows that are not infinite
     rows = np.where(np.all(resistances == np.inf, axis=1) == False)[0]
     if len(rows) != 0:
@@ -51,5 +54,7 @@ def reduced_resistances(resistances, voltages):
     if len(columns) != 0:
         column = columns[0]
         resistances = resistances[:, :column]
+
+    display.reduced(original_shape, resistances.shape)
 
     return resistances, voltages
