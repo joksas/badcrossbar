@@ -11,15 +11,19 @@ def currents(i, resistances, extract_all=False):
     :return: Either output currents or output currents together with the currents in all branches.
     """
     output_i = np.transpose(i[-resistances.shape[1]:, ])
+    device_i = None
+    horizontal_i = None
+    vertical_i = None
+
     if extract_all is False:
         display.message('Extracted output currents.')
-        return output_i
     else:
         device_i = device_currents(i, resistances)
         horizontal_i = horizontal_currents(i, resistances)
         vertical_i = vertical_currents(i, resistances)
         display.message('Extracted currents from all branches in a crossbar.')
-        return output_i, device_i, horizontal_i, vertical_i
+
+    return output_i, device_i, horizontal_i, vertical_i
 
 
 def device_currents(i, resistances):

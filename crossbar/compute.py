@@ -15,7 +15,7 @@ def currents(voltages, resistances, r_i=0):
     r = fill.r(resistances, r_i)
     v = fill.v(voltages, resistances)
     i = solve.i(r, v)
-    output_currents = extract.currents(i, resistances)
+    output_currents, device_currents, horizontal_currents, vertical_currents = extract.currents(i, resistances)
     complete_output_currents[:, :output_currents.shape[1]] = output_currents
 
-    return complete_output_currents
+    return output_currents, device_currents, horizontal_currents, vertical_currents
