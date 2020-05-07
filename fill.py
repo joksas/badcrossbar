@@ -12,8 +12,8 @@ def r(resistances, r_i):
     return r_matrix
 
 
-def fill_v(voltages, resistances):
+def v(voltages, resistances):
     v_shape = (3*resistances.size, voltages.shape[1])
-    v = np.zeros(v_shape)
-    v[:resistances.size, :] = np.repeat(voltages, resistances.shape[1], axis=0)
-    return v
+    v_matrix = np.zeros(v_shape)
+    v_matrix[:resistances.size, :] = np.repeat(voltages, resistances.shape[1], axis=0)
+    return v_matrix
