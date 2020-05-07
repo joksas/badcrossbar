@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def currents(i, resistances, extract_all=True):
+def currents(i, resistances, extract_all=False):
     output_i = np.transpose(i[-resistances.shape[1]:, ])
     if extract_all is False:
         return output_i
