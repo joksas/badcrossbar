@@ -5,7 +5,7 @@ def currents(i, resistances, extract_all=False):
     else:
         device_i = device_currents(i, resistances)
         horizontal_i = horizontal_currents(i, resistances)
-        vertical_i = horizontal_currents(i, resistances)
+        vertical_i = vertical_currents(i, resistances)
         return output_i, device_i, horizontal_i, vertical_i
 
 
@@ -31,3 +31,15 @@ def horizontal_currents(i, resistances):
         horizontal_i = i.reshape(resistances.shape)
 
     return horizontal_i
+
+
+def vertical_currents(i, resistances):
+    i = i[2*resistances.size:3*resistances.size, ]
+    if i.ndim > 1:
+        vertical_i = []
+        for example in range(i.shape[1]):
+            vertical_i.append(i[:, example].reshape(resistances.shape))
+    else:
+        vertical_i = i.reshape(resistances.shape)
+
+    return vertical_i
