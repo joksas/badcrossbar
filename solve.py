@@ -2,5 +2,5 @@ from scipy.sparse import linalg
 
 
 def i(r, v):
-    i = linalg.spsolve(r.tocsc(), v)
-    return i
+    i_matrix = linalg.spsolve(r.tocsc(), v)
+    return i_matrix
