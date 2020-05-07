@@ -19,8 +19,8 @@ def currents(i, resistances, extract_all=False):
         display.message('Extracted output currents.')
     else:
         device_i = device_currents(i, resistances)
-        horizontal_i = horizontal_currents(i, resistances)
-        vertical_i = vertical_currents(i, resistances)
+        horizontal_i = word_line_currents(i, resistances)
+        vertical_i = bit_line_currents(i, resistances)
         display.message('Extracted currents from all branches in a crossbar.')
 
     return output_i, device_i, horizontal_i, vertical_i
@@ -37,7 +37,7 @@ def device_currents(i, resistances):
     return reshaped_currents(i_domain, resistances)
 
 
-def horizontal_currents(i, resistances):
+def word_line_currents(i, resistances):
     """Extracts currents flowing through interconnects along the word lines of the crossbar.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
@@ -48,7 +48,7 @@ def horizontal_currents(i, resistances):
     return reshaped_currents(i_domain, resistances)
 
 
-def vertical_currents(i, resistances):
+def bit_line_currents(i, resistances):
     """Extracts currents flowing through interconnects along the bit lines of the crossbar.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
