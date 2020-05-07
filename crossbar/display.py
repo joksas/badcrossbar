@@ -13,6 +13,12 @@ def reduced(original_shape, new_shape):
         print('Size of effective resistances matrix kept at ' + original_shape_str + '.')
 
 
+def message(message_str):
+    time()
+    gap()
+    print(message_str)
+
+
 def gap(size=5):
     gap_str = size*' '
     print(gap_str, end='')
