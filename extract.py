@@ -19,3 +19,15 @@ def device_currents(i, resistances):
         device_i = i.reshape(resistances.shape)
 
     return device_i
+
+
+def horizontal_currents(i, resistances):
+    i = i[resistances.size:2*resistances.size, ]
+    if i.ndim > 1:
+        horizontal_i = []
+        for example in range(i.shape[1]):
+            horizontal_i.append(i[:, example].reshape(resistances.shape))
+    else:
+        horizontal_i = i.reshape(resistances.shape)
+
+    return horizontal_i
