@@ -28,3 +28,8 @@ def fill_v(voltages, resistances):
     v = np.zeros(v_shape)
     v[-resistances.size:, :] = np.repeat(voltages, resistances.shape[1], axis=0)
     return v
+
+
+def solve(r, v):
+    i = linalg.spsolve(r.tocsc(), v)
+    return i
