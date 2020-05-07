@@ -9,7 +9,9 @@ def apply(r, resistances, r_i):
 
 
 def fill_resistances(r, resistances):
-    np.fill_diagonal(r[:resistances.size, :resistances.size], -resistances.flatten())
+    row = np.arange(resistances.size)
+    column = np.arange(resistances.size)
+    r[row, column] = -resistances.flatten()
     return r
 
 
