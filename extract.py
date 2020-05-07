@@ -1,4 +1,4 @@
-def currents(i, resistances, extract_all=False):
+def currents(i, resistances, extract_all=True):
     output_i = i[-resistances.shape[1]:, ]
     if extract_all is False:
         return output_i
@@ -10,36 +10,26 @@ def currents(i, resistances, extract_all=False):
 
 
 def device_currents(i, resistances):
-    i = i[:resistances.size, ]
-    if i.ndim > 1:
-        device_i = []
-        for example in range(i.shape[1]):
-            device_i.append(i[:, example].reshape(resistances.shape))
-    else:
-        device_i = i.reshape(resistances.shape)
-
-    return device_i
+    i_domain = i[:resistances.size, ]
+    return reshaped_currents(i_domain, resistances)
 
 
 def horizontal_currents(i, resistances):
-    i = i[resistances.size:2*resistances.size, ]
-    if i.ndim > 1:
-        horizontal_i = []
-        for example in range(i.shape[1]):
-            horizontal_i.append(i[:, example].reshape(resistances.shape))
-    else:
-        horizontal_i = i.reshape(resistances.shape)
-
-    return horizontal_i
+    i_domain = i[resistances.size:2*resistances.size, ]
+    return reshaped_currents(i_domain, resistances)
 
 
 def vertical_currents(i, resistances):
-    i = i[2*resistances.size:3*resistances.size, ]
-    if i.ndim > 1:
-        vertical_i = []
-        for example in range(i.shape[1]):
-            vertical_i.append(i[:, example].reshape(resistances.shape))
-    else:
-        vertical_i = i.reshape(resistances.shape)
+    i_domain = i[2*resistances.size:3*resistances.size, ]
+    return reshaped_currents(i_domain, resistances)
 
-    return vertical_i
+
+def reshaped_currents(i, resistances):
+    if i.ndim > 1:
+        reshaped_i = []
+        for example in range(i.shape[1]):
+            reshaped_i.append(i[:, example].reshape(resistances.shape))
+    else:
+        reshaped_i = i.reshape(resistances.shape)
+
+    return reshaped_i
