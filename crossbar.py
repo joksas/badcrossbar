@@ -33,3 +33,9 @@ def fill_v(voltages, resistances):
 def solve(r, v):
     i = linalg.spsolve(r.tocsc(), v)
     return i
+
+
+def extract_currents(i, resistances):
+    output_currents = i[-resistances.shape[1]:, ]
+
+    return output_currents
