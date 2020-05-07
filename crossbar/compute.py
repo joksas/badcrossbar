@@ -1,6 +1,4 @@
-import extract
-import fill
-import solve
+from crossbar import solve, extract, fill
 
 
 def currents(voltages, resistances, r_i=0):

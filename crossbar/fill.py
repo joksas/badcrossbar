@@ -1,6 +1,5 @@
 import numpy as np
-import kvl
-import kcl
+from crossbar import kcl, kvl
 from scipy.sparse import lil_matrix
 
 
