@@ -36,3 +36,20 @@ def reshaped_currents(i, resistances):
         reshaped_i = i.reshape(resistances.shape)
 
     return reshaped_i
+
+
+def reduced_resistances(resistances, voltages):
+    # find rows that are not infinite
+    rows = np.where(np.all(resistances == np.inf, axis=1) == False)[0]
+    if len(rows) != 0:
+        row = rows[0]
+        resistances = resistances[row:, :]
+        voltages = voltages[row:, :]
+
+    # find columns that are infinite
+    columns = np.where(np.all(resistances == np.inf, axis=0) == True)[0]
+    if len(columns) != 0:
+        column = columns[0]
+        resistances = resistances[:, :column]
+
+    return resistances, voltages
