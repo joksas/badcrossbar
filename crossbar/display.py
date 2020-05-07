@@ -12,7 +12,7 @@ def reduced(original_shape, new_shape):
 
 
 def gap(size=5):
-    gap_str = 5*' '
+    gap_str = size*' '
     print(gap_str, end='')
 
 
