@@ -9,7 +9,7 @@ def currents(voltages, resistances, r_i=0):
     r = fill_r(resistances, r_i)
     v = fill_v(voltages, resistances)
     i = solve(r, v)
-    output_currents = extract.extract_currents(i, resistances)
+    output_currents = extract.currents(i, resistances)
 
     return output_currents
 
@@ -25,7 +25,7 @@ def fill_r(resistances, r_i):
 def fill_v(voltages, resistances):
     v_shape = (3*resistances.size, voltages.shape[1])
     v = np.zeros(v_shape)
-    v[-resistances.size:, :] = np.repeat(voltages, resistances.shape[1], axis=0)
+    v[:resistances.size, :] = np.repeat(voltages, resistances.shape[1], axis=0)
     return v
 
 
