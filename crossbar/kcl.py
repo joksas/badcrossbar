@@ -2,12 +2,24 @@ import numpy as np
 
 
 def apply(r, resistances):
+    """Applies Kirchhoff's current laws to construct part of r matrix.
+
+    :param r: r matrix.
+    :param resistances: Resistances of crossbar devices.
+    :return: r matrix with its second and last thirds of rows filled.
+    """
     r = fill_left(r, resistances)
     r = fill_right(r, resistances)
     return r
 
 
 def fill_left(r, resistances):
+    """Fills r matrix with values corresponding to nodes on the word lines.
+
+    :param r: r matrix.
+    :param resistances: Resistances of crossbar devices.
+    :return: Partially filled r matrix.
+    """
     (num_rows, num_columns) = resistances.shape
     devices = r[resistances.size:2*resistances.size, :resistances.size]
     horizontal = r[resistances.size:2*resistances.size, resistances.size:2*resistances.size]
@@ -30,6 +42,12 @@ def fill_left(r, resistances):
 
 
 def fill_right(r, resistances):
+    """Fills r matrix with values corresponding to nodes on the bit lines.
+
+    :param r: r matrix.
+    :param resistances: Resistances of crossbar devices.
+    :return: Fully filled r matrix (if this function is executed last).
+    """
     (num_rows, num_columns) = resistances.shape
     devices = r[2*resistances.size:3*resistances.size, :resistances.size]
     vertical = r[2*resistances.size:3*resistances.size, 2*resistances.size:3*resistances.size]

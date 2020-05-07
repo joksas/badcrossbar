@@ -2,6 +2,12 @@ from datetime import datetime
 
 
 def reduced(original_shape, new_shape):
+    """Prints if and how resistances matrix changed after attempted reduction
+
+    :param original_shape: shape of original resistances matrix
+    :param new_shape: shape of new resistances matrix
+    :return: None
+    """
     time()
     gap()
     original_shape_str = str(original_shape[0]) + 'x' + str(original_shape[1])
@@ -14,17 +20,32 @@ def reduced(original_shape, new_shape):
 
 
 def message(message_str):
+    """Prints current time followed by a gap and a custom message
+
+    :param message_str: message to be printed at the end of the line
+    :return: None
+    """
     time()
     gap()
     print(message_str)
 
 
 def gap(size=5):
+    """Prints a given number of whitespace characters
+
+    :param size: number of whitespace characters to be printed
+    :return: None
+    """
     gap_str = size*' '
     print(gap_str, end='')
 
 
 def time(keep_ms=False):
+    """Prints current time
+
+    :param keep_ms: if True, includes milliseconds
+    :return: None
+    """
     time_str = str(datetime.now())
     if keep_ms is False:
         time_str = time_str.split('.')[0]
