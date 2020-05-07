@@ -3,8 +3,9 @@ import numpy as np
 
 def apply(r, resistances, r_i):
     r = fill_resistances(r, resistances)
-    r = fill_horizontal(r, r_i, resistances)
-    r = fill_vertical(r, r_i, resistances)
+    if r_i != 0:
+        r = fill_horizontal(r, r_i, resistances)
+        r = fill_vertical(r, r_i, resistances)
     return r
 
 
