@@ -1,17 +1,12 @@
-from scipy.sparse import linalg
 import extract
 import fill
+import solve
 
 
 def currents(voltages, resistances, r_i=0):
     r = fill.r(resistances, r_i)
     v = fill.v(voltages, resistances)
-    i = solve(r, v)
+    i = solve.solve(r, v)
     output_currents = extract.currents(i, resistances)
 
     return output_currents
-
-
-def solve(r, v):
-    i = linalg.spsolve(r.tocsc(), v)
-    return i
