@@ -5,11 +5,13 @@ from crossbar import display
 def currents(i, resistances, extract_all=False):
     output_i = np.transpose(i[-resistances.shape[1]:, ])
     if extract_all is False:
+        display.message('Extracted output currents.')
         return output_i
     else:
         device_i = device_currents(i, resistances)
         horizontal_i = horizontal_currents(i, resistances)
         vertical_i = vertical_currents(i, resistances)
+        display.message('Extracted currents from all branches in a crossbar.')
         return output_i, device_i, horizontal_i, vertical_i
 
 
