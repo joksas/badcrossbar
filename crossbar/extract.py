@@ -10,7 +10,7 @@ def currents(i, resistances, extract_all=False):
     :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
     :return: Either output currents or output currents together with the currents in all branches.
     """
-    output_i = np.transpose(i[-resistances.shape[1]:, ])
+    output_i = output_currents(i, resistances)
     device_i = None
     horizontal_i = None
     vertical_i = None
@@ -24,6 +24,16 @@ def currents(i, resistances, extract_all=False):
         display.message('Extracted currents from all branches in a crossbar.')
 
     return output_i, device_i, horizontal_i, vertical_i
+
+
+def output_currents(i, resistances):
+    """Extracts output currents of the crossbar.
+
+    :param i: Matrix containing solutions to ri = v in a flattened form.
+    :param resistances: Resistances of crossbar devices.
+    :return: Output currents in a matrix of shape p x n, where p is the number of examples (sets of voltages applied one by one) and n is the number of outputs of the crossbar.
+    """
+    return np.transpose(i[-resistances.shape[1]:, ])
 
 
 def device_currents(i, resistances):
