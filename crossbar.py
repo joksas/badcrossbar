@@ -1,18 +1,17 @@
-from scipy.sparse import lil_matrix, csr_matrix
+from scipy.sparse import lil_matrix, linalg
 import kvl
 import kcl
+import extract
 import numpy as np
 
 
 def currents(voltages, resistances, r_i=0):
-    (num_inputs, num_outputs) = resistances.shape
-    num_examples = voltages.shape[1]
     r = fill_r(resistances, r_i)
     v = fill_v(voltages, resistances)
     i = solve(r, v)
-    currents = extract_currents(i)
+    output_currents = extract.extract_currents(i, resistances)
 
-    return currents
+    return output_currents
 
 
 def fill_r(resistances, r_i):
@@ -33,9 +32,3 @@ def fill_v(voltages, resistances):
 def solve(r, v):
     i = linalg.spsolve(r.tocsc(), v)
     return i
-
-
-def extract_currents(i, resistances):
-    output_currents = i[-resistances.shape[1]:, ]
-
-    return output_currents
