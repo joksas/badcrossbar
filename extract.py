@@ -1,5 +1,8 @@
+import numpy as np
+
+
 def currents(i, resistances, extract_all=True):
-    output_i = i[-resistances.shape[1]:, ]
+    output_i = np.transpose(i[-resistances.shape[1]:, ])
     if extract_all is False:
         return output_i
     else:
