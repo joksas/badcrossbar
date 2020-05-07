@@ -24,6 +24,8 @@ def fill_left(r, resistances):
     horizontal[row, column] = -1
     devices[row, column] = 1
 
+    r[resistances.size:2 * resistances.size, :resistances.size] = devices
+    r[resistances.size:2 * resistances.size, resistances.size:2 * resistances.size] = horizontal
     return r
 
 
@@ -44,4 +46,6 @@ def fill_right(r, resistances):
     devices[row, column] = -1
     vertical[row, column] = 1
 
+    r[2 * resistances.size:3 * resistances.size, :resistances.size] = devices
+    r[2 * resistances.size:3 * resistances.size, 2 * resistances.size:3 * resistances.size] = vertical
     return r

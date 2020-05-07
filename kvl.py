@@ -23,6 +23,7 @@ def fill_horizontal(r, r_i, resistances):
         for column in range(num_columns):
             horizontal[row*num_columns+column, row*num_columns:row*num_columns+column+1] = -r_i
 
+    r[:resistances.size, resistances.size:2 * resistances.size] = horizontal
     return r
 
 
@@ -34,4 +35,5 @@ def fill_vertical(r, r_i, resistances):
         for column in range(num_columns):
             vertical[row*num_columns+column, row*num_columns+column::num_columns] = -r_i
 
+    r[:resistances.size, 2 * resistances.size:3 * resistances.size] = vertical
     return r
