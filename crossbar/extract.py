@@ -3,15 +3,16 @@ from crossbar import display
 from collections import namedtuple
 
 
-def currents(i, resistances, extract_all=False):
+def currents(i, resistances, extract_all=False, shape=(128, 64)):
     """Extracts crossbar currents in a convenient format.
 
     :param i: Solution to ri = v in a flattened form.
     :param resistances: Resistances of crossbar devices.
     :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
+    :param shape: shape of voltages and resistances matrices
     :return: Either output currents or output currents together with the currents in all branches.
     """
-    output_i = output_currents(i, resistances)
+    output_i = output_currents(i, resistances, shape)
     device_i = None
     word_line_i = None
     bit_line_i = None
@@ -19,9 +20,9 @@ def currents(i, resistances, extract_all=False):
     if extract_all is False:
         display.message('Extracted output currents.')
     else:
-        device_i = device_currents(i, resistances)
-        word_line_i = word_line_currents(i, resistances)
-        bit_line_i = bit_line_currents(i, resistances)
+        device_i = device_currents(i, resistances, shape)
+        word_line_i = word_line_currents(i, resistances, shape)
+        bit_line_i = bit_line_currents(i, resistances, shape)
         display.message('Extracted currents from all branches in a crossbar.')
 
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
@@ -29,62 +30,76 @@ def currents(i, resistances, extract_all=False):
     return extracted_currents
 
 
-def output_currents(i, resistances):
+def output_currents(i, resistances, shape):
     """Extracts output currents of the crossbar.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
     :param resistances: Resistances of crossbar devices.
+    :param shape: shape of voltages and resistances matrices
     :return: Output currents in a matrix of shape p x n, where p is the number of examples (sets of voltages applied one by one) and n is the number of outputs of the crossbar.
     """
-    return np.transpose(i[-resistances.shape[1]:, ])
+    output_i = np.zeros((shape.voltages[1], shape.resistances[1]))
+    filled_output_i = np.transpose(i[-resistances.shape[1]:, ])
+    # TODO: what if num_examples == 1?
+    output_i[:, :filled_output_i.shape[1]] = filled_output_i
+    return output_i
 
 
-def device_currents(i, resistances):
+def device_currents(i, resistances, shape):
     """Extracts currents flowing through crossbar devices.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
     :param resistances: Resistances of crossbar devices.
+    :param shape: shape of voltages and resistances matrices
     :return: List of currents flowing through crossbar devices for each set of applied voltages.
     """
     i_domain = i[:resistances.size, ]
-    return reshaped_currents(i_domain, resistances)
+    return reshaped_currents(i_domain, resistances, shape)
 
 
-def word_line_currents(i, resistances):
+def word_line_currents(i, resistances, shape):
     """Extracts currents flowing through interconnects along the word lines of the crossbar.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
     :param resistances: Resistances of crossbar devices.
+    :param shape: shape of voltages and resistances matrices
     :return: List of currents flowing through word line interconnects for each set of applied voltages.
     """
     i_domain = i[resistances.size:2*resistances.size, ]
-    return reshaped_currents(i_domain, resistances)
+    return reshaped_currents(i_domain, resistances, shape)
 
 
-def bit_line_currents(i, resistances):
+def bit_line_currents(i, resistances, shape):
     """Extracts currents flowing through interconnects along the bit lines of the crossbar.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
     :param resistances: Resistances of crossbar devices.
+    :param shape: shape of voltages and resistances matrices
     :return: List of currents flowing through bit line interconnects for each set of applied voltages.
     """
     i_domain = i[2*resistances.size:3*resistances.size, ]
-    return reshaped_currents(i_domain, resistances)
+    return reshaped_currents(i_domain, resistances, shape)
 
 
-def reshaped_currents(i, resistances):
+def reshaped_currents(i, resistances, shape):
     """Reshapes flattened vector(s) of currents into an array or a list of arrays.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
     :param resistances: Resistances of crossbar devices.
+    :param shape: shape of voltages and resistances matrices
     :return: Array or a list of arrays of currents having the same shape as the crossbar.
     """
     if i.ndim > 1:
         reshaped_i = []
         for example in range(i.shape[1]):
-            reshaped_i.append(i[:, example].reshape(resistances.shape))
+            reshaped_matrix = np.zeros(shape.resistances)
+            filled_matrix = i[:, example].reshape(resistances.shape)
+            reshaped_matrix[-filled_matrix.shape[0]:, :filled_matrix.shape[1]] = filled_matrix
+            reshaped_i.append(reshaped_matrix)
     else:
-        reshaped_i = i.reshape(resistances.shape)
+        reshaped_i = np.zeros(shape.resistances)
+        filled_matrix = i.reshape(resistances.shape)
+        reshaped_i[-filled_matrix.shape[0]:, :filled_matrix.shape[1]] = filled_matrix
 
     return reshaped_i
 

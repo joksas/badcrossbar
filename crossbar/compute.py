@@ -11,12 +11,11 @@ def currents(voltages, resistances, r_i=0, extract_all=False):
     :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
     :return: Output currents. Currents are returned in an array of shape p x n.
     """
-    # complete_output_currents = np.zeros((voltages.shape[1], resistances.shape[1]))
+    original_shape = extract.shapes(voltages, resistances)
     resistances, voltages = extract.reduced_resistances(resistances, voltages)
     r = fill.r(resistances, r_i)
     v = fill.v(voltages, resistances)
     i = solve.i(r, v)
-    crossbar_currents = extract.currents(i, resistances, extract_all=extract_all)
-    # complete_output_currents[:, :output_currents.shape[1]] = output_currents
+    crossbar_currents = extract.currents(i, resistances, extract_all=extract_all, shape=original_shape)
 
     return crossbar_currents
