@@ -116,3 +116,16 @@ def reduced_resistances(resistances, voltages):
     display.reduced(original_shape, resistances.shape)
 
     return resistances, voltages
+
+
+def shapes(voltages, resistances):
+    """Extracts shapes of voltages and resistances vectors.
+
+    :param voltages: Applied voltages.
+    :param resistances: Resistances of crossbar devices.
+    :return: Shapes of voltages and resistances matrices.
+    """
+    Shape = namedtuple('Shape', ['voltages', 'resistances'])
+    shape = Shape(voltages.shape, resistances.shape)
+
+    return shape
