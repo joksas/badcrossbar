@@ -1,5 +1,6 @@
 import numpy as np
 from crossbar import display
+from collections import namedtuple
 
 
 def currents(i, resistances, extract_all=False):
@@ -23,7 +24,9 @@ def currents(i, resistances, extract_all=False):
         vertical_i = bit_line_currents(i, resistances)
         display.message('Extracted currents from all branches in a crossbar.')
 
-    return output_i, device_i, horizontal_i, vertical_i
+    Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+    extracted_currents = Currents(output_i, device_i, horizontal_i, vertical_i)
+    return extracted_currents
 
 
 def output_currents(i, resistances):
