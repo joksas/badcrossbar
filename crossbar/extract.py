@@ -13,19 +13,19 @@ def currents(i, resistances, extract_all=False):
     """
     output_i = output_currents(i, resistances)
     device_i = None
-    horizontal_i = None
-    vertical_i = None
+    word_line_i = None
+    bit_line_i = None
 
     if extract_all is False:
         display.message('Extracted output currents.')
     else:
         device_i = device_currents(i, resistances)
-        horizontal_i = word_line_currents(i, resistances)
-        vertical_i = bit_line_currents(i, resistances)
+        word_line_i = word_line_currents(i, resistances)
+        bit_line_i = bit_line_currents(i, resistances)
         display.message('Extracted currents from all branches in a crossbar.')
 
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
-    extracted_currents = Currents(output_i, device_i, horizontal_i, vertical_i)
+    extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     return extracted_currents
 
 
