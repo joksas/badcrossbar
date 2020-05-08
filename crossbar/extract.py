@@ -3,7 +3,7 @@ from crossbar import display
 from collections import namedtuple
 
 
-def currents(i, resistances, extract_all=False, shape=(128, 64)):
+def currents(i, resistances, extract_all=True, shape=(128, 64)):
     """Extracts crossbar currents in a convenient format.
 
     :param i: Solution to ri = v in a flattened form.
