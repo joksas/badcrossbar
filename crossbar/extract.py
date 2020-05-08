@@ -40,8 +40,10 @@ def output_currents(i, resistances, shape):
     """
     output_i = np.zeros((shape.voltages[1], shape.resistances[1]))
     filled_output_i = np.transpose(i[-resistances.shape[1]:, ])
-    # TODO: what if num_examples == 1?
-    output_i[:, :filled_output_i.shape[1]] = filled_output_i
+    if filled_output_i.ndim > 1:
+        output_i[:, :filled_output_i.shape[1]] = filled_output_i
+    else:
+        output_i[:, :filled_output_i.shape[0]] = filled_output_i
     return output_i
 
 
