@@ -11,7 +11,7 @@ def crossbar_requirements(resistances, voltages):
 
 def matrix_type(*args):
     new_args = []
-    for i, arg in enumerate(args):
+    for arg in args:
         if isinstance(arg, np.ndarray):
             new_args.append(arg)
         else:
