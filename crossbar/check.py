@@ -1,9 +1,10 @@
 import numpy as np
 
+
 def crossbar_requirements(resistances, voltages):
     resistances, voltages = matrix_type(resistances, voltages)
+    empty(resistances, voltages)
     match_shape()
-    non_zero()
 
     return resistances, voltages
 
@@ -24,3 +25,9 @@ def matrix_type(*args):
     else:
         new_args = tuple(new_args)
     return new_args
+
+
+def empty(*args):
+    for arg in args:
+        if arg.size == 0:
+            raise ValueError('Array is empty!')
