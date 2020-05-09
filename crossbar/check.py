@@ -1,10 +1,11 @@
 import numpy as np
 
 
-def crossbar_requirements(resistances, voltages):
+def crossbar_requirements(resistances, voltages, r_i):
     resistances, voltages = matrix_type(resistances=resistances, voltages=voltages)
     empty(resistances=resistances, voltages=voltages)
     match_shape(resistances=(resistances, 0), voltages=(voltages, 0))
+    short_circuit(resistances, r_i)
 
     return resistances, voltages
 
@@ -40,3 +41,9 @@ def match_shape(**kwargs):
     for key, value in kwargs.items():
         if value[0].shape[value[1]] != dim:
             raise ValueError('Dimension ' + str(value[1]) + ' of array \'' + key + '\' should match dimension ' + str(first_value[1]) + ' of array \'' + first_key + '\'!')
+
+
+def short_circuit(resistances, r_i):
+    if r_i == 0:
+        if 0 in resistances:
+            raise ValueError('At least some crossbar devices have zero resistance causing short circuit!')
