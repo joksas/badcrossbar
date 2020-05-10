@@ -6,7 +6,7 @@ from collections import namedtuple
 def test_currents_qucs_2x3_a():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    :return: None
+    :return: None.
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     resistances = np.array([[10, 20, 30],
@@ -30,7 +30,7 @@ def test_currents_qucs_2x3_a():
 def test_currents_qucs_2x3_b():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    :return: None
+    :return: None.
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     resistances = np.array([[10, 20, 30],
@@ -56,7 +56,7 @@ def test_currents_qucs_2x3_c():
 
     This specific test returns an error if devices with infinite resistance are not converted to devices with very large resistance.
 
-    :return: None
+    :return: None.
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     resistances = np.array([[45, np.inf, np.inf],
@@ -80,7 +80,7 @@ def test_currents_qucs_2x3_c():
 def test_currents_qucs_2x3_d():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    :return: None
+    :return: None.
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     resistances = np.array([[np.inf, np.inf, np.inf],
@@ -104,7 +104,7 @@ def test_currents_qucs_2x3_d():
 def test_currents_qucs_2x1_a():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    :return: None
+    :return: None.
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     resistances = np.array([[60],
@@ -128,7 +128,7 @@ def test_currents_qucs_2x1_a():
 def test_currents_qucs_2x1_b():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    :return: None
+    :return: None.
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     resistances = np.array([[100],
@@ -152,7 +152,7 @@ def test_currents_qucs_2x1_b():
 def test_currents_qucs_2x1_c():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    :return: None
+    :return: None.
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     resistances = np.array([[1],
@@ -171,6 +171,26 @@ def test_currents_qucs_2x1_c():
     computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
+
+
+def test_currents_dot_product_engine():
+    """Tests whether crossbars behave as dot product engines when r_i = 0.
+
+    When r_i = 0, crossbars should be able to compute matrix-vector products of conductances of devices and applied voltages.
+
+    :return: None.
+    """
+    for _ in range(10):
+        m, n, p = np.random.randint(1, 50, 3)
+        resistances = np.random.rand(m, n)
+        voltages = np.random.rand(m, p)
+        r_i = 0
+        computed_currents = crossbar.currents(voltages, resistances, r_i)
+
+        conductances = np.reciprocal(resistances)
+        expected_output = np.dot(np.transpose(voltages), conductances)
+
+        np.testing.assert_array_almost_equal(computed_currents.output, expected_output)
 
 
 def compare_currents(computed_currents, expected_currents):
