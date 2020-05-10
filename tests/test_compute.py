@@ -242,6 +242,23 @@ def test_currents_dot_product_engine_insulating_lines():
         np.testing.assert_array_almost_equal(computed_currents.output, expected_output)
 
 
+def test_currents_return_only_outputs():
+    """Tests whether the function returns only output currents and whether all the other parameters are None.
+
+    :return: None.
+    """
+    m, n, p = np.random.randint(10, 30, 3)
+    resistances = np.random.rand(m, n)
+    voltages = np.random.rand(m, p)
+    r_i = 0
+    computed_currents = crossbar.currents(voltages, resistances, r_i, extract_all=False)
+
+    assert type(computed_currents.output) is np.ndarray
+    assert computed_currents.device is None
+    assert computed_currents.word_line is None
+    assert computed_currents.bit_line is None
+
+
 def compare_currents(computed_currents, expected_currents):
     np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
     np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
