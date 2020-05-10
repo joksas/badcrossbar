@@ -12,6 +12,7 @@ def crossbar_requirements(resistances, voltages, r_i):
     resistances, voltages = matrix_type(resistances=resistances, voltages=voltages)
     empty(resistances=resistances, voltages=voltages)
     match_shape(resistances=(resistances, 0), voltages=(voltages, 0))
+    number(r_i=r_i)
     short_circuit(resistances, r_i)
 
     return resistances, voltages
