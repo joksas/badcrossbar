@@ -54,6 +54,8 @@ def test_currents_qucs_2x3_b():
 def test_currents_qucs_2x3_c():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
+    This specific test returns an error if devices with infinite resistance are not converted to devices with very large resistance.
+
     :return: None
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
