@@ -157,6 +157,9 @@ def non_infinite(matrix):
     :param matrix: An array in which some of the values might be set to np.inf.
     :return: An array in which np.inf values are replaced with a very large number.
     """
-    large_number = 1e100
-    matrix[matrix == np.inf] = large_number
+    matrix[matrix == np.inf] = large_number()
     return matrix
+
+
+def large_number():
+    return 1e200
