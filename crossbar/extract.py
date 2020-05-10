@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from crossbar import display
 from collections import namedtuple
 
@@ -13,6 +14,7 @@ def currents(i, resistances, shape=(128, 64), **kwargs):
         :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
     :return: Either output currents or output currents together with the currents in all branches.
     """
+    i = round_zeros(i)
     output_i = output_currents(i, resistances, shape)
     device_i = None
     word_line_i = None
@@ -162,4 +164,25 @@ def non_infinite(matrix):
 
 
 def large_number():
+    """Return large number.
+
+    :return: Large number.
+    """
     return 1e200
+
+
+def round_zeros(matrix):
+    """Rounds number with very small absolute values to zero.
+
+    This function was mainly created to deal with very small crossbar currents that should, in theory, be zero but are computed as non-zero because of extract.non_infinite().
+
+    :param matrix: A numpy matrix.
+    :return: A numpy matrix with its smallest absolute values set to zero.
+    """
+    order_of_magnitude = np.floor(math.log(large_number(), 10))
+    threshold = 1/(10 ** int(order_of_magnitude*0.9))
+
+    almost_zero = np.where((matrix > -threshold) & (matrix < threshold))
+    matrix[almost_zero] = 0
+
+    return matrix
