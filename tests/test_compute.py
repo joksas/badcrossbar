@@ -66,7 +66,7 @@ def test_currents_qucs_2x3_c():
     voltages = np.array([[14],
                          [6]])
     r_i = 1.5
-    expected_currents = Currents(np.array([[]]),
+    expected_currents = Currents(np.array([[0.3160015477, 0, 0.228795581]]),
                                  np.array([[0.2817916183, 0, 0],
                                            [0.03420992942, 0, 0.228795581]]),
                                  np.array([[0.2817916183, 0, 0],
