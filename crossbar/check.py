@@ -17,6 +17,18 @@ def crossbar_requirements(resistances, voltages, r_i):
     return resistances, voltages
 
 
+def number(**kwargs):
+    """Confirms that items are int or float.
+
+    :param kwargs: Items of arbitrary type.
+    :return: None or raises an error if a certain item is neither int, nor float.
+    """
+    for key, value in kwargs.items():
+        if not isinstance(value, int):
+            if not isinstance(value, float):
+                raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use int or float instead.')
+
+
 def matrix_type(**kwargs):
     """Checks if items can be used numpy arrays.
 
