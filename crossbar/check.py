@@ -13,6 +13,7 @@ def crossbar_requirements(resistances, voltages, r_i):
     empty(resistances=resistances, voltages=voltages)
     match_shape(resistances=(resistances, 0), voltages=(voltages, 0))
     number(r_i=r_i)
+    negative_array(resistances=resistances)
     short_circuit(resistances, r_i)
 
     return resistances, voltages
@@ -67,7 +68,7 @@ def empty(**kwargs):
 
 
 def match_shape(**kwargs):
-    """Check if numpy arrays have matching dimensions; if not, raises an error.
+    """Checks if numpy arrays have matching dimensions; if not, raises an error.
 
     :param kwargs: Tuples of numpy arrays and dimensions that have to be matched.
     :return: None or raises an error.
@@ -78,6 +79,17 @@ def match_shape(**kwargs):
     for key, value in kwargs.items():
         if value[0].shape[value[1]] != dim:
             raise ValueError('Dimension ' + str(value[1]) + ' of array \'' + key + '\' should match dimension ' + str(first_value[1]) + ' of array \'' + first_key + '\'!')
+
+
+def negative_array(**kwargs):
+    """Checks if any entries in numpy arrays contain negative values.
+
+    :param kwargs: Numpy arrays.
+    :return: None or raises an error if there are any negative entries.
+    """
+    for key, value in kwargs.items():
+        if (value < 0).any():
+            raise ValueError('Array \'' + str(key) + '\' contains at least one negative value!')
 
 
 def short_circuit(resistances, r_i):
