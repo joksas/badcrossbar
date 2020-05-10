@@ -181,8 +181,32 @@ def test_currents_dot_product_engine():
     :return: None.
     """
     for _ in range(10):
-        m, n, p = np.random.randint(1, 50, 3)
+        m, n, p = np.random.randint(1, 25, 3)
         resistances = np.random.rand(m, n)
+        voltages = np.random.rand(m, p)
+        r_i = 0
+        computed_currents = crossbar.currents(voltages, resistances, r_i)
+
+        conductances = np.reciprocal(resistances)
+        expected_output = np.dot(np.transpose(voltages), conductances)
+
+        np.testing.assert_array_almost_equal(computed_currents.output, expected_output)
+
+
+def test_currents_dot_product_engine_insulating():
+    """Tests whether crossbars behave as dot product engines when r_i = 0, but some devices are insulating.
+
+    When r_i = 0, crossbars should be able to compute matrix-vector products of conductances of devices and applied voltages.
+
+    :return: None.
+    """
+    for _ in range(10):
+        m, n, p = np.random.randint(1, 25, 3)
+        resistances = np.random.rand(m, n)
+        rows = np.random.randint(0, m, int(0.1 * m * n))
+        columns = np.random.randint(0, n, int(0.1 * m * n))
+        resistances[rows, columns] = np.inf  # makes 10% of random devices insulating
+
         voltages = np.random.rand(m, p)
         r_i = 0
         computed_currents = crossbar.currents(voltages, resistances, r_i)
