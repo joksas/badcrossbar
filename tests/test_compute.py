@@ -129,6 +129,32 @@ def test_currents_qucs_2x1_a():
     compare_currents(computed_currents, expected_currents)
 
 
+def test_currents_qucs_2x1_b():
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+
+    This specific test returns an error if devices with infinite resistance are not converted to devices with very large resistance.
+
+    :return: None
+    """
+    Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+    resistances = np.array([[100],
+                            [500]])
+    voltages = np.array([[0],
+                         [0]])
+    r_i = 1
+
+    expected_currents = Currents(np.array([[0]]),
+                                 np.array([[0],
+                                           [0]]),
+                                 np.array([[0],
+                                           [0]]),
+                                 np.array([[0],
+                                           [0]]))
+    computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
+
+    compare_currents(computed_currents, expected_currents)
+
+
 def compare_currents(computed_currents, expected_currents):
     np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
     np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
