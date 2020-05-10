@@ -1,5 +1,5 @@
 from scipy.sparse import linalg
-from crossbar import display
+from crossbar import display, extract
 
 
 def i(r, v):
@@ -10,6 +10,7 @@ def i(r, v):
     :return: Currents in each branch of the crossbar.
     """
     display.message('Started solving for i.')
+    r = extract.non_infinite(r)
     i_matrix = linalg.spsolve(r.tocsc(), v)  # converts lil_matrix to csc_matrix before solving
     display.message('Solved for i.')
     return i_matrix

@@ -147,3 +147,16 @@ def shapes(voltages, resistances):
     shape = Shape(voltages.shape, resistances.shape)
 
     return shape
+
+
+def non_infinite(matrix):
+    """Replaces np.inf values with very large numbers.
+
+    In most cases, this would not be necessary to solve matrix equations. Unfortunately, in a few edge cases, even when there is an analytic solution, scipy library is not able to compute i matrix when some specific r entries are equal to np.inf .
+
+    :param matrix: An array in which some of the values might be set to np.inf.
+    :return: An array in which np.inf values are replaced with a very large number.
+    """
+    large_number = 1e100
+    matrix[matrix == np.inf] = large_number
+    return matrix
