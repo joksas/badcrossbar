@@ -14,6 +14,7 @@ def test_currents_qucs_2x3_a():
     voltages = np.array([[3],
                          [5]])
     r_i = 0.1
+
     expected_currents = Currents(np.array([[0.4109446865, 0.2427676365, 0.1782942773]]),
                                  np.array([[0.2877316742, 0.1442221472, 0.09620240051],
                                            [0.1232130123, 0.09854548924, 0.08209187684]]),
@@ -23,10 +24,7 @@ def test_currents_qucs_2x3_a():
                                            [0.4109446865, 0.2427676365, 0.1782942773]]))
     computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
 
-    np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
-    np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
-    np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
-    np.testing.assert_array_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
+    compare_currents(computed_currents, expected_currents)
 
 
 def test_currents_qucs_2x3_b():
@@ -40,6 +38,7 @@ def test_currents_qucs_2x3_b():
     voltages = np.array([[3],
                          [5]])
     r_i = 0
+
     expected_currents = Currents(np.array([[0.425, 0.25, 0.183333333333333]]),
                                  np.array([[0.3, 0.15, 0.1],
                                            [0.125, 0.1, 0.0833333333333]]),
@@ -49,10 +48,7 @@ def test_currents_qucs_2x3_b():
                                            [0.425, 0.25, 0.183333333333333]]))
     computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
 
-    np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
-    np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
-    np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
-    np.testing.assert_array_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
+    compare_currents(computed_currents, expected_currents)
 
 
 def test_currents_qucs_2x3_c():
@@ -66,6 +62,7 @@ def test_currents_qucs_2x3_c():
     voltages = np.array([[14],
                          [6]])
     r_i = 1.5
+
     expected_currents = Currents(np.array([[0.3160015477, 0, 0.228795581]]),
                                  np.array([[0.2817916183, 0, 0],
                                            [0.03420992942, 0, 0.228795581]]),
@@ -75,6 +72,10 @@ def test_currents_qucs_2x3_c():
                                            [0.3160015477, 0, 0.228795581]]))
     computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
 
+    compare_currents(computed_currents, expected_currents)
+
+
+def compare_currents(computed_currents, expected_currents):
     np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
     np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
     np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
