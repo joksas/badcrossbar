@@ -3,14 +3,12 @@ import numpy as np
 from collections import namedtuple
 
 
-def test_currents_qucs():
+def test_currents_qucs_2x3_a():
     """Tests outputs of crossbar.compute.test_currents against results Qucs.
 
     :return: None
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
-
-    # 2x3-a.sch
     resistances = np.array([[10, 20, 30],
                             [40, 50, 60]])
     voltages = np.array([[3],
@@ -29,3 +27,4 @@ def test_currents_qucs():
     np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
     np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
     np.testing.assert_array_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
+
