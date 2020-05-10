@@ -154,9 +154,9 @@ def shapes(voltages, resistances):
 def non_infinite(matrix):
     """Replaces np.inf values with very large numbers.
 
-    In most cases, this would not be necessary to solve matrix equations. Unfortunately, in a few edge cases, even when there is an analytic solution, scipy library is not able to compute i matrix when some specific r entries are equal to np.inf .
+    In most cases, this function would not be necessary to solve matrix equations. Unfortunately, in a few edge cases, even when there is an analytic solution, scipy library is not able to compute i matrix when some specific r entries are equal to np.inf. Replacing np.inf with very large numbers seems to provide a stable solution (see tests directory).
 
-    :param matrix: An array in which some of the values might be set to np.inf.
+    :param matrix: An array.
     :return: An array in which np.inf values are replaced with a very large number.
     """
     matrix[matrix == np.inf] = large_number()
@@ -176,8 +176,8 @@ def round_zeros(matrix):
 
     This function was mainly created to deal with very small crossbar currents that should, in theory, be zero but are computed as non-zero because of extract.non_infinite().
 
-    :param matrix: A numpy matrix.
-    :return: A numpy matrix with its smallest absolute values set to zero.
+    :param matrix: A numpy array.
+    :return: A numpy array with its smallest absolute values set to zero.
     """
     order_of_magnitude = np.floor(math.log(large_number(), 10))
     threshold = 1/(10 ** int(order_of_magnitude*0.9))
