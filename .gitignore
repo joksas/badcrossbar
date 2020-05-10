@@ -140,3 +140,10 @@ cython_debug/
 # Pycharm
 .idea/
 /main.py
+
+# Qucs
+*.dpl
+*.dat
+
+# Linux
+*.swp
