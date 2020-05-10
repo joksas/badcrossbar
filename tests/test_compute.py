@@ -80,8 +80,6 @@ def test_currents_qucs_2x3_c():
 def test_currents_qucs_2x3_d():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    This specific test returns an error if devices with infinite resistance are not converted to devices with very large resistance.
-
     :return: None
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
@@ -105,8 +103,6 @@ def test_currents_qucs_2x3_d():
 
 def test_currents_qucs_2x1_a():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
-
-    This specific test returns an error if devices with infinite resistance are not converted to devices with very large resistance.
 
     :return: None
     """
@@ -132,8 +128,6 @@ def test_currents_qucs_2x1_a():
 def test_currents_qucs_2x1_b():
     """Tests outputs of crossbar.compute.test_currents against results from Qucs.
 
-    This specific test returns an error if devices with infinite resistance are not converted to devices with very large resistance.
-
     :return: None
     """
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
@@ -150,6 +144,30 @@ def test_currents_qucs_2x1_b():
                                            [0]]),
                                  np.array([[0],
                                            [0]]))
+    computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
+
+    compare_currents(computed_currents, expected_currents)
+
+
+def test_currents_qucs_2x1_c():
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+
+    :return: None
+    """
+    Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+    resistances = np.array([[1],
+                            [np.inf]])
+    voltages = np.array([[50],
+                         [5]])
+    r_i = 0
+
+    expected_currents = Currents(np.array([[50]]),
+                                 np.array([[50],
+                                           [0]]),
+                                 np.array([[50],
+                                           [0]]),
+                                 np.array([[50],
+                                           [50]]))
     computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
