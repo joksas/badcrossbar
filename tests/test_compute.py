@@ -54,3 +54,28 @@ def test_currents_qucs_2x3_b():
     np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
     np.testing.assert_array_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
 
+
+def test_currents_qucs_2x3_c():
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+
+    :return: None
+    """
+    Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+    resistances = np.array([[45, np.inf, np.inf],
+                            [150, np.inf, 20]])
+    voltages = np.array([[14],
+                         [6]])
+    r_i = 1.5
+    expected_currents = Currents(np.array([[]]),
+                                 np.array([[0.2817916183, 0, 0],
+                                           [0.03420992942, 0, 0.228795581]]),
+                                 np.array([[0.2817916183, 0, 0],
+                                           [0.2630055104, 0.228795581, 0.228795581]]),
+                                 np.array([[0.2817916183, 0, 0],
+                                           [0.3160015477, 0, 0.228795581]]))
+    computed_currents = crossbar.currents(voltages, resistances, r_i=r_i)
+
+    np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
+    np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
+    np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
+    np.testing.assert_array_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
