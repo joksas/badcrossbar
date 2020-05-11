@@ -4,10 +4,19 @@ import numpy as np
 def crossbar_requirements(resistances, voltages, r_i):
     """Checks if crossbar variables satisfy all requirements.
 
-    :param resistances: Resistances of crossbar devices.
-    :param voltages: Applied voltages.
-    :param r_i: Interconnect resistance.
-    :return: Potentially modified resistances and voltages.
+    Parameters
+    ----------
+    resistances : array_like
+        Resistances of crossbar devices.
+    voltages : array_like
+        Applied voltages.
+    r_i : int, float
+        Interconnect resistance.
+
+    Returns
+    -------
+    resistances, voltages : ndarray
+        Potentially modified resistances and voltages.
     """
     resistances, voltages = matrix_type(resistances=resistances, voltages=voltages)
     empty(resistances=resistances, voltages=voltages)
@@ -23,8 +32,15 @@ def crossbar_requirements(resistances, voltages, r_i):
 def number(**kwargs):
     """Confirms that items are int or float.
 
-    :param kwargs: Items of arbitrary type.
-    :return: None or raises an error if a certain item is neither int, nor float.
+    Parameters
+    ----------
+    kwargs : any
+        Items of arbitrary type.
+
+    Raises
+    -------
+    TypeError
+        If any of the items are not int or float.
     """
     for key, value in kwargs.items():
         if not isinstance(value, int):
@@ -37,8 +53,19 @@ def matrix_type(**kwargs):
 
     If one of the arguments is already a numpy array, it is returned unchanged. If it is a list (or a list of list), it is converted to numpy array and then returned. Else, an error is raised.
 
-    :param kwargs: Items that should ideally already be numpy arrays.
-    :return: Numpy arrays or raises an error.
+    Parameters
+    ----------
+    kwargs : any
+        Items of arbitrary type.
+
+    Returns
+    -------
+    list of ndarray
+
+    Raises
+    -------
+    TypeError
+        If any of the items are not ndarray or list.
     """
     new_args = []
     for key, value in kwargs.items():
@@ -60,8 +87,15 @@ def matrix_type(**kwargs):
 def empty(**kwargs):
     """Checks if numpy arrays are empty; if yes, raises an error.
 
-    :param kwargs: Numpy arrays.
-    :return: None or raises an error.
+    Parameters
+    ----------
+    kwargs : ndarray
+        Arrays.
+
+    Raises
+    -------
+    ValueError
+        If any of the ndarrays are empty.
     """
     for key, value in kwargs.items():
         if value.size == 0:
@@ -69,10 +103,17 @@ def empty(**kwargs):
 
 
 def match_shape(**kwargs):
-    """Checks if numpy arrays have matching dimensions; if not, raises an error.
+    """Checks if numpy arrays have matching dimensions.
 
-    :param kwargs: Tuples of numpy arrays and dimensions that have to be matched.
-    :return: None or raises an error.
+    Parameters
+    ----------
+    kwargs : tuple of ndarray and int
+        Arrays and the dimension along which they should be matched.
+
+    Raises
+    -------
+    ValueError
+        If any of the ndarrays do not match specified dimensions.
     """
     first_key = list(kwargs.keys())[0]
     first_value = list(kwargs.values())[0]
@@ -85,8 +126,15 @@ def match_shape(**kwargs):
 def negative_array(**kwargs):
     """Checks if any entries in numpy arrays contain negative values.
 
-    :param kwargs: Numpy arrays.
-    :return: None or raises an error if there are any negative entries.
+    Parameters
+    ----------
+    kwargs : ndarray
+        Arrays.
+
+    Raises
+    -------
+    ValueError
+        If any of the ndarrays contain negative values.
     """
     for key, value in kwargs.items():
         if (value < 0).any():
@@ -96,8 +144,15 @@ def negative_array(**kwargs):
 def negative_number(**kwargs):
     """Checks if any of the numbers are negative.
 
-    :param kwargs: Numbers.
-    :return: None or raises an error if there are any negative entries.
+    Parameters
+    ----------
+    kwargs : int
+        Numbers.
+
+    Raises
+    -------
+    ValueError
+        If any of the numbers are negative.
     """
     for key, value in kwargs.items():
         if value < 0:
@@ -107,9 +162,17 @@ def negative_number(**kwargs):
 def short_circuit(resistances, r_i):
     """Checks if crossbar will be short-circuited.
 
-    :param resistances: Resistances of crossbar devices.
-    :param r_i: Interconnect resistance.
-    :return: None or raises an error.
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+
+    Raises
+    -------
+    ValueError
+        If r_i = 0 and any of the devices have zero resistance.
     """
     if r_i == 0:
         if 0 in resistances:
