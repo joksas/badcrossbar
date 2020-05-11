@@ -227,10 +227,10 @@ def test_currents_dot_product_engine_insulating_lines():
     for _ in range(10):
         m, n, p = np.random.randint(10, 30, 3)
         resistances = np.random.rand(m, n)
-        rows = np.random.randint(0, m, int(0.3*m))
-        columns = np.random.randint(0, n, int(0.3*n))
-        resistances[rows, :] = np.inf  # makes ~30% of random word lines (some might be repeated) contain only insulating devices
-        resistances[:, columns] = np.inf  # makes ~30% of random bit lines (some might be repeated) contain only insulating devices
+        rows = np.random.choice(range(m), int(0.3*m), replace=False)
+        columns = np.random.choice(range(n), int(0.3*n), replace=False)
+        resistances[rows, :] = np.inf  # makes 30% of random word lines contain only insulating devices
+        resistances[:, columns] = np.inf  # makes 30% of random bit lines contain only insulating devices
 
         voltages = np.random.rand(m, p)
         r_i = 0
