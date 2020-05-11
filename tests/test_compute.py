@@ -203,9 +203,10 @@ def test_currents_dot_product_engine_insulating():
     for _ in range(10):
         m, n, p = np.random.randint(1, 30, 3)
         resistances = np.random.rand(m, n)
-        rows = np.random.randint(0, m, int(0.1 * m * n))
-        columns = np.random.randint(0, n, int(0.1 * m * n))
-        resistances[rows, columns] = np.inf  # makes ~10% of random devices (some might be repeated) insulating
+        indices = np.random.choice(range(m*n), int(0.1*m*n), replace=False)
+        rows = (indices/n).astype(int)
+        columns = indices - n*rows
+        resistances[rows, columns] = np.inf  # makes 10% of random devices insulating
 
         voltages = np.random.rand(m, p)
         r_i = 0
