@@ -260,6 +260,23 @@ def test_currents_return_only_outputs():
     assert computed_currents.bit_line is None
 
 
+def test_currents_qucs_2x3_a_only_outputs():
+    """Tests output currents of crossbar.compute.test_currents against results from Qucs, when passed an argument extract_all=False.
+
+    :return: None.
+    """
+    resistances = np.array([[10, 20, 30],
+                            [40, 50, 60]])
+    voltages = np.array([[3],
+                         [5]])
+    r_i = 0.1
+
+    expected_output = np.array([[0.4109446865, 0.2427676365, 0.1782942773]])
+    computed_currents = crossbar.currents(voltages, resistances, r_i=r_i, extract_all=False)
+
+    np.testing.assert_array_almost_equal(computed_currents.output, expected_output)
+
+
 def compare_currents(computed_currents, expected_currents):
     np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
     np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
