@@ -14,7 +14,8 @@ def currents(i, resistances, shape=(128, 64), **kwargs):
         :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
     :return: Either output currents or output currents together with the currents in all branches.
     """
-    output_i = rounded_zeros(output_currents(i, resistances, shape))
+    i = rounded_zeros_i(i, resistances, part='first')
+    output_i = output_currents(i, resistances, shape)
     device_i = None
     word_line_i = None
     bit_line_i = None
@@ -22,7 +23,7 @@ def currents(i, resistances, shape=(128, 64), **kwargs):
     if kwargs.get('extract_all', True) is False:
         display.message('Extracted output currents.')
     else:
-        i = rounded_zeros(i)
+        i = rounded_zeros_i(i, resistances, part='rest')
         device_i = device_currents(i, resistances, shape)
         word_line_i = word_line_currents(i, resistances, shape)
         bit_line_i = bit_line_currents(i, resistances, shape)
@@ -172,7 +173,7 @@ def large_number():
 
 
 def rounded_zeros(matrix):
-    """Rounds number with very small absolute values to zero.
+    """Rounds numbers with very small absolute values to zero.
 
     This function was mainly created to deal with very small crossbar currents that should, in theory, be zero but are computed as non-zero because of extract.non_infinite().
 
@@ -186,3 +187,21 @@ def rounded_zeros(matrix):
     matrix[almost_zero] = 0
 
     return matrix
+
+
+def rounded_zeros_i(i, resistances, part='whole'):
+    """Rounds numbers in i matrix with very small absolute values to zero.
+
+    :param i: Solution to ri = v in a flattened form.
+    :param resistances: Resistances of crossbar devices.
+    :param part: Subset of currents that has to be rounded.
+    :return: i matrix with some or all of its small values rounded to zero.
+    """
+    if part == 'output':
+        i[-resistances.shape[1]:, ] = rounded_zeros(i[-resistances.shape[1]:, ])
+    elif part == 'rest':
+        i[:resistances.shape[1], ] = rounded_zeros(i[:resistances.shape[1], ])
+    elif part == 'whole':
+        i = rounded_zeros(i)
+
+    return i
