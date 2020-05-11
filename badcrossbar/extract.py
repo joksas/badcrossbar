@@ -1,6 +1,6 @@
 import numpy as np
 import math
-from crossbar import display
+from badcrossbar import display
 from collections import namedtuple
 
 

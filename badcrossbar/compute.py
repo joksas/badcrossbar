@@ -1,4 +1,4 @@
-from crossbar import solve, extract, fill, check
+from badcrossbar import solve, extract, fill, check
 
 
 def currents(voltages, resistances, r_i=0, **kwargs):

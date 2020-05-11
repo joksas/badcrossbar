@@ -1,5 +1,5 @@
 from scipy.sparse import linalg
-from crossbar import display, extract
+from badcrossbar import display, extract
 
 
 def i(r, v):
