@@ -4,7 +4,7 @@ from collections import namedtuple
 
 
 def test_currents_qucs_2x3_a():
-    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs. See qucs-files/qucs_2x3_a.sch.
 
     :return: None.
     """
@@ -28,7 +28,7 @@ def test_currents_qucs_2x3_a():
 
 
 def test_currents_qucs_2x3_b():
-    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs. See qucs-files/qucs_2x3_b.sch.
 
     :return: None.
     """
@@ -52,7 +52,7 @@ def test_currents_qucs_2x3_b():
 
 
 def test_currents_qucs_2x3_c():
-    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs. See qucs-files/qucs_2x3_c.sch.
 
     This specific test returns an error if devices with infinite resistance are not converted to devices with very large resistance.
 
@@ -78,7 +78,7 @@ def test_currents_qucs_2x3_c():
 
 
 def test_currents_qucs_2x3_d():
-    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs. See qucs-files/qucs_2x3_d.sch.
 
     :return: None.
     """
@@ -102,7 +102,7 @@ def test_currents_qucs_2x3_d():
 
 
 def test_currents_qucs_2x1_a():
-    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs. See qucs-files/qucs_2x1_a.sch.
 
     :return: None.
     """
@@ -126,7 +126,7 @@ def test_currents_qucs_2x1_a():
 
 
 def test_currents_qucs_2x1_b():
-    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs. See qucs-files/qucs_2x1_b.sch.
 
     :return: None.
     """
@@ -150,7 +150,7 @@ def test_currents_qucs_2x1_b():
 
 
 def test_currents_qucs_2x1_c():
-    """Tests outputs of crossbar.compute.test_currents against results from Qucs.
+    """Tests outputs of crossbar.compute.test_currents against results from Qucs. See qucs-files/qucs_2x1_c.sch.
 
     :return: None.
     """
@@ -261,7 +261,7 @@ def test_currents_return_only_outputs():
 
 
 def test_currents_qucs_2x3_a_only_outputs():
-    """Tests output currents of crossbar.compute.test_currents against results from Qucs, when passed an argument extract_all=False.
+    """Tests output parameter of the output crossbar.compute.test_currents against results from Qucs, when passed an argument extract_all=False. See qucs-files/qucs_2x3_a.sch.
 
     :return: None.
     """
