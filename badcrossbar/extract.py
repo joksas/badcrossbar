@@ -33,7 +33,7 @@ def currents(v, resistances, r_i, voltages, shape=(128, 64), **kwargs):
     else:
         device_i = device_currents(v, resistances, shape)
         word_line_i = word_line_currents(v, resistances, r_i, voltages, shape)
-        bit_line_i = bit_line_currents(v, resistances, r_i, voltages, shape)
+        bit_line_i = bit_line_currents(v, resistances, r_i, shape)
         display.message('Extracted currents from all branches in a crossbar.')
 
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
@@ -104,13 +104,13 @@ def word_line_currents(v, resistances, r_i, voltages, shape):
     :return: List of currents flowing through word line interconnects for each set of applied voltages.
     """
     i = np.zeros((resistances.size, shape.voltages[1]))
-    i[::resistances.shape[1], ] = (voltages - v[:resistances.size:resistances.shape[1], ].reshape(voltages.shape))/r_i
+    i[::resistances.shape[1], ] = (voltages - v[:resistances.size:resistances.shape[1], ])/r_i
     for j in range(1, resistances.shape[1]):
         i[j::resistances.shape[1], ] = (v[j-1:resistances.size:resistances.shape[1], ] - v[j:resistances.size:resistances.shape[1], ])/r_i
     return distributed_matrix(i, resistances, shape)
 
 
-def bit_line_currents(v, resistances, r_i, voltages, shape):
+def bit_line_currents(v, resistances, r_i, shape):
     """Extracts currents flowing through interconnects along the bit lines of the crossbar.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
