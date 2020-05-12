@@ -42,7 +42,7 @@ def currents(v, resistances, r_i, voltages, shape=(128, 64), **kwargs):
     return extracted_currents
 
 
-def voltages(v, resistances, shape=(128, 64), **kwargs):
+def voltages(v, resistances, shape=(128, 64)):
     """Extracts crossbar currents in a convenient format.
 
     :param i: Solution to ri = v in a flattened form.
@@ -159,14 +159,14 @@ def reduced_resistances(resistances, voltages):
     original_shape = resistances.shape
 
     # find first row that is non-infinite
-    rows = np.where(np.all(resistances > large_number(), axis=1) == False)[0]
+    rows = np.where(np.all(resistances == np.inf, axis=1) == False)[0]
     if len(rows) != 0:
         row = rows[0]
         resistances = resistances[row:, :]
         voltages = voltages[row:, :]
 
     # find last column that is non-infinite
-    columns = np.where(np.all(resistances > large_number(), axis=0) == False)[0]
+    columns = np.where(np.all(resistances == np.inf, axis=0) == False)[0]
     if len(columns) != 0:
         column = columns[-1]
         resistances = resistances[:, :(column+1)]
@@ -187,58 +187,3 @@ def shapes(voltages, resistances):
     shape = Shape(voltages.shape, resistances.shape)
 
     return shape
-
-
-def non_infinite(matrix):
-    """Replaces np.inf values with very large numbers.
-
-    In most cases, this function would not be necessary to solve matrix equations. Unfortunately, in a few edge cases, even when there is an analytic solution, scipy library is not able to compute i matrix when some specific r entries are equal to np.inf. Replacing np.inf with very large numbers seems to provide a stable solution (see tests directory).
-
-    :param matrix: An array.
-    :return: An array in which np.inf values are replaced with a very large number.
-    """
-    matrix[matrix == np.inf] = large_number()
-    return matrix
-
-
-def large_number():
-    """Return large number.
-
-    :return: Large number.
-    """
-    return 1e200
-
-
-def rounded_zeros(matrix):
-    """Rounds numbers with very small absolute values to zero.
-
-    This function was mainly created to deal with very small crossbar currents that should, in theory, be zero but are computed as non-zero because of extract.non_infinite().
-
-    :param matrix: A numpy array.
-    :return: A numpy array with its smallest absolute values set to zero.
-    """
-    order_of_magnitude = np.floor(math.log(large_number(), 10))
-    threshold = 1/(10 ** int(order_of_magnitude*0.9))
-
-    almost_zero = np.where((matrix > -threshold) & (matrix < threshold))
-    matrix[almost_zero] = 0
-
-    return matrix
-
-
-def rounded_zeros_i(i, resistances, part='whole'):
-    """Rounds numbers in i matrix with very small absolute values to zero.
-
-    :param i: Solution to ri = v in a flattened form.
-    :param resistances: Resistances of crossbar devices.
-    :param part: Subset of currents that has to be rounded.
-    :return: i matrix with some or all of its small values rounded to zero.
-    """
-    if part == 'output':
-        i[-resistances.shape[1]:, ] = rounded_zeros(i[-resistances.shape[1]:, ])
-    elif part == 'rest':
-        i[:resistances.shape[1], ] = rounded_zeros(i[:resistances.shape[1], ])
-    elif part == 'whole':
-        i = rounded_zeros(i)
-
-    return i
