@@ -76,9 +76,11 @@ def output_currents(v, resistances, r_i, shape):
     :param shape: Shape of voltages and resistances matrices.
     :return: Output currents in a matrix of shape p x n, where p is the number of examples (sets of voltages applied one by one) and n is the number of outputs of the crossbar.
     """
+    output_i = np.zeros((v.shape[1], shape.resistances[1]))
     filled_output_i = v[-resistances.shape[1]:, ]/r_i
     filled_output_i = np.transpose(filled_output_i)
-    return filled_output_i
+    output_i[:, :filled_output_i.shape[1]] = filled_output_i
+    return output_i
 
 
 def device_currents(v, resistances, shape):
