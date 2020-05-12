@@ -4,4 +4,4 @@ In perfect conditions, crossbar array can work as a dot product engine computing
 For most users, function badcrossbar.currents should complete the main task at hand, i.e. computing output currents of a crossbar array given applied voltages, resistances of crossbar devices and interconnect resistance.
 """
 
-from .compute import currents
+from .compute import compute

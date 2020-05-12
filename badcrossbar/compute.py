@@ -1,7 +1,7 @@
 from badcrossbar import solve, extract, fill, check
 
 
-def currents(voltages, resistances, r_i=0, **kwargs):
+def compute(voltages, resistances, r_i=0, **kwargs):
     """Computes output currents for a crossbar.
 
     :param voltages: Applied voltages. Voltages must be supplied in an array of shape m x p, where m is the number of word lines and p is the number of examples (sets of voltages applied one by one).

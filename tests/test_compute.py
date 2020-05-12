@@ -22,7 +22,7 @@ def test_currents_qucs_2x3_a():
                                            [0.3038503784, 0.1806373661, 0.08209187684]]),
                                  np.array([[0.2877316742, 0.1442221472, 0.09620240051],
                                            [0.4109446865, 0.2427676365, 0.1782942773]]))
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
 
@@ -46,7 +46,7 @@ def test_currents_qucs_2x3_b():
                                            [0.3083333333333, 0.183333333333, 0.08333333333333]]),
                                  np.array([[0.3, 0.15, 0.1],
                                            [0.425, 0.25, 0.183333333333333]]))
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
 
@@ -72,7 +72,7 @@ def test_currents_qucs_2x3_c():
                                            [0.2630055104, 0.228795581, 0.228795581]]),
                                  np.array([[0.2817916183, 0, 0],
                                            [0.3160015477, 0, 0.228795581]]))
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
 
@@ -96,7 +96,7 @@ def test_currents_qucs_2x3_d():
                                            [0.3700017161, 0.1465591213, 0]]),
                                  np.array([[0, 0, 0],
                                            [0.2234425948, 0.1465591213, 0]]))
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
 
@@ -120,7 +120,7 @@ def test_currents_qucs_2x1_a():
                                            [0.004370860927]]),
                                  np.array([[0.04754966887],
                                            [0.0519205298]]))
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
 
@@ -144,7 +144,7 @@ def test_currents_qucs_2x1_b():
                                            [0]]),
                                  np.array([[0],
                                            [0]]))
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
 
@@ -168,7 +168,7 @@ def test_currents_qucs_2x1_c():
                                            [0]]),
                                  np.array([[50],
                                            [50]]))
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i)
 
     compare_currents(computed_currents, expected_currents)
 
@@ -185,7 +185,7 @@ def test_currents_dot_product_engine():
         resistances = np.random.rand(m, n)
         voltages = np.random.rand(m, p)
         r_i = 0
-        computed_currents = badcrossbar.currents(voltages, resistances, r_i)
+        computed_currents = badcrossbar.compute(voltages, resistances, r_i)
 
         conductances = np.reciprocal(resistances)
         expected_output = np.dot(np.transpose(voltages), conductances)
@@ -210,7 +210,7 @@ def test_currents_dot_product_engine_insulating():
 
         voltages = np.random.rand(m, p)
         r_i = 0
-        computed_currents = badcrossbar.currents(voltages, resistances, r_i)
+        computed_currents = badcrossbar.compute(voltages, resistances, r_i)
 
         conductances = np.reciprocal(resistances)
         expected_output = np.dot(np.transpose(voltages), conductances)
@@ -235,7 +235,7 @@ def test_currents_dot_product_engine_insulating_lines():
 
         voltages = np.random.rand(m, p)
         r_i = 0
-        computed_currents = badcrossbar.currents(voltages, resistances, r_i)
+        computed_currents = badcrossbar.compute(voltages, resistances, r_i)
 
         conductances = np.reciprocal(resistances)
         expected_output = np.dot(np.transpose(voltages), conductances)
@@ -252,7 +252,7 @@ def test_currents_return_only_outputs():
     resistances = np.random.rand(m, n)
     voltages = np.random.rand(m, p)
     r_i = 0
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i, extract_all=False)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i, extract_all=False)
 
     assert type(computed_currents.output) is np.ndarray
     assert computed_currents.device is None
@@ -272,7 +272,7 @@ def test_currents_qucs_2x3_a_only_outputs():
     r_i = 0.1
 
     expected_output = np.array([[0.4109446865, 0.2427676365, 0.1782942773]])
-    computed_currents = badcrossbar.currents(voltages, resistances, r_i=r_i, extract_all=False)
+    computed_currents = badcrossbar.compute(voltages, resistances, r_i=r_i, extract_all=False)
 
     np.testing.assert_array_almost_equal(computed_currents.output, expected_output)
 
