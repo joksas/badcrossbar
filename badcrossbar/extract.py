@@ -34,6 +34,33 @@ def currents(i, resistances, shape=(128, 64), **kwargs):
     return extracted_currents
 
 
+def voltages(v, resistances, shape=(128, 64), **kwargs):
+    """Extracts crossbar currents in a convenient format.
+
+    :param i: Solution to ri = v in a flattened form.
+    :param resistances: Resistances of crossbar devices.
+    :param shape: Shape of voltages and resistances matrices.
+    :param **kwargs:
+        :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
+    :return: Either output currents or output currents together with the currents in all branches.
+    """
+    Voltages = namedtuple('Currents', ['word_line', 'bit_line'])
+    word_line_v = word_line_voltages(v, resistances, shape)
+    bit_line_v = bit_line_voltages(v, resistances, shape)
+    extracted_voltages = Voltages(word_line_v, bit_line_v)
+    return extracted_voltages
+
+
+def word_line_voltages(v, resistances, shape):
+    v_domain = v[:resistances.size, ]
+    return distributed_matrix(v_domain, resistances, shape)
+
+
+def bit_line_voltages(v, resistances, shape):
+    v_domain = v[resistances.size:, ]
+    return distributed_matrix(v_domain, resistances, shape)
+
+
 def output_currents(i, resistances, shape):
     """Extracts output currents of the crossbar.
 
