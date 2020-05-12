@@ -4,6 +4,16 @@ from badcrossbar import display
 from collections import namedtuple
 
 
+def solution(v, resistances, r_i, applied_voltages, shape=(128, 64), **kwargs):
+    Solution = namedtuple('Solution', ['currents', 'voltages'])
+    extracted_voltages = None
+    if kwargs.get('extract_voltages', True) is True:
+        extracted_voltages = voltages(v, resistances, shape=shape)
+    extracted_currents = currents(v, resistances, r_i, applied_voltages, shape=shape, **kwargs)
+    extracted_solution = Solution(extracted_currents, extracted_voltages)
+    return extracted_solution
+
+
 def currents(v, resistances, r_i, voltages, shape=(128, 64), **kwargs):
     """Extracts crossbar currents in a convenient format.
 

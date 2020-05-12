@@ -15,6 +15,6 @@ def currents(voltages, resistances, r_i=0, **kwargs):
     g = fill.g(resistances, r_i)
     i = fill.i(voltages, resistances, r_i)
     v = solve.v(g, i)
-    crossbar_currents = extract.currents(i, resistances, shape=original_shape, **kwargs)
+    solution = extract.solution(v, resistances, r_i, voltages, shape=original_shape, **kwargs)
 
-    return crossbar_currents
+    return solution
