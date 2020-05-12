@@ -12,9 +12,9 @@ def currents(voltages, resistances, r_i=0, **kwargs):
     resistances, voltages = check.crossbar_requirements(resistances, voltages, r_i)
     original_shape = extract.shapes(voltages, resistances)
     resistances, voltages = extract.reduced_resistances(resistances, voltages)
-    r = fill.r(resistances, r_i)
-    v = fill.v(voltages, resistances)
-    i = solve.i(r, v)
+    g = fill.g(resistances, r_i)
+    i = fill.i(voltages, resistances, r_i)
+    v = solve.v(g, i)
     crossbar_currents = extract.currents(i, resistances, shape=original_shape, **kwargs)
 
     return crossbar_currents
