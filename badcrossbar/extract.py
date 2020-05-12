@@ -1,5 +1,4 @@
 import numpy as np
-import math
 from badcrossbar import display
 from collections import namedtuple
 
@@ -7,7 +6,7 @@ from collections import namedtuple
 def solution(v, resistances, r_i, applied_voltages, shape=(128, 64), **kwargs):
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = None
-    if kwargs.get('extract_voltages', True) is True:
+    if kwargs.get('node_voltages', True) is True:
         extracted_voltages = voltages(v, resistances, shape=shape)
     extracted_currents = currents(v, resistances, r_i, applied_voltages, shape=shape, **kwargs)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
@@ -29,7 +28,7 @@ def currents(v, resistances, r_i, voltages, shape=(128, 64), **kwargs):
     word_line_i = None
     bit_line_i = None
 
-    if kwargs.get('extract_all', True) is False:
+    if kwargs.get('all_currents', True) is False:
         display.message('Extracted output currents.')
     else:
         device_i = device_currents(v, resistances, shape)
