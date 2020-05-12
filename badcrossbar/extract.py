@@ -60,7 +60,7 @@ def device_currents(i, resistances, shape):
     :return: List of currents flowing through crossbar devices for each set of applied voltages.
     """
     i_domain = i[:resistances.size, ]
-    return reshaped_currents(i_domain, resistances, shape)
+    return distributed_matrix(i_domain, resistances, shape)
 
 
 def word_line_currents(i, resistances, shape):
@@ -72,7 +72,7 @@ def word_line_currents(i, resistances, shape):
     :return: List of currents flowing through word line interconnects for each set of applied voltages.
     """
     i_domain = i[resistances.size:2*resistances.size, ]
-    return reshaped_currents(i_domain, resistances, shape)
+    return distributed_matrix(i_domain, resistances, shape)
 
 
 def bit_line_currents(i, resistances, shape):
@@ -84,27 +84,27 @@ def bit_line_currents(i, resistances, shape):
     :return: List of currents flowing through bit line interconnects for each set of applied voltages.
     """
     i_domain = i[2*resistances.size:3*resistances.size, ]
-    return reshaped_currents(i_domain, resistances, shape)
+    return distributed_matrix(i_domain, resistances, shape)
 
 
-def reshaped_currents(i, resistances, shape):
+def distributed_matrix(matrix, resistances, shape):
     """Reshapes flattened vector(s) of currents into an array or a list of arrays.
 
-    :param i: Matrix containing solutions to ri = v in a flattened form.
+    :param matrix: A matrix.
     :param resistances: Resistances of crossbar devices.
     :param shape: Shape of voltages and resistances matrices.
     :return: Array or a list of arrays of currents having the same shape as the crossbar.
     """
-    if i.ndim > 1:
+    if matrix.ndim > 1:
         reshaped_i = []
-        for example in range(i.shape[1]):
+        for example in range(matrix.shape[1]):
             reshaped_matrix = np.zeros(shape.resistances)
-            filled_matrix = i[:, example].reshape(resistances.shape)
+            filled_matrix = matrix[:, example].reshape(resistances.shape)
             reshaped_matrix[-filled_matrix.shape[0]:, :filled_matrix.shape[1]] = filled_matrix
             reshaped_i.append(reshaped_matrix)
     else:
         reshaped_i = np.zeros(shape.resistances)
-        filled_matrix = i.reshape(resistances.shape)
+        filled_matrix = matrix.reshape(resistances.shape)
         reshaped_i[-filled_matrix.shape[0]:, :filled_matrix.shape[1]] = filled_matrix
 
     return reshaped_i
