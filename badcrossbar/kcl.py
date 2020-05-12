@@ -87,7 +87,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
         word_lines = np.repeat(num_word_lines-1, num_bit_lines)
         bit_lines = np.arange(num_bit_lines)
         index = conductances.size + word_lines * num_bit_lines + bit_lines
-        g_matrix[index, index] = np.ones((num_bit_lines,))*g_i + conductances[-1, :]
+        g_matrix[index, index] = np.ones((num_bit_lines,))*2*g_i + conductances[-1, :]
         g_matrix[index, index - num_bit_lines] = -np.ones((num_bit_lines,))*g_i
         g_matrix[index, index - conductances.size] = -conductances[-1, :]
 
