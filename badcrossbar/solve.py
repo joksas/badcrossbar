@@ -24,7 +24,6 @@ def v(g, i):
     :return: Currents in each branch of the crossbar.
     """
     display.message('Started solving for i.')
-    # r = extract.non_infinite(r)
-    v_matrix = linalg.spsolve(g, i)  # converts lil_matrix to csc_matrix before solving
+    v_matrix = linalg.spsolve(g.tocsc(), i)  # converts lil_matrix to csc_matrix before solving
     display.message('Solved for v.')
     return v_matrix
