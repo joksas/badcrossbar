@@ -8,7 +8,7 @@ def extract(filename, shape):
     V = one_dim(data, shape, var1='V')
     S = solution(data, shape)
     r_i = zero_dim(data, var1='r_i')
-    pass
+    return R, V, r_i, S
 
 
 def open_file(filename):
