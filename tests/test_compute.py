@@ -12,6 +12,13 @@ def test_currents_qucs(file_name):
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
+@pytest.mark.parametrize('file_name', ['1x4_a', '1x4_b', '1x4_c', '1x4_d', '5x1_a', '5x1_b' '5x1_c', '5x4_a', '5x4_b', '5x4_c', '5x4_d', '5x4_e', '5x4_f', '5x4_g'])
+def test_voltages_qucs(file_name):
+    resistances, voltages, r_i, expected_solution = qucs_data(file_name)
+    computed_solution = badcrossbar.compute(voltages, resistances, r_i=r_i)
+    compare_voltages(computed_solution.voltages, expected_solution.voltages)
+
+
 def qucs_data(file_name):
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
@@ -33,3 +40,8 @@ def compare_currents(computed_currents, expected_currents):
     np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
     np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
     np.testing.assert_array_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
+
+
+def compare_voltages(computed_voltages, expected_voltages):
+    np.testing.assert_array_almost_equal(computed_voltages.word_line, expected_voltages.word_line)
+    np.testing.assert_array_almost_equal(computed_voltages.bit_line, expected_voltages.bit_line)
