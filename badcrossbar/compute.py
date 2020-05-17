@@ -10,11 +10,9 @@ def compute(voltages, resistances, r_i=0, **kwargs):
     :return: Currents in a crossbar. Output currents are returned in an array of shape p x n. If extract_all=False is not passed, then also currents flowing through crossbar devices, word lines and bit lines are returned as lists of arrays of shape m x n.
     """
     resistances, voltages = check.crossbar_requirements(resistances, voltages, r_i)
-    original_shape = extract.shapes(voltages, resistances)
-    resistances, voltages = extract.reduced_resistances(resistances, voltages)
     g = fill.g(resistances, r_i)
     i = fill.i(voltages, resistances, r_i)
     v = solve.v(g, i)
-    solution = extract.solution(v, resistances, r_i, voltages, shape=original_shape, **kwargs)
+    solution = extract.solution(v, resistances, r_i, voltages, **kwargs)
 
     return solution
