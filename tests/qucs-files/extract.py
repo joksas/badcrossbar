@@ -13,9 +13,9 @@ def extract(filename, shape):
     data = open_file(filename, 'dat')
     R = two_dim(data, shape, var1='R')
     V = one_dim(data, shape, var1='V')
-    S = solution(data, shape)
     r_i = zero_dim(data, var1='r_i')
-    save_file((R, V, r_i, S), filename, allow_overwrite=True)
+    I_o, I_d, I_w, I_b, V_w, V_b = solution(data, shape)
+    save_file((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename, allow_overwrite=True)
 
 
 def two_dim(data, shape, var1, var2=None):
@@ -61,16 +61,12 @@ def solution(data, shape):
     device_currents = two_dim(data, shape, var1='d', var2='.I')
     word_line_currents = two_dim(data, shape, var1='w', var2='.I')
     bit_line_currents = two_dim(data, shape, var1='b', var2='.I')
-    output_currents = bit_line_currents[-1, :]
-    extracted_currents = Currents(output_currents, device_currents, word_line_currents, bit_line_currents)
+    output_currents = bit_line_currents[-1, :].reshape(1, shape[1])
 
     word_line_voltages = two_dim(data, shape, var1='w', var2='.V')
     bit_line_voltages = two_dim(data, shape, var1='b', var2='.V')
-    extracted_voltages = Voltages(word_line_voltages, bit_line_voltages)
 
-    solution = Solution(extracted_currents, extracted_voltages)
-
-    return solution
+    return output_currents, device_currents, word_line_currents, bit_line_currents, word_line_voltages, bit_line_voltages
 
 
 def between(data, delim1, delim2):
