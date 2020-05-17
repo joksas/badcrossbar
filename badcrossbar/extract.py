@@ -51,7 +51,7 @@ def voltages(v, resistances, shape=(128, 64)):
         :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
     :return: Either output currents or output currents together with the currents in all branches.
     """
-    Voltages = namedtuple('Currents', ['word_line', 'bit_line'])
+    Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
     word_line_v = word_line_voltages(v, resistances, shape)
     bit_line_v = bit_line_voltages(v, resistances, shape)
     extracted_voltages = Voltages(word_line_v, bit_line_v)
