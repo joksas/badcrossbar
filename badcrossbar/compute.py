@@ -1,4 +1,6 @@
-from badcrossbar import solve, extract, fill, check
+import badcrossbar.ideal.extract
+from badcrossbar import check
+from badcrossbar.nonideal import extract, fill, solve
 
 
 def compute(voltages, resistances, r_i=0, **kwargs):
@@ -16,6 +18,6 @@ def compute(voltages, resistances, r_i=0, **kwargs):
         v = solve.v(g, i)
         solution = extract.solution(v, resistances, r_i, voltages, **kwargs)
     else:
-        solution = extract.zero_solution(resistances, voltages, **kwargs)
+        solution = badcrossbar.ideal.extract.solution(resistances, voltages, **kwargs)
 
     return solution

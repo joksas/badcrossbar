@@ -1,5 +1,5 @@
 import numpy as np
-from badcrossbar import kcl, display
+from badcrossbar.nonideal import kcl
 from scipy.sparse import lil_matrix
 
 
