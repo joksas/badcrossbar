@@ -24,7 +24,7 @@ def qucs_data(file_name):
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
-    path = 'qucs-files/' + file_name + '.pickle'
+    path = 'qucs/' + file_name + '.pickle'
     with open(path, 'rb') as handle:
         resistances, voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = pickle.load(handle)
 
