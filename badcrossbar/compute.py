@@ -1,6 +1,4 @@
-import badcrossbar.ideal.extract
-import badcrossbar.nonideal.extract
-from badcrossbar import check
+from badcrossbar import check, nonideal, ideal
 
 
 def compute(voltages, resistances, r_i=0, **kwargs):
@@ -13,8 +11,8 @@ def compute(voltages, resistances, r_i=0, **kwargs):
     """
     resistances, voltages = check.crossbar_requirements(resistances, voltages, r_i)
     if r_i != 0:
-        solution = badcrossbar.nonideal.extract.solution(resistances, r_i, voltages, **kwargs)
+        solution = nonideal.extract.solution(resistances, r_i, voltages, **kwargs)
     else:
-        solution = badcrossbar.ideal.extract.solution(resistances, voltages, **kwargs)
+        solution = ideal.extract.solution(resistances, voltages, **kwargs)
 
     return solution
