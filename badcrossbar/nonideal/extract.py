@@ -1,9 +1,14 @@
 import numpy as np
 from badcrossbar import display
 from collections import namedtuple
+from badcrossbar.nonideal import fill, solve
 
 
-def solution(v, resistances, r_i, applied_voltages, **kwargs):
+def solution(resistances, r_i, applied_voltages, **kwargs):
+    g = fill.g(resistances, r_i)
+    i = fill.i(applied_voltages, resistances, r_i)
+    v = solve.v(g, i)
+
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = None
     if kwargs.get('node_voltages', True) is True:
