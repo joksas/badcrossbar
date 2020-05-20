@@ -5,10 +5,10 @@ from badcrossbar import display
 
 def solution(resistances, applied_voltages, **kwargs):
     Solution = namedtuple('Solution', ['currents', 'voltages'])
-    extracted_voltages = None
-    if kwargs.get('node_voltages', True) is True:
-        extracted_voltages = voltages(applied_voltages, resistances)
+    extracted_voltages = voltages(applied_voltages, resistances)
     extracted_currents = currents(resistances, applied_voltages, extracted_voltages, **kwargs)
+    if kwargs.get('node_voltages', True) is False:
+        extracted_voltages = None
     extracted_solution = Solution(extracted_currents, extracted_voltages)
     return extracted_solution
 
