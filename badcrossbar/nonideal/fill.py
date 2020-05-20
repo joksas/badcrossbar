@@ -17,7 +17,7 @@ def i(voltages, resistances, r_i):
     return i_matrix
 
 
-def conductive(g_matrix, i_matrix, resistances, r_i):
+def superconductive(g_matrix, i_matrix, resistances, r_i):
     # get rows of g_matrix that contain np.inf elements
     rows = np.argwhere(np.any(g_matrix[:resistances.size, :] == np.inf, axis=0) == True)[:, -1]
     g_matrix[g_matrix == np.inf] = 0

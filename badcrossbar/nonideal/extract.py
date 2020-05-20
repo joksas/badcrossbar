@@ -7,7 +7,7 @@ from badcrossbar.nonideal import fill, solve
 def solution(resistances, r_i, applied_voltages, **kwargs):
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
-    g, i, removed_rows = fill.conductive(g, i, resistances, r_i)
+    g, i, removed_rows = fill.superconductive(g, i, resistances, r_i)
 
     v = solve.v(g, i)
     if len(removed_rows) > 0:
@@ -107,11 +107,11 @@ def device_currents(v, resistances, removed_rows, word_line_i):
     """
     i = np.divide(v[:resistances.size, ] - v[resistances.size:, ], np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
     if len(removed_rows) > 0:
-        i = zero_resistance(i, v, removed_rows, resistances, word_line_i)
+        i = superconductive_device_currents(i, removed_rows, resistances, word_line_i)
     return i
 
 
-def zero_resistance(i, v, removed_rows, resistances, word_line_i):
+def superconductive_device_currents(i, removed_rows, resistances, word_line_i):
     rows = [x-resistances.size for x in removed_rows]
 
     for row in rows:
