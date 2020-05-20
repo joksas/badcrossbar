@@ -10,7 +10,7 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     g, i, removed_rows = fill.superconductive(g, i, resistances, r_i)
 
     v = solve.v(g, i)
-    if len(removed_rows) > 0:
+    if removed_rows is not None:
         v = full_v(v, removed_rows, resistances)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
@@ -106,7 +106,7 @@ def device_currents(v, resistances, removed_rows, word_line_i):
     :return: List of currents flowing through crossbar devices for each set of applied voltages.
     """
     i = np.divide(v[:resistances.size, ] - v[resistances.size:, ], np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
-    if len(removed_rows) > 0:
+    if removed_rows is not None:
         i = superconductive_device_currents(i, removed_rows, resistances, word_line_i)
     return i
 
