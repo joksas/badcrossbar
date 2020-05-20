@@ -1,4 +1,5 @@
 import numpy as np
+from badcrossbar import display
 
 
 def crossbar_requirements(resistances, voltages, r_i):
@@ -174,6 +175,9 @@ def short_circuit(resistances, r_i):
     ValueError
         If r_i = 0 and any of the devices have zero resistance.
     """
-    if r_i == 0:
-        if 0 in resistances:
+
+    if 0 in resistances:
+        if r_i == 0:
             raise ValueError('At least some crossbar devices have zero resistance causing short circuit!')
+        else:
+            display.message('Warning: some crossbar devices have zero resistance!')
