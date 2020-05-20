@@ -177,3 +177,15 @@ def full_v(v, removed_rows, resistances):
         v = np.insert(v, row, 0, axis=0)
         v[row, :] = v[row - resistances.size, :]
     return v
+
+
+def delete_rows(matrix, rows):
+    matrix.rows = np.delete(matrix.rows, rows)
+    matrix.data = np.delete(matrix.data, rows)
+    matrix._shape = (matrix._shape[0] - len(rows), matrix._shape[1])
+    return matrix
+
+
+def delete_columns(matrix, columns):
+    matrix = delete_rows(np.transpose(matrix), columns)
+    return np.transpose(matrix)

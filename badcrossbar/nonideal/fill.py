@@ -1,6 +1,7 @@
 import numpy as np
 from badcrossbar.nonideal import kcl
 from scipy.sparse import lil_matrix
+from badcrossbar.nonideal import extract
 
 
 def g(resistances, r_i):
@@ -31,8 +32,8 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
         g_matrix[:, row] += g_matrix[:, row + resistances.size]
 
     removed_rows = list(map(int, rows + np.ones(rows.shape)*resistances.size))
-    g_matrix = delete_rows(g_matrix, removed_rows)
-    g_matrix = delete_columns(g_matrix, removed_rows)
+    g_matrix = extract.delete_rows(g_matrix, removed_rows)
+    g_matrix = extract.delete_columns(g_matrix, removed_rows)
     i_matrix = np.delete(i_matrix, removed_rows, 0)
 
     for row in rows:
@@ -43,15 +44,3 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
             g_matrix[row, row] += 1 / r_i
 
     return g_matrix, i_matrix, removed_rows
-
-
-def delete_rows(matrix, rows):
-    matrix.rows = np.delete(matrix.rows, rows)
-    matrix.data = np.delete(matrix.data, rows)
-    matrix._shape = (matrix._shape[0] - len(rows), matrix._shape[1])
-    return matrix
-
-
-def delete_columns(matrix, columns):
-    matrix = delete_rows(np.transpose(matrix), columns)
-    return np.transpose(matrix)
