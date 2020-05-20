@@ -44,9 +44,8 @@ def number(**kwargs):
         If any of the items are not int or float.
     """
     for key, value in kwargs.items():
-        if not isinstance(value, int):
-            if not isinstance(value, float):
-                raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use int or float instead.')
+        if not isinstance(value, (int, float)):
+            raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use int or float instead.')
 
 
 def matrix_type(**kwargs):
@@ -77,6 +76,8 @@ def matrix_type(**kwargs):
                 new_args.append(np.array(value))
             else:
                 raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use np.ndarray or list instead.')
+        if np.issubdtype(new_args[-1].dtype, np.number) is False:
+            raise TypeError('Array \'' + key + '\' should only contain numbers!')
 
     if len(new_args) == 1:
         new_args = new_args[0]
