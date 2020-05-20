@@ -27,7 +27,7 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
         g_matrix[row, :] += g_matrix[row + resistances.size, :]
         g_matrix[:, row] += g_matrix[:, row + resistances.size]
 
-    removed_rows = list(rows + np.ones(rows.shape)*resistances.size)
+    removed_rows = list(map(int, rows + np.ones(rows.shape)*resistances.size))
     g_matrix = delete_rows(g_matrix, removed_rows)
     g_matrix = delete_columns(g_matrix, removed_rows)
     i_matrix = np.delete(i_matrix, removed_rows, 0)
@@ -39,7 +39,7 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
         if resistances.size - row <= resistances.shape[1]:
             g_matrix[row, row] += 1 / r_i
 
-    return g_matrix, i_matrix, list(map(int, removed_rows))
+    return g_matrix, i_matrix, removed_rows
 
 
 def delete_rows(matrix, rows):
