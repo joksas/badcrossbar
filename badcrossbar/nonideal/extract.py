@@ -106,7 +106,8 @@ def device_currents(v, resistances, removed_rows, word_line_i):
     :param shape: Shape of voltages and resistances matrices.
     :return: List of currents flowing through crossbar devices for each set of applied voltages.
     """
-    i = np.divide(v[:resistances.size, ] - v[resistances.size:, ], np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
+    with np.errstate(invalid='ignore'):
+        i = np.divide(v[:resistances.size, ] - v[resistances.size:, ], np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
     if removed_rows is not None:
         i = superconductive_device_currents(i, removed_rows, resistances, word_line_i)
     return i
