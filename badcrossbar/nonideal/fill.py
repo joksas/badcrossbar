@@ -36,10 +36,8 @@ def conductive(g_matrix, i_matrix, resistances, r_i):
         g_matrix[row, row] = -np.sum(g_matrix[row, :])
         if row % resistances.shape[1] == 0:
             g_matrix[row, row] += 1/r_i
-        if resistances.size - row < resistances.shape[1]:
+        if resistances.size - row <= resistances.shape[1]:
             g_matrix[row, row] += 1 / r_i
-
-    # TODO: handle the case when there are consecutive conductive elements in a column
 
     return g_matrix, i_matrix, map(int, removed_rows)
 
