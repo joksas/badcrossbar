@@ -8,7 +8,7 @@ def apply(g_matrix, resistances, r_i):
     :param resistances: Resistances of crossbar devices.
     :return: Partially filled r matrix.
     """
-    conductances = np.divide(np.ones(resistances.shape), resistances)
+    conductances = 1./resistances
     g_matrix = word_line_nodes(g_matrix, conductances, r_i)
     g_matrix = bit_line_nodes(g_matrix, conductances, r_i)
     return g_matrix
