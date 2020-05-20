@@ -1,24 +1,6 @@
 from datetime import datetime
 
 
-def reduced(original_shape, new_shape):
-    """Prints if and how resistances matrix changed after attempted reduction.
-
-    :param original_shape: Shape of original resistances matrix.
-    :param new_shape: Shape of new resistances matrix.
-    :return: None
-    """
-    time()
-    gap()
-    original_shape_str = str(original_shape[0]) + 'x' + str(original_shape[1])
-    new_shape_str = str(new_shape[0]) + 'x' + str(new_shape[1])
-
-    if original_shape != new_shape:
-        print('Size of effective resistances matrix reduced from ' + original_shape_str + ' to ' + new_shape_str + '.')
-    else:
-        print('Size of effective resistances matrix kept at ' + original_shape_str + '.')
-
-
 def message(message_str):
     """Prints current time followed by a gap and a custom message.
 
