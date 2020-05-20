@@ -61,7 +61,7 @@ def currents(resistances, applied_voltages, extracted_voltages, **kwargs):
 
 
 def output_currents(resistances, applied_voltages):
-    output_i = np.dot(np.transpose(np.reciprocal(resistances)), applied_voltages)
+    output_i = np.dot(np.transpose(1./resistances), applied_voltages)
 
     return np.transpose(output_i)
 
