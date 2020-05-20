@@ -7,7 +7,10 @@ from badcrossbar.nonideal import fill, solve
 def solution(resistances, r_i, applied_voltages, **kwargs):
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
+    g, i, removed_rows = fill.conductive(g, i, resistances, r_i)
+
     v = solve.v(g, i)
+    v = full_v(v, removed_rows, resistances)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = None
@@ -146,3 +149,10 @@ def distributed_matrix(matrix, resistances):
         reshaped_i = matrix.reshape(resistances.shape)
 
     return reshaped_i
+
+
+def full_v(v, removed_rows, resistances):
+    for row in removed_rows:
+        v = np.insert(v, row, 0, axis=0)
+        v[row, :] = v[row - resistances.size, :]
+    return v
