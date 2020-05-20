@@ -10,18 +10,19 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     g, i, removed_rows = fill.conductive(g, i, resistances, r_i)
 
     v = solve.v(g, i)
-    v = full_v(v, removed_rows, resistances)
+    if len(removed_rows) > 0:
+        v = full_v(v, removed_rows, resistances)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = None
     if kwargs.get('node_voltages', True) is True:
         extracted_voltages = voltages(v, resistances)
-    extracted_currents = currents(v, resistances, r_i, applied_voltages, **kwargs)
+    extracted_currents = currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
     return extracted_solution
 
 
-def currents(v, resistances, r_i, voltages, **kwargs):
+def currents(v, resistances, r_i, voltages, removed_rows, **kwargs):
     """Extracts crossbar currents in a convenient format.
 
     :param i: Solution to ri = v in a flattened form.
@@ -39,9 +40,14 @@ def currents(v, resistances, r_i, voltages, **kwargs):
     if kwargs.get('all_currents', True) is False:
         display.message('Extracted output currents.')
     else:
-        device_i = device_currents(v, resistances)
         word_line_i = word_line_currents(v, resistances, r_i, voltages)
         bit_line_i = bit_line_currents(v, resistances, r_i)
+        device_i = device_currents(v, resistances, removed_rows, word_line_i)
+
+        word_line_i = distributed_matrix(word_line_i, resistances)
+        bit_line_i = distributed_matrix(bit_line_i, resistances)
+        device_i = distributed_matrix(device_i, resistances)
+
         display.message('Extracted currents from all branches in a crossbar.')
 
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
@@ -91,7 +97,7 @@ def output_currents(v, resistances, r_i):
     return output_i
 
 
-def device_currents(v, resistances):
+def device_currents(v, resistances, removed_rows, word_line_i):
     """Extracts currents flowing through crossbar devices.
 
     :param i: Matrix containing solutions to ri = v in a flattened form.
@@ -100,7 +106,20 @@ def device_currents(v, resistances):
     :return: List of currents flowing through crossbar devices for each set of applied voltages.
     """
     i = np.divide(v[:resistances.size, ] - v[resistances.size:, ], np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
-    return distributed_matrix(i, resistances)
+    if len(removed_rows) > 0:
+        i = zero_resistance(i, v, removed_rows, resistances, word_line_i)
+    return i
+
+
+def zero_resistance(i, v, removed_rows, resistances, word_line_i):
+    rows = [x-resistances.size for x in removed_rows]
+
+    for row in rows:
+        if (row+1) % resistances.shape[1] == 0:
+            i[row, ] = word_line_i[row]
+        else:
+            i[row, ] = word_line_i[row] - word_line_i[row+1]
+    return i
 
 
 def word_line_currents(v, resistances, r_i, voltages):
@@ -115,7 +134,7 @@ def word_line_currents(v, resistances, r_i, voltages):
     i[::resistances.shape[1], ] = (voltages - v[:resistances.size:resistances.shape[1], ])/r_i
     for j in range(1, resistances.shape[1]):
         i[j::resistances.shape[1], ] = (v[j-1:resistances.size:resistances.shape[1], ] - v[j:resistances.size:resistances.shape[1], ])/r_i
-    return distributed_matrix(i, resistances)
+    return i
 
 
 def bit_line_currents(v, resistances, r_i):
@@ -130,7 +149,7 @@ def bit_line_currents(v, resistances, r_i):
     for j in range(resistances.shape[0]-1):
         i[resistances.shape[1]*j:resistances.shape[1]*(j+1), ] = (v[resistances.size + resistances.shape[1]*j:resistances.size + resistances.shape[1]*(j+1), ] - v[resistances.size + resistances.shape[1]*(j+1):resistances.size + resistances.shape[1]*(j+2), ])/r_i
     i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ]/r_i
-    return distributed_matrix(i, resistances)
+    return i
 
 
 def distributed_matrix(matrix, resistances):
