@@ -77,8 +77,8 @@ def matrix_type(**kwargs):
                 for item in value:
                     if isinstance(item, list) is False:
                         good_type = False
-                    if good_type is True:
-                        new_args.append(np.array(value))
+                if good_type is True:
+                    new_args.append(np.array(value))
             else:
                 good_type = False
         if good_type is False:
