@@ -7,11 +7,11 @@ def crossbar_requirements(resistances, voltages, r_i):
 
     Parameters
     ----------
-    resistances : array_like
+    resistances : any
         Resistances of crossbar devices.
-    voltages : array_like
+    voltages : any
         Applied voltages.
-    r_i : int, float
+    r_i : any
         Interconnect resistance.
 
     Returns
@@ -49,9 +49,9 @@ def number(**kwargs):
 
 
 def matrix_type(**kwargs):
-    """Checks if items can be used numpy arrays.
+    """Checks if items can be used as numpy arrays.
 
-    If one of the arguments is already a numpy array, it is returned unchanged. If it is a list (or a list of list), it is converted to numpy array and then returned. Else, an error is raised.
+    If one of the arguments is already a numpy array, it is returned unchanged. If it is a list of lists, it is converted to numpy array and then returned. Else, an error is raised.
 
     Parameters
     ----------
@@ -65,7 +65,7 @@ def matrix_type(**kwargs):
     Raises
     -------
     TypeError
-        If any of the items are not ndarray or list.
+        If any of the items are not ndarray or list, or if they contain non-number elements.
     """
     new_args = []
     good_type = True
@@ -94,7 +94,7 @@ def matrix_type(**kwargs):
 
 
 def empty(**kwargs):
-    """Checks if numpy arrays are empty; if yes, raises an error.
+    """Checks if numpy arrays are empty.
 
     Parameters
     ----------

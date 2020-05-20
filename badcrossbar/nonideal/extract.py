@@ -5,6 +5,27 @@ from badcrossbar.nonideal import fill, solve
 
 
 def solution(resistances, r_i, applied_voltages, **kwargs):
+    """Extracts currents and voltages in a crossbar in a convenient form.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+    applied_voltages :ndarray
+        Applied voltages.
+    kwargs
+        node_voltages : bool, optional
+            If False, None is returned instead of node voltages.
+        all_currents : bool, optional
+            If False, only output currents are returned.
+
+    Returns
+    -------
+    named tuple
+        Currents and voltages of the crossbar.
+    """
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
     g, i, removed_rows = fill.superconductive(g, i, resistances, r_i)
@@ -22,15 +43,29 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     return extracted_solution
 
 
-def currents(v, resistances, r_i, voltages, removed_rows, **kwargs):
+def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
     """Extracts crossbar currents in a convenient format.
+    
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+    applied_voltages :ndarray
+        Applied voltages.
+    removed_rows : list of int
+        Indices of rows removed from g and i.
+    kwargs
+        all_currents : bool, optional
+            If False, only output currents are returned.
 
-    :param i: Solution to ri = v in a flattened form.
-    :param resistances: Resistances of crossbar devices.
-    :param shape: Shape of voltages and resistances matrices.
-    :param **kwargs:
-        :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
-    :return: Either output currents or output currents together with the currents in all branches.
+    Returns
+    -------
+    named tuple
+        Crossbar currents. It has fields 'output', 'device', 'word_line' and 'bit_line' that contain output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines.
     """
     output_i = output_currents(v, resistances, r_i)
     device_i = None
@@ -40,7 +75,7 @@ def currents(v, resistances, r_i, voltages, removed_rows, **kwargs):
     if kwargs.get('all_currents', True) is False:
         display.message('Extracted output currents.')
     else:
-        word_line_i = word_line_currents(v, resistances, r_i, voltages)
+        word_line_i = word_line_currents(v, resistances, r_i, applied_voltages)
         bit_line_i = bit_line_currents(v, resistances, r_i)
         device_i = device_currents(v, resistances, removed_rows, word_line_i)
 
@@ -58,12 +93,17 @@ def currents(v, resistances, r_i, voltages, removed_rows, **kwargs):
 def voltages(v, resistances):
     """Extracts crossbar currents in a convenient format.
 
-    :param i: Solution to ri = v in a flattened form.
-    :param resistances: Resistances of crossbar devices.
-    :param shape: Shape of voltages and resistances matrices.
-    :param **kwargs:
-        :param extract_all: If True, extracts not only the output currents, but also the currents in all the branches of a crossbar.
-    :return: Either output currents or output currents together with the currents in all branches.
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    named tuple
+        Voltages at the nodes of the crossbar. It has fields 'word_line' and 'bit_line' that contain the potentials at the nodes on the word and bit lines.
     """
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
     word_line_v = word_line_voltages(v, resistances)
@@ -74,22 +114,59 @@ def voltages(v, resistances):
 
 
 def word_line_voltages(v, resistances):
+    """Extracts potentials at the nodes on the word lines.
+
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    ndarray of list of ndarray
+        Potentials at the nodes on the word lines.
+    """
     v_domain = v[:resistances.size, ]
     return distributed_matrix(v_domain, resistances)
 
 
 def bit_line_voltages(v, resistances):
+    """Extracts potentials at the nodes on the bit lines.
+
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    ndarray of list of ndarray
+        Potentials at the nodes on the bit lines.
+    """
     v_domain = v[resistances.size:, ]
     return distributed_matrix(v_domain, resistances)
 
 
 def output_currents(v, resistances, r_i):
-    """Extracts output currents of the crossbar.
+    """Extracts output currents.
 
-    :param i: Matrix containing solutions to ri = v in a flattened form.
-    :param resistances: Resistances of crossbar devices.
-    :param shape: Shape of voltages and resistances matrices.
-    :return: Output currents in a matrix of shape p x n, where p is the number of examples (sets of voltages applied one by one) and n is the number of outputs of the crossbar.
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+
+    Returns
+    -------
+    ndarray
+        Output currents.
     """
     output_i = np.zeros((v.shape[1], resistances.shape[1]))
     filled_output_i = v[-resistances.shape[1]:, ]/r_i
@@ -101,10 +178,21 @@ def output_currents(v, resistances, r_i):
 def device_currents(v, resistances, removed_rows, word_line_i):
     """Extracts currents flowing through crossbar devices.
 
-    :param i: Matrix containing solutions to ri = v in a flattened form.
-    :param resistances: Resistances of crossbar devices.
-    :param shape: Shape of voltages and resistances matrices.
-    :return: List of currents flowing through crossbar devices for each set of applied voltages.
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+    removed_rows : list of int
+        Indices of rows removed from g and i.
+    word_line_i : ndarray
+        Currents flowing through interconnect segments along the word lines.
+
+    Returns
+    -------
+    ndarray
+        Currents flowing through crossbar devices.
     """
     with np.errstate(invalid='ignore'):
         i = np.divide(v[:resistances.size, ] - v[resistances.size:, ], np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
@@ -113,39 +201,77 @@ def device_currents(v, resistances, removed_rows, word_line_i):
     return i
 
 
-def superconductive_device_currents(i, removed_rows, resistances, word_line_i):
+def superconductive_device_currents(device_i, removed_rows, resistances, word_line_i):
+    """Extracts currents flowing through crossbar devices that have zero resistance.
+
+    Parameters
+    ----------
+    device_i : ndarray
+        Currents flowing through crossbar devices.
+    removed_rows : list of int
+        Indices of rows removed from g and i.
+    resistances : ndarray
+        Resistances of crossbar devices.
+    word_line_i : ndarray
+        Currents flowing through interconnect segments along the word lines.
+
+    Returns
+    -------
+    ndarray
+        Currents flowing through crossbar devices.
+    """
     rows = [x-resistances.size for x in removed_rows]
 
     for row in rows:
         if (row+1) % resistances.shape[1] == 0:
-            i[row, ] = word_line_i[row]
+            device_i[row,] = word_line_i[row]
         else:
-            i[row, ] = word_line_i[row] - word_line_i[row+1]
-    return i
+            device_i[row,] = word_line_i[row] - word_line_i[row + 1]
+    return device_i
 
 
-def word_line_currents(v, resistances, r_i, voltages):
-    """Extracts currents flowing through interconnects along the word lines of the crossbar.
+def word_line_currents(v, resistances, r_i, applied_voltages):
+    """Extracts currents flowing through interconnect segments along the word lines.
 
-    :param i: Matrix containing solutions to ri = v in a flattened form.
-    :param resistances: Resistances of crossbar devices.
-    :param shape: Shape of voltages and resistances matrices.
-    :return: List of currents flowing through word line interconnects for each set of applied voltages.
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+    applied_voltages :ndarray
+        Applied voltages.
+
+    Returns
+    -------
+    ndarray
+        Currents flowing through interconnect segments along the word lines.
     """
-    i = np.zeros((resistances.size, voltages.shape[1]))
-    i[::resistances.shape[1], ] = (voltages - v[:resistances.size:resistances.shape[1], ])/r_i
+    i = np.zeros((resistances.size, applied_voltages.shape[1]))
+    i[::resistances.shape[1], ] = (applied_voltages - v[:resistances.size:resistances.shape[1], ]) / r_i
     for j in range(1, resistances.shape[1]):
         i[j::resistances.shape[1], ] = (v[j-1:resistances.size:resistances.shape[1], ] - v[j:resistances.size:resistances.shape[1], ])/r_i
     return i
 
 
 def bit_line_currents(v, resistances, r_i):
-    """Extracts currents flowing through interconnects along the bit lines of the crossbar.
+    """Extracts currents flowing through interconnect segments along the bit lines.
 
-    :param i: Matrix containing solutions to ri = v in a flattened form.
-    :param resistances: Resistances of crossbar devices.
-    :param shape: Shape of voltages and resistances matrices.
-    :return: List of currents flowing through bit line interconnects for each set of applied voltages.
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+
+    Returns
+    -------
+    ndarray
+        Currents flowing through interconnect segments along the bit lines.
     """
     i = np.zeros((resistances.size, v.shape[1]))
     for j in range(resistances.shape[0]-1):
@@ -154,25 +280,48 @@ def bit_line_currents(v, resistances, r_i):
     return i
 
 
-def distributed_matrix(matrix, resistances):
-    """Reshapes flattened vector(s) of currents into an array or a list of arrays.
+def distributed_matrix(flattened_array, model_array):
+    """Reshapes flattened array(s) into an array or a list of arrays.
+    
+    Parameters
+    ----------
+    flattened_array : ndarray
+        An array whose each column contains a flattened matrix.
+    model_array : ndarray
+        An array whose shape is used for reshaping.
 
-    :param matrix: A matrix.
-    :param resistances: Resistances of crossbar devices.
-    :param shape: Shape of voltages and resistances matrices.
-    :return: Array or a list of arrays of currents having the same shape as the crossbar.
+    Returns
+    -------
+    ndarray or list of ndarray
+        Array or a list of arrays in specified shape.
     """
-    if matrix.shape[1] > 1:
+    if flattened_array.shape[1] > 1:
         reshaped_i = []
-        for example in range(matrix.shape[1]):
-            reshaped_i.append(matrix[:, example].reshape(resistances.shape))
+        for example in range(flattened_array.shape[1]):
+            reshaped_i.append(flattened_array[:, example].reshape(model_array.shape))
     else:
-        reshaped_i = matrix.reshape(resistances.shape)
+        reshaped_i = flattened_array.reshape(model_array.shape)
 
     return reshaped_i
 
 
 def full_v(v, removed_rows, resistances):
+    """Refills v with rows that were removed.
+
+    Parameters
+    ----------
+    v : ndarray
+        Solution to gv = i in a flattened form.
+    removed_rows : list of int
+        Indices of rows removed from g and i.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    ndarray
+        Complete v array.
+    """
     for row in removed_rows:
         v = np.insert(v, row, 0, axis=0)
         v[row, :] = v[row - resistances.size, :]
@@ -180,6 +329,20 @@ def full_v(v, removed_rows, resistances):
 
 
 def except_rows(matrix, rows):
+    """Deletes certain rows of sparse lil matrix.
+
+    Parameters
+    ----------
+    matrix : lil_matrix
+        Sparse array.
+    rows : list of int
+        Rows to be removed.
+
+    Returns
+    -------
+    lil_matrix
+        Array with specified rows removed.
+    """
     matrix.rows = np.delete(matrix.rows, rows)
     matrix.data = np.delete(matrix.data, rows)
     matrix._shape = (matrix._shape[0] - len(rows), matrix._shape[1])
@@ -187,5 +350,19 @@ def except_rows(matrix, rows):
 
 
 def except_columns(matrix, columns):
+    """Deletes certain columns of sparse lil matrix.
+
+        Parameters
+        ----------
+        matrix : lil_matrix
+            Sparse array.
+        columns : list of int
+            Columns to be removed.
+
+        Returns
+        -------
+        lil_matrix
+            Array with specified columns removed.
+        """
     matrix = except_rows(np.transpose(matrix), columns)
     return np.transpose(matrix)
