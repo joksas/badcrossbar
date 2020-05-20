@@ -68,14 +68,21 @@ def matrix_type(**kwargs):
         If any of the items are not ndarray or list.
     """
     new_args = []
+    good_type = True
     for key, value in kwargs.items():
         if isinstance(value, np.ndarray):
             new_args.append(value)
         else:
             if isinstance(value, list):
-                new_args.append(np.array(value))
+                for item in value:
+                    if isinstance(item, list) is False:
+                        good_type = False
+                    if good_type is True:
+                        new_args.append(np.array(value))
             else:
-                raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use np.ndarray or list instead.')
+                good_type = False
+        if good_type is False:
+            raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use np.ndarray or list of lists instead.')
         if np.issubdtype(new_args[-1].dtype, np.number) is False:
             raise TypeError('Array \'' + key + '\' should only contain numbers!')
 
