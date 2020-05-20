@@ -9,6 +9,8 @@ def solution(resistances, applied_voltages, **kwargs):
     extracted_currents = currents(resistances, applied_voltages, extracted_voltages, **kwargs)
     if kwargs.get('node_voltages', True) is False:
         extracted_voltages = None
+    else:
+        display.message('Extracted node voltages.')
     extracted_solution = Solution(extracted_currents, extracted_voltages)
     return extracted_solution
 
@@ -53,7 +55,7 @@ def currents(resistances, applied_voltages, extracted_voltages, **kwargs):
         device_i = device_currents(extracted_voltages.word_line, resistances)
         word_line_i = word_line_currents(resistances, device_i)
         bit_line_i = bit_line_currents(resistances, device_i)
-        display.message('Extracted currents from all branches in a crossbar.')
+        display.message('Extracted currents from all branches in the crossbar.')
 
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)

@@ -9,7 +9,7 @@ def v(g, i):
     :param v: v matrix.
     :return: Currents in each branch of the crossbar.
     """
-    display.message('Started solving for i.')
+    display.message('Started solving for v.')
     v_matrix = linalg.spsolve(g.tocsc(), i)  # converts lil_matrix to csc_matrix before solving
     display.message('Solved for v.')
     if v_matrix.ndim == 1:

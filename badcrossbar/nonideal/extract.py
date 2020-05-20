@@ -48,7 +48,7 @@ def currents(v, resistances, r_i, voltages, removed_rows, **kwargs):
         bit_line_i = distributed_matrix(bit_line_i, resistances)
         device_i = distributed_matrix(device_i, resistances)
 
-        display.message('Extracted currents from all branches in a crossbar.')
+        display.message('Extracted currents from all branches in the crossbar.')
 
     Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
@@ -69,6 +69,7 @@ def voltages(v, resistances):
     word_line_v = word_line_voltages(v, resistances)
     bit_line_v = bit_line_voltages(v, resistances)
     extracted_voltages = Voltages(word_line_v, bit_line_v)
+    display.message('Extracted node voltages.')
     return extracted_voltages
 
 
