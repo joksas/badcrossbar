@@ -79,9 +79,9 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         bit_line_i = bit_line_currents(v, resistances, r_i)
         device_i = device_currents(v, resistances, removed_rows, word_line_i)
 
-        word_line_i = distributed_matrix(word_line_i, resistances)
-        bit_line_i = distributed_matrix(bit_line_i, resistances)
-        device_i = distributed_matrix(device_i, resistances)
+        word_line_i = distributed_array(word_line_i, resistances)
+        bit_line_i = distributed_array(bit_line_i, resistances)
+        device_i = distributed_array(device_i, resistances)
 
         display.message('Extracted currents from all branches in the crossbar.')
 
@@ -129,7 +129,7 @@ def word_line_voltages(v, resistances):
         Potentials at the nodes on the word lines.
     """
     v_domain = v[:resistances.size, ]
-    return distributed_matrix(v_domain, resistances)
+    return distributed_array(v_domain, resistances)
 
 
 def bit_line_voltages(v, resistances):
@@ -148,7 +148,7 @@ def bit_line_voltages(v, resistances):
         Potentials at the nodes on the bit lines.
     """
     v_domain = v[resistances.size:, ]
-    return distributed_matrix(v_domain, resistances)
+    return distributed_array(v_domain, resistances)
 
 
 def output_currents(v, resistances, r_i):
@@ -280,13 +280,13 @@ def bit_line_currents(v, resistances, r_i):
     return i
 
 
-def distributed_matrix(flattened_array, model_array):
+def distributed_array(flattened_array, model_array):
     """Reshapes flattened array(s) into an array or a list of arrays.
     
     Parameters
     ----------
     flattened_array : ndarray
-        An array whose each column contains a flattened matrix.
+        An array whose each column contains a flattened array.
     model_array : ndarray
         An array whose shape is used for reshaping.
 
