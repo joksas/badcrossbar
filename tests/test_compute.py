@@ -5,14 +5,17 @@ from collections import namedtuple
 import pytest
 
 
-@pytest.mark.parametrize('file_name', ['1x4_a', '1x4_b', '1x4_c', '1x4_d', '5x1_a', '5x1_b', '5x1_c', '5x4_a', '5x4_b', '5x4_c', '5x4_d', '5x4_e', '5x4_f', '5x4_g'])
+file_names = ['1x1_a', '1x1_b', '1x1_c', '1x1_d', '1x1_e', '1x4_a', '1x4_b', '1x4_c', '1x4_d', '1x4_e', '5x1_a', '5x1_b', '5x1_c', '5x4_a', '5x4_b', '5x4_c', '5x4_d', '5x4_e', '5x4_f', '5x4_g', '5x4_h']
+
+
+@pytest.mark.parametrize('file_name', file_names)
 def test_currents_qucs(file_name):
     resistances, voltages, r_i, expected_solution = qucs_data(file_name)
     computed_solution = badcrossbar.compute(voltages, resistances, r_i=r_i)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
-@pytest.mark.parametrize('file_name', ['1x4_a', '1x4_b', '1x4_c', '1x4_d', '5x1_a', '5x1_b', '5x1_c', '5x4_a', '5x4_b', '5x4_c', '5x4_d', '5x4_e', '5x4_f', '5x4_g'])
+@pytest.mark.parametrize('file_name', file_names)
 def test_voltages_qucs(file_name):
     resistances, voltages, r_i, expected_solution = qucs_data(file_name)
     computed_solution = badcrossbar.compute(voltages, resistances, r_i=r_i)
