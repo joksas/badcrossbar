@@ -2,11 +2,23 @@ import numpy as np
 
 
 def apply(g_matrix, resistances, r_i):
-    """Fills r matrix with values corresponding to nodes on the word lines.
+    """Fills matrix g used in equation gv = i.
 
-    :param r: r matrix.
-    :param resistances: Resistances of crossbar devices.
-    :return: Partially filled r matrix.
+    Values are filled by applying nodal analysis at the nodes on the word and bit lines.
+
+    Parameters
+    ----------
+    g_matrix : ndarray
+        Matrix g used in equation gv = i.
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+
+    Returns
+    -------
+    ndarray
+        Filled matrix g.
     """
     with np.errstate(divide='ignore'):
         conductances = 1./resistances
@@ -16,11 +28,21 @@ def apply(g_matrix, resistances, r_i):
 
 
 def word_line_nodes(g_matrix, conductances, r_i):
-    """Fills r matrix with values corresponding to nodes on the word lines.
+    """Fills matrix g with values corresponding to nodes on the word lines.
 
-    :param r: r matrix.
-    :param resistances: Resistances of crossbar devices.
-    :return: Partially filled r matrix.
+    Parameters
+    ----------
+    g_matrix : ndarray
+        Matrix g used in equation gv = i.
+    conductances : ndarray
+        Conductances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+
+    Returns
+    -------
+    ndarray
+        Partially filled matrix g.
     """
     (num_word_lines, num_bit_lines) = conductances.shape
     g_i = 1/r_i
@@ -63,11 +85,21 @@ def word_line_nodes(g_matrix, conductances, r_i):
 
 
 def bit_line_nodes(g_matrix, conductances, r_i):
-    """Fills r matrix with values corresponding to nodes on the bit lines.
+    """Fills matrix g with values corresponding to nodes on the bit lines.
 
-    :param r: r matrix.
-    :param resistances: Resistances of crossbar devices.
-    :return: Fully filled r matrix (if this function is executed last).
+    Parameters
+    ----------
+    g_matrix : ndarray
+        Matrix g used in equation gv = i.
+    conductances : ndarray
+        Conductances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+
+    Returns
+    -------
+    ndarray
+        Filled matrix g (if this function is executed after word_line_nodes()).
     """
     (num_word_lines, num_bit_lines) = conductances.shape
     g_i = 1/r_i

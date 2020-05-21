@@ -3,11 +3,19 @@ from badcrossbar import display
 
 
 def v(g, i):
-    """Solves matrix equation ri = v.
+    """Solves matrix equation gv = i.
 
-    :param r: r matrix.
-    :param v: v matrix.
-    :return: Currents in each branch of the crossbar.
+    Parameters
+    ----------
+    g : ndarray
+        Matrix containing conductances next to each of the nodes.
+    i : ndarray
+        Matrix containing known currents flowing into each of the nodes.
+
+    Returns
+    -------
+    ndarray
+        Matrix containing potentials at each of the nodes.
     """
     display.message('Started solving for v.')
     v_matrix = linalg.spsolve(g.tocsc(), i)  # converts lil_matrix to csc_matrix before solving
