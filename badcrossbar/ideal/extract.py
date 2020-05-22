@@ -4,6 +4,25 @@ from badcrossbar import display
 
 
 def solution(resistances, applied_voltages, **kwargs):
+    """Extracts currents and voltages in a crossbar in a convenient form.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    applied_voltages : ndarray
+        Applied voltages.
+    kwargs
+        node_voltages : bool, optional
+            If False, None is returned instead of node voltages.
+        all_currents : bool, optional
+            If False, only output currents are returned, while all the other ones are set to None.
+
+    Returns
+    -------
+    named tuple
+        Currents and voltages of the crossbar.
+    """
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = voltages(applied_voltages, resistances)
     extracted_currents = currents(resistances, applied_voltages, extracted_voltages, **kwargs)
@@ -16,6 +35,20 @@ def solution(resistances, applied_voltages, **kwargs):
 
 
 def voltages(applied_voltages, resistances):
+    """Extracts crossbar voltages in a convenient format.
+
+    Parameters
+    ----------
+    applied_voltages : ndarray
+        Applied voltages.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    named tuple
+        Voltages at the nodes of the crossbar. It has fields 'word_line' and 'bit_line' that contain the potentials at the nodes on the word and bit lines.
+    """
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
     word_line_v = word_line_voltages(applied_voltages, resistances)
     bit_line_v = bit_line_voltages(applied_voltages, resistances)
@@ -24,6 +57,20 @@ def voltages(applied_voltages, resistances):
 
 
 def word_line_voltages(applied_voltages, resistances):
+    """Extracts potentials at the nodes on the word lines.
+
+    Parameters
+    ----------
+    applied_voltages : ndarray
+        Applied voltages.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    ndarray of list of ndarray
+        Potentials at the nodes on the word lines.
+    """
     if applied_voltages.shape[1] > 1:
         word_line_v = []
         for i in range(applied_voltages.shape[1]):
@@ -35,6 +82,20 @@ def word_line_voltages(applied_voltages, resistances):
 
 
 def bit_line_voltages(applied_voltages, resistances):
+    """Extracts potentials at the nodes on the bit lines.
+
+    Parameters
+    ----------
+    applied_voltages : ndarray
+        Applied voltages.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    ndarray of list of ndarray
+        Potentials at the nodes on the bit lines.
+    """
     if applied_voltages.shape[1] > 1:
         bit_line_v = [np.zeros(resistances.shape) for _ in range(applied_voltages.shape[1])]
     else:
@@ -44,6 +105,25 @@ def bit_line_voltages(applied_voltages, resistances):
 
 
 def currents(resistances, applied_voltages, extracted_voltages, **kwargs):
+    """Extracts crossbar currents in a convenient format.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    applied_voltages : ndarray
+        Applied voltages.
+    extracted_voltages : ndarray
+        Voltages at the nodes of the crossbar.
+    kwargs
+        all_currents : bool, optional
+            If False, only output currents are returned, while all the other ones are set to None.
+
+    Returns
+    -------
+    named tuple
+        Crossbar currents. It has fields 'output', 'device', 'word_line' and 'bit_line' that contain output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines.
+    """
     output_i = output_currents(resistances, applied_voltages)
     device_i = None
     word_line_i = None
@@ -63,23 +143,65 @@ def currents(resistances, applied_voltages, extracted_voltages, **kwargs):
 
 
 def output_currents(resistances, applied_voltages):
+    """Extracts output currents.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    applied_voltages : ndarray
+        Applied voltages.
+
+    Returns
+    -------
+    ndarray
+        Output currents.
+    """
     output_i = np.dot(np.transpose(1./resistances), applied_voltages)
 
     return np.transpose(output_i)
 
 
-def device_currents(extracted_voltages, resistances):
-    if isinstance(extracted_voltages, list):
+def device_currents(word_line_voltages, resistances):
+    """Extracts currents flowing through crossbar devices.
+
+    Parameters
+    ----------
+    word_line_voltages : ndarray
+        Potentials at the nodes on the word lines.
+    resistances : ndarray
+        Resistances of crossbar devices.
+
+    Returns
+    -------
+    ndarray
+        Currents flowing through crossbar devices.
+    """
+    if isinstance(word_line_voltages, list):
         device_i = []
-        for voltages in extracted_voltages:
+        for voltages in word_line_voltages:
             device_i.append(np.divide(voltages, resistances))
     else:
-        device_i = np.divide(extracted_voltages, resistances)
+        device_i = np.divide(word_line_voltages, resistances)
 
     return device_i
 
 
 def word_line_currents(resistances, device_i_all):
+    """Extracts currents flowing through interconnect segments along the word lines.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    device_i_all : ndarray
+        Currents flowing through crossbar devices.
+
+    Returns
+    -------
+    ndarray
+        Currents flowing through interconnect segments along the word lines.
+    """
     if isinstance(device_i_all, list):
         word_line_i = []
         for device_i in device_i_all:
@@ -98,6 +220,20 @@ def word_line_currents(resistances, device_i_all):
 
 
 def bit_line_currents(resistances, device_i_all):
+    """Extracts currents flowing through interconnect segments along the bit lines.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    device_i_all : ndarray
+        Currents flowing through crossbar devices.
+
+    Returns
+    -------
+    ndarray
+        Currents flowing through interconnect segments along the bit lines.
+    """
     if isinstance(device_i_all, list):
         bit_line_i = []
         for device_i in device_i_all:

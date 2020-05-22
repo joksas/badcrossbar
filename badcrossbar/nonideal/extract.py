@@ -19,7 +19,7 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
         node_voltages : bool, optional
             If False, None is returned instead of node voltages.
         all_currents : bool, optional
-            If False, only output currents are returned.
+            If False, only output currents are returned, while all the other ones are set to None.
 
     Returns
     -------
@@ -60,7 +60,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         Indices of rows removed from g and i.
     kwargs
         all_currents : bool, optional
-            If False, only output currents are returned.
+            If False, only output currents are returned, while all the other ones are set to None.
 
     Returns
     -------
@@ -91,7 +91,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
 
 
 def voltages(v, resistances):
-    """Extracts crossbar currents in a convenient format.
+    """Extracts crossbar voltages in a convenient format.
 
     Parameters
     ----------
