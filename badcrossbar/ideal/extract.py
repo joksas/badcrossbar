@@ -68,7 +68,7 @@ def word_line_voltages(applied_voltages, resistances):
 
     Returns
     -------
-    ndarray of list of ndarray
+    ndarray or list of ndarray
         Voltages at the nodes on the word lines.
     """
     if applied_voltages.shape[1] > 1:
@@ -93,7 +93,7 @@ def bit_line_voltages(applied_voltages, resistances):
 
     Returns
     -------
-    ndarray of list of ndarray
+    ndarray or list of ndarray
         Voltages at the nodes on the bit lines.
     """
     if applied_voltages.shape[1] > 1:
@@ -174,7 +174,7 @@ def device_currents(extracted_word_line_voltages, resistances):
 
     Returns
     -------
-    ndarray
+    ndarray or list of ndarray
         Currents flowing through crossbar devices.
     """
     if isinstance(extracted_word_line_voltages, list):
@@ -199,7 +199,7 @@ def word_line_currents(resistances, device_i_all):
 
     Returns
     -------
-    ndarray
+    ndarray or list of ndarray
         Currents flowing through interconnect segments along the word lines.
     """
     if isinstance(device_i_all, list):
@@ -231,7 +231,7 @@ def bit_line_currents(resistances, device_i_all):
 
     Returns
     -------
-    ndarray
+    ndarray or list of ndarray
         Currents flowing through interconnect segments along the bit lines.
     """
     if isinstance(device_i_all, list):

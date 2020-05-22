@@ -125,7 +125,7 @@ def word_line_voltages(v, resistances):
 
     Returns
     -------
-    ndarray of list of ndarray
+    ndarray or list of ndarray
         Voltages at the nodes on the word lines.
     """
     v_domain = v[:resistances.size, ]
@@ -144,7 +144,7 @@ def bit_line_voltages(v, resistances):
 
     Returns
     -------
-    ndarray of list of ndarray
+    ndarray or list of ndarray
         Voltages at the nodes on the bit lines.
     """
     v_domain = v[resistances.size:, ]
