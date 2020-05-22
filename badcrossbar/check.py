@@ -2,32 +2,32 @@ import numpy as np
 from badcrossbar import display
 
 
-def crossbar_requirements(resistances, voltages, r_i):
+def crossbar_requirements(resistances, applied_voltages, r_i):
     """Checks if crossbar variables satisfy all requirements.
 
     Parameters
     ----------
     resistances : any
         Resistances of crossbar devices.
-    voltages : any
+    applied_voltages : any
         Applied voltages.
     r_i : any
         Interconnect resistance.
 
     Returns
     -------
-    resistances, voltages : ndarray
-        Potentially modified resistances and voltages.
+    resistances, applied_voltages : ndarray
+        Potentially modified resistances and applied voltages.
     """
-    resistances, voltages = matrix_type(resistances=resistances, voltages=voltages)
-    empty(resistances=resistances, voltages=voltages)
-    match_shape(resistances=(resistances, 0), voltages=(voltages, 0))
+    resistances, applied_voltages = matrix_type(resistances=resistances, applied_voltages=applied_voltages)
+    empty(resistances=resistances, applied_voltages=applied_voltages)
+    match_shape(resistances=(resistances, 0), applied_voltages=(applied_voltages, 0))
     number(r_i=r_i)
     negative_array(resistances=resistances)
     negative_number(r_i=r_i)
     short_circuit(resistances, r_i)
 
-    return resistances, voltages
+    return resistances, applied_voltages
 
 
 def number(**kwargs):

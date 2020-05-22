@@ -25,14 +25,14 @@ def g(resistances, r_i):
     return g_matrix
 
 
-def i(voltages, resistances, r_i):
+def i(applied_voltages, resistances, r_i):
     """Creates and fills matrix i used in equation gv = i.
 
     Values are filled by applying nodal analysis at the leftmost nodes on the word lines.
 
     Parameters
     ----------
-    voltages :ndarray
+    applied_voltages :ndarray
         Applied voltages.
     resistances : ndarray
         Resistances of crossbar devices.
@@ -44,9 +44,9 @@ def i(voltages, resistances, r_i):
     ndarray
         Filled matrix i.
     """
-    v_shape = (2*resistances.size, voltages.shape[1])
+    v_shape = (2 * resistances.size, applied_voltages.shape[1])
     i_matrix = np.zeros(v_shape)
-    i_matrix[:resistances.size:resistances.shape[1], :] = voltages/r_i
+    i_matrix[:resistances.size:resistances.shape[1], :] = applied_voltages / r_i
     return i_matrix
 
 
