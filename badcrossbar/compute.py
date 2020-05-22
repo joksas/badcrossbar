@@ -20,7 +20,7 @@ def compute(applied_voltages, resistances, r_i=0, **kwargs):
     Returns
     -------
     named tuple
-        Currents and voltages of the crossbar. Field 'currents' is a named tuple itself with fields 'output', 'device', 'word_line' and 'bit_line' and contains output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines. Field 'voltages' is a named tuple itself with fields 'word_line' and 'bit_line' and contains the potentials at the nodes on the word and bit lines. 'currents.output' is an array of shape p x n, while all the others are arrays of shape m x n if p = 1, or lists of length p with arrays of shape m x n as their elements if p > 1.
+        Branch currents and node voltages of the crossbar. Field 'currents' is a named tuple itself with fields 'output', 'device', 'word_line' and 'bit_line' and contains output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines. Field 'voltages' is a named tuple itself with fields 'word_line' and 'bit_line' and contains the voltages at the nodes on the word and bit lines. 'currents.output' is an array of shape p x n, while all the others are arrays of shape m x n if p = 1, or lists of length p with arrays of shape m x n as their elements if p > 1.
     """
     resistances, applied_voltages = check.crossbar_requirements(resistances, applied_voltages, r_i)
     if r_i != 0:

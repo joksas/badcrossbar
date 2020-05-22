@@ -53,7 +53,7 @@ def i(applied_voltages, resistances, r_i):
 def superconductive(g_matrix, i_matrix, resistances, r_i):
     """Transforms matrices g and i (used in equation gv = i) so that the equation could be solved even if some of the crossbar devices have zero resistance.
 
-    When some crossbar devices have zero resistance, g() can yield a singular matrix. To avoid that, redundant nodes (those next to devices with zero resistance) have to removed before attempting to solve. In this function, nodes on the bit lines next to devices with zero resistance are removed. Any references to those nodes are now directed to their corresponding nodes on the word lines because they share the same potential.
+    When some crossbar devices have zero resistance, g() can yield a singular matrix. To avoid that, redundant nodes (those next to devices with zero resistance) have to removed before attempting to solve. In this function, nodes on the bit lines next to devices with zero resistance are removed. Any references from and to those nodes are now encoded into descriptions of corresponding nodes on the word lines because they share the same potential.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
     for row in rows:
         # add nodes referenced by bit line node to the list of nodes that word line node references
         g_matrix[row, :] += g_matrix[row + resistances.size, :]
-        # redirect references, that were directed bit line node, to word line node
+        # redirect references, that were directed to the bit line node, to word line node
         g_matrix[:, row] += g_matrix[:, row + resistances.size]
 
     # transform matrices by removing redundant bit line nodes

@@ -5,7 +5,7 @@ from badcrossbar.nonideal import fill, solve
 
 
 def solution(resistances, r_i, applied_voltages, **kwargs):
-    """Extracts currents and voltages in a crossbar in a convenient form.
+    """Extracts branch currents and node voltages of a crossbar in a convenient form.
 
     Parameters
     ----------
@@ -24,7 +24,7 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     Returns
     -------
     named tuple
-        Currents and voltages of the crossbar.
+        Branch currents and node voltages of the crossbar.
     """
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
@@ -44,7 +44,7 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
 
 
 def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
-    """Extracts crossbar currents in a convenient format.
+    """Extracts crossbar branch currents in a convenient format.
     
     Parameters
     ----------
@@ -65,7 +65,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
     Returns
     -------
     named tuple
-        Crossbar currents. It has fields 'output', 'device', 'word_line' and 'bit_line' that contain output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines.
+        Crossbar branch currents. Named tuple has fields 'output', 'device', 'word_line' and 'bit_line' that contain output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines.
     """
     output_i = output_currents(v, resistances, r_i)
     device_i = None
@@ -91,7 +91,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
 
 
 def voltages(v, resistances):
-    """Extracts crossbar voltages in a convenient format.
+    """Extracts crossbar node voltages in a convenient format.
 
     Parameters
     ----------
@@ -103,7 +103,7 @@ def voltages(v, resistances):
     Returns
     -------
     named tuple
-        Voltages at the nodes of the crossbar. It has fields 'word_line' and 'bit_line' that contain the potentials at the nodes on the word and bit lines.
+        Crossbar node voltages. It has fields 'word_line' and 'bit_line' that contain the potentials at the nodes on the word and bit lines.
     """
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
     word_line_v = word_line_voltages(v, resistances)
@@ -114,7 +114,7 @@ def voltages(v, resistances):
 
 
 def word_line_voltages(v, resistances):
-    """Extracts potentials at the nodes on the word lines.
+    """Extracts voltages at the nodes on the word lines.
 
     Parameters
     ----------
@@ -126,14 +126,14 @@ def word_line_voltages(v, resistances):
     Returns
     -------
     ndarray of list of ndarray
-        Potentials at the nodes on the word lines.
+        Voltages at the nodes on the word lines.
     """
     v_domain = v[:resistances.size, ]
     return distributed_array(v_domain, resistances)
 
 
 def bit_line_voltages(v, resistances):
-    """Extracts potentials at the nodes on the bit lines.
+    """Extracts voltages at the nodes on the bit lines.
 
     Parameters
     ----------
@@ -145,7 +145,7 @@ def bit_line_voltages(v, resistances):
     Returns
     -------
     ndarray of list of ndarray
-        Potentials at the nodes on the bit lines.
+        Voltages at the nodes on the bit lines.
     """
     v_domain = v[resistances.size:, ]
     return distributed_array(v_domain, resistances)
