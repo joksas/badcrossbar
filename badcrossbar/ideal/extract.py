@@ -162,12 +162,12 @@ def output_currents(resistances, applied_voltages):
     return np.transpose(output_i)
 
 
-def device_currents(word_line_voltages, resistances):
+def device_currents(extracted_word_line_voltages, resistances):
     """Extracts currents flowing through crossbar devices.
 
     Parameters
     ----------
-    word_line_voltages : ndarray
+    extracted_word_line_voltages : ndarray or list of ndarray
         Potentials at the nodes on the word lines.
     resistances : ndarray
         Resistances of crossbar devices.
@@ -177,12 +177,12 @@ def device_currents(word_line_voltages, resistances):
     ndarray
         Currents flowing through crossbar devices.
     """
-    if isinstance(word_line_voltages, list):
+    if isinstance(extracted_word_line_voltages, list):
         device_i = []
-        for voltages in word_line_voltages:
-            device_i.append(np.divide(voltages, resistances))
+        for w_l in extracted_word_line_voltages:
+            device_i.append(np.divide(w_l, resistances))
     else:
-        device_i = np.divide(word_line_voltages, resistances)
+        device_i = np.divide(extracted_word_line_voltages, resistances)
 
     return device_i
 
