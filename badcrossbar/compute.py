@@ -16,7 +16,7 @@ def compute(voltages, resistances, r_i=0, **kwargs):
         node_voltages : bool, optional
             If False, None is returned instead of node voltages.
         all_currents : bool, optional
-            If False, only output currents are returned.
+            If False, only output currents are returned, while all the other ones are set to None.
     Returns
     -------
     named tuple
