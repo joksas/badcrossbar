@@ -24,7 +24,7 @@ applied_voltages = [[1.5],
                     [2.3],
                     [1.7]]
 
-# device resistance in ohms
+# device resistances in ohms
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
@@ -67,7 +67,7 @@ applied_voltages = [[1.5, 4.1, 2.6, 2.1],
                     [2.3, 4.5, 1.1, 0.8],
                     [1.7, 4.0, 3.3, 1.1]]
 
-# device resistance in ohms
+# device resistances in ohms
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
@@ -93,6 +93,10 @@ print('\nCurrent through the device in question is {} A.'.format(current))
 
 Current through the device in question is 0.015489677765099288 A.
 ```
+
+### Perfectly insulating devices
+
+Devices with infinite resistance can be denoted using resistance value of `numpy.inf` (or equivalently `math.inf`).
 
 [badcrossbar]:https://github.com/joksas/badcrossbar
 [numpy]:https://github.com/numpy/numpy
