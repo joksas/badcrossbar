@@ -74,7 +74,7 @@ def word_line_nodes(g_matrix, conductances, r_i):
         g_matrix[index, index - 1] = -np.ones((num_word_lines,))*g_i
         g_matrix[index, index + conductances.size] = -conductances[:, -1]
     else:
-        # first column
+        # the only column
         word_lines = np.arange(num_word_lines)
         bit_lines = np.repeat(0, num_word_lines)
         index = word_lines*num_bit_lines + bit_lines
@@ -131,6 +131,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
         g_matrix[index, index - num_bit_lines] = -np.ones((num_bit_lines,))*g_i
         g_matrix[index, index - conductances.size] = -conductances[-1, :]
     else:
+        # the only row
         word_lines = np.repeat(0, num_bit_lines)
         bit_lines = np.arange(num_bit_lines)
         index = conductances.size + word_lines*num_bit_lines + bit_lines
