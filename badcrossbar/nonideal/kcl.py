@@ -4,7 +4,7 @@ import numpy as np
 def apply(g_matrix, resistances, r_i):
     """Fills matrix g used in equation gv = i.
 
-    Values are filled by applying nodal analysis at the nodes on the word and bit lines.
+    Values are filled by applying Kirchhoff's current law at the nodes on the word and bit lines.
 
     Parameters
     ----------
