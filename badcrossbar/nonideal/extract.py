@@ -26,6 +26,9 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     named tuple
         Branch currents and node voltages of the crossbar.
     """
+    if r_i == np.inf:
+        return insulating_interconnect_solution(resistances, applied_voltages, **kwargs)
+
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
     g, i, removed_rows = fill.superconductive(g, i, resistances, r_i)
@@ -326,6 +329,46 @@ def full_v(v, removed_rows, resistances):
         v = np.insert(v, row, 0, axis=0)
         v[row, :] = v[row - resistances.size, :]
     return v
+
+
+def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
+    """Extracts solution when interconnects are perfectly insulating.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    applied_voltages :ndarray
+        Applied voltages.
+    kwargs
+        all_currents : bool, optional
+            If False, only output currents are returned, while all the other ones are set to None.
+
+    Returns
+    -------
+    named tuple
+        Branch currents and node voltages of the crossbar.
+    """
+    display.message('Warning: interconnects are perfectly insulating! Node voltages are undefined!')
+
+    Solution = namedtuple('Solution', ['currents', 'voltages'])
+    Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+    Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
+
+    extracted_voltages = Voltages(None, None)
+
+    output_i = np.zeros((applied_voltages.shape[1], resistances.shape[1]))
+    if kwargs.get('all_currents', True) is False:
+        device_i = word_line_i = bit_line_i = None
+    else:
+        if applied_voltages.shape[1] == 1:
+            device_i = word_line_i = bit_line_i = np.zeros(resistances.shape)
+        else:
+            device_i = word_line_i = bit_line_i = [np.zeros(resistances.shape) for _ in range(applied_voltages.shape[1])]
+    extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
+    extracted_solution = Solution(extracted_currents, extracted_voltages)
+
+    return extracted_solution
 
 
 def except_rows(matrix, rows):
