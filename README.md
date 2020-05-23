@@ -96,10 +96,11 @@ print('\nCurrent through the device in question is {} A.'.format(current))
 #### Output
 
 ```text
-2020-05-23 10:54:28     Started solving for v.
-2020-05-23 10:54:28     Solved for v.
-2020-05-23 10:54:28     Extracted node voltages.
-2020-05-23 10:54:28     Extracted currents from all branches in the crossbar.
+2020-05-23 12:58:38     Initialising simulation.
+2020-05-23 12:58:38     Started solving for v.
+2020-05-23 12:58:38     Solved for v.
+2020-05-23 12:58:38     Extracted node voltages.
+2020-05-23 12:58:38     Extracted currents from all branches in the crossbar.
 
 Current through the device in question is 0.015489677765099288 A.
 ```
