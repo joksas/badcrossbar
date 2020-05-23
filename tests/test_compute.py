@@ -4,7 +4,7 @@ import pickle
 from collections import namedtuple
 import pytest
 
-
+# the outputs of the function crossbar.compute are tested using the results from Qucs circuit simulation software.
 file_names = ['1x1_a', '1x1_b', '1x1_c', '1x1_d', '1x1_e', '1x4_a', '1x4_b', '1x4_c', '1x4_d', '1x4_e', '5x1_a', '5x1_b', '5x1_c', '5x4_a', '5x4_b', '5x4_c', '5x4_d', '5x4_e', '5x4_f', '5x4_g', '5x4_h']
 double_inputs = [False, True]
 
