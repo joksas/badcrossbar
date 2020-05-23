@@ -45,7 +45,7 @@ The returned variable (`solution`) is a named tuple with fields `currents` and `
 
 If `applied_voltages` is an array of shape `(m, p)` (each column representing a different set of inputs) and `resistances` is an array of shape `(m, n)`, then:
 * `currents.output` will be a [numpy] array of shape `(p, n)`
-* `currents.device`,  `currents.word_line` and `currents.bit_line` will be [numpy] arrays of shape `(m, n)` if `p = 1` or will be lists of length `p` containing [numpy] arrays of shape `(m, n)` as their elements.
+* `currents.device`,  `currents.word_line` and `currents.bit_line` will be [numpy] arrays of shape `(m, n)` if `p = 1`, or will be lists of length `p` containing [numpy] arrays of shape `(m, n)` as their elements if `p ≠ 1`.
 
 ### Voltages
 
@@ -53,7 +53,7 @@ If `applied_voltages` is an array of shape `(m, p)` (each column representing a 
 
 ![crossbar array](images/3x5_crossbar_array_nodes.png)
 
-If `applied_voltages` is an array of shape `(m, p)` (each column representing a different set of inputs) and `resistances` is an array of shape `(m, n)`, then `voltages.word_line` and `voltages.bit_line` will be [numpy] arrays of shape `(m, n)` if `p = 1` or will be lists of length `p` containing [numpy] arrays of shape `(m, n)` as their elements.
+If `applied_voltages` is an array of shape `(m, p)` (each column representing a different set of inputs) and `resistances` is an array of shape `(m, n)`, then `voltages.word_line` and `voltages.bit_line` will be [numpy] arrays of shape `(m, n)` if `p = 1`, or will be lists of length `p` containing [numpy] arrays of shape `(m, n)` as their elements if `p ≠ 1`.
 
 [badcrossbar]:https://github.com/joksas/badcrossbar
 [numpy]:https://github.com/numpy/numpy
