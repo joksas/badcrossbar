@@ -78,8 +78,7 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
     if len(rows) == 0:
         return g_matrix, i_matrix, None
 
-    g_matrix[g_matrix == np.inf] = 0
-    g_matrix[g_matrix == -np.inf] = 0
+    g_matrix[g_matrix == np.inf] = g_matrix[g_matrix == -np.inf] = 0
 
     for row in rows:
         # add nodes referenced by bit line node to the list of nodes that word line node references

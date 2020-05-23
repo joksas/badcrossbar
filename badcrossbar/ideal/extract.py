@@ -125,9 +125,7 @@ def currents(resistances, applied_voltages, extracted_voltages, **kwargs):
         Crossbar branch currents. It has fields 'output', 'device', 'word_line' and 'bit_line' that contain output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines.
     """
     output_i = output_currents(resistances, applied_voltages)
-    device_i = None
-    word_line_i = None
-    bit_line_i = None
+    device_i = word_line_i = bit_line_i = None
 
     if kwargs.get('all_currents', True) is False:
         display.message('Extracted output currents.')

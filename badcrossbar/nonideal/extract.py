@@ -71,9 +71,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         Crossbar branch currents. Named tuple has fields 'output', 'device', 'word_line' and 'bit_line' that contain output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines.
     """
     output_i = output_currents(v, resistances, r_i)
-    device_i = None
-    word_line_i = None
-    bit_line_i = None
+    device_i = word_line_i = bit_line_i = None
 
     if kwargs.get('all_currents', True) is False:
         display.message('Extracted output currents.')
@@ -227,9 +225,9 @@ def superconductive_device_currents(device_i, removed_rows, resistances, word_li
 
     for row in rows:
         if (row+1) % resistances.shape[1] == 0:
-            device_i[row,] = word_line_i[row]
+            device_i[row, ] = word_line_i[row]
         else:
-            device_i[row,] = word_line_i[row] - word_line_i[row + 1]
+            device_i[row, ] = word_line_i[row] - word_line_i[row + 1]
     return device_i
 
 
