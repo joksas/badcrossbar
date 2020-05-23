@@ -4,7 +4,7 @@
 
 ## Background
 
-Conventional crossbars have a structure like the one shown in the image below. Resistive two-terminal **devices** (depicted here as memristors) are connected to **word lines** on one side and to **bit lines** on the other. In the diagram, the crossbar devices are depicted in black, the word lines are the horizontal blue lines and the bit lines are the vertical blue lines. Orange circles denote the **nodes**, i.e. the connections between the devices and the word/bit lines. The segments of word and bit lines between neighbouring nodes are often seen as **interconnects** between neighbouring devices and can themselves be modelled as resistive elements.
+Conventional crossbars have a structure like the one shown in the image below. Resistive two-terminal **devices** (depicted here as memristors) are connected to **word lines** on one side and to **bit lines** on the other. In the diagram, the crossbar devices are depicted in black, the word lines are depicted as horizontal blue lines and the bit lines as vertical blue lines. Orange circles denote the **nodes**, i.e. the connections between the devices and the word/bit lines. The segments of word and bit lines between neighbouring nodes are often seen as **interconnects** between neighbouring devices and can themselves be modelled as resistive elements.
 
 ![crossbar array](images/3x5_crossbar_array.png)
 
@@ -12,7 +12,7 @@ In most practical scenarios, we want the resistance of the interconnects to be z
 
 ## Usage
 
-[badcrossbar] computed branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistance. It assumes that all interconnects have the same specified resistance.
+[badcrossbar] computes branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistance. It assumes that all interconnects have the same specified resistance.
 
 One can compute branch currents and node voltages with the code shown in the example below.
 
@@ -44,12 +44,12 @@ The returned variable (`solution`) is a named tuple with fields `currents` and `
 ![crossbar array](images/3x5_crossbar_array_branches.png)
 
 If `applied_voltages` is an array of shape `(m, p)` (each column representing a different set of inputs) and `resistances` is an array of shape `(m, n)`, then:
-* `currents.output` will be a [numpy] array of shape `(p, n)`
+* `currents.output` will be a [numpy] array of shape `(p, n)`.
 * `currents.device`,  `currents.word_line` and `currents.bit_line` will be [numpy] arrays of shape `(m, n)` if `p = 1`, or will be lists of length `p` containing [numpy] arrays of shape `(m, n)` as their elements if `p > 1`.
 
 ### Voltages
 
-`solution.voltages` is itself a named tuple with fields `word_line` and `bit_line`. They represent the voltages at the nodes on the word lines and bit lines, respectively. These two types of nodes are depicted in the diagram below.
+`solution.voltages` is itself a named tuple with fields `word_line` and `bit_line`. They represent the voltages at the nodes on the word and bit lines, respectively. These two types of nodes are depicted in the diagram below.
 
 ![crossbar array](images/3x5_crossbar_array_nodes.png)
 
@@ -80,7 +80,7 @@ solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 # current that we are interested in (note zero-based indexing)
 current = solution.currents.device[1][0, 3]
 
-print('Current through the device in question is {} A.'.format(current))
+print('\nCurrent through the device in question is {} A.'.format(current))
 ```
 
 #### Output
