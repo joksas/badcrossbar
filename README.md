@@ -22,7 +22,7 @@ python setup.py install
 
 ## Usage
 
-[badcrossbar] computes branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistance. It assumes that all interconnects have the same specified resistance.
+[badcrossbar] computes branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistance. It assumes that all interconnects have the same specified resistance and that outputs (in the bottom of bit lines) are grounded.
 
 One can compute branch currents and node voltages with the code shown in the example below.
 
