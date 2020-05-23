@@ -15,6 +15,7 @@ In most practical scenarios, we want the resistance of the interconnects to be z
 To install the package and its dependencies, type the following lines into the terminal:
 ```text
 git clone https://github.com/joksas/badcrossbar
+cd badcrossbar
 pip install -r requirements.txt
 python setup.py install
 ```
