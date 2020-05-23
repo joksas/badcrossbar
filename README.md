@@ -25,9 +25,9 @@ applied_voltages = [[1.5],
                     [1.7]]
 
 # device resistance in ohms
-resistances = [[34, 90, 75, 25, 64],
-               [65, 40, 50, 16, 45],
-               [44, 87, 19, 24, 63]]
+resistances = [[345, 903, 755, 257, 646],
+               [652, 401, 508, 166, 454],
+               [442, 874, 190, 244, 635]]
 
 # interconnect resistance in ohms
 r_i = 0.5
@@ -54,6 +54,45 @@ If `applied_voltages` is an array of shape `(m, p)` (each column representing a 
 ![crossbar array](images/3x5_crossbar_array_nodes.png)
 
 If `applied_voltages` is an array of shape `(m, p)` (each column representing a different set of inputs) and `resistances` is an array of shape `(m, n)`, then `voltages.word_line` and `voltages.bit_line` will be [numpy] arrays of shape `(m, n)` if `p = 1`, or will be lists of length `p` containing [numpy] arrays of shape `(m, n)` as their elements if `p > 1`.
+
+### Example
+
+Suppose we applied four sets of inputs to a crossbar array and wanted to find the current flowing through the device in the first row and fourth column when the second set of inputs was applied. We could print out the current through that device using the following piece of code:
+
+```python
+import badcrossbar
+
+# applied voltages in volts
+applied_voltages = [[1.5, 4.1, 2.6, 2.1],
+                    [2.3, 4.5, 1.1, 0.8],
+                    [1.7, 4.0, 3.3, 1.1]]
+
+# device resistance in ohms
+resistances = [[345, 903, 755, 257, 646],
+               [652, 401, 508, 166, 454],
+               [442, 874, 190, 244, 635]]
+
+# interconnect resistance in ohms
+r_i = 0.5
+
+solution = badcrossbar.compute(applied_voltages, resistances, r_i)
+
+# current that we are interested in (note zero-based indexing)
+current = solution.currents.device[1][0, 3]
+
+print('Current through the device in question is {} A.'.format(current))
+```
+
+#### Output
+
+```text
+2020-05-23 10:54:28     Started solving for v.
+2020-05-23 10:54:28     Solved for v.
+2020-05-23 10:54:28     Extracted node voltages.
+2020-05-23 10:54:28     Extracted currents from all branches in the crossbar.
+
+Current through the device in question is 0.015489677765099288 A.
+```
 
 [badcrossbar]:https://github.com/joksas/badcrossbar
 [numpy]:https://github.com/numpy/numpy
