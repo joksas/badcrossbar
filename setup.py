@@ -10,8 +10,8 @@ setup(
     version='1.0.0',
     packages=['badcrossbar', 'badcrossbar.ideal', 'badcrossbar.nonideal', 'tests'],
     url='https://github.com/joksas/badcrossbar',
-    license='',
+    license='MIT license',
     author='Dovydas Joksas',
     author_email='dovydas.joksas.15@ucl.ac.uk',
-    description=''
+    description='Nodal analysis solver for memristive crossbar arrays.'
 )
