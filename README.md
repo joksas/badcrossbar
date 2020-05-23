@@ -10,6 +10,15 @@ Conventional crossbars have a structure like the one shown in the image below. R
 
 In most practical scenarios, we want the resistance of the interconnects to be zero. That is because crossbar arrays containing resistive elements can be used as dot product engines, i.e. systems able to compute vector-matrix products in hardware. Specifically, crossbar arrays with interconnect resistance of zero are able to compute the vector-matrix products of applied voltages (vector) and conductances of the crossbar devices (matrix). In the diagram above, voltages are applied on the left side of the word lines and the vector-matrix product is computed in a form of currents at the bottom of the bit lines.
 
+## Installation
+
+To install the package and its dependencies, type the following lines into the terminal:
+```text
+git clone https://github.com/joksas/badcrossbar
+pip install -r requirements.txt
+python setup.py install
+```
+
 ## Usage
 
 [badcrossbar] computes branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistance. It assumes that all interconnects have the same specified resistance.
