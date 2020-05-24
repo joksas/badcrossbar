@@ -79,11 +79,11 @@ def word_line_voltages(applied_voltages, resistances):
         word_line_v = []
         for i in range(applied_voltages.shape[1]):
             word_line_v.append(
-                np.repeat(applied_voltages[:, i:i + 1], resistances.shape[1],
-                          axis=1))
+                np.repeat(
+                    applied_voltages[:, i:i + 1], resistances.shape[1], axis=1))
     else:
-        word_line_v = np.repeat(applied_voltages[:, 0:1], resistances.shape[1],
-                                axis=1)
+        word_line_v = np.repeat(
+            applied_voltages[:, 0:1], resistances.shape[1], axis=1)
 
     return word_line_v
 
@@ -226,11 +226,11 @@ def word_line_currents(resistances, device_i_all):
             word_line_i.append(temp_word_line_i)
     else:
         word_line_i = np.zeros(resistances.shape)
-        word_line_i[:, :] += np.repeat(device_i_all[:, -1:],
-                                       resistances.shape[1], axis=1)
+        word_line_i[:, :] += np.repeat(
+            device_i_all[:, -1:], resistances.shape[1], axis=1)
         for i in range(1, resistances.shape[1]):
-            word_line_i[:, :-i] += np.repeat(device_i_all[:, -(1 + i):-i],
-                                             resistances.shape[1] - i, axis=1)
+            word_line_i[:, :-i] += np.repeat(
+                device_i_all[:, -(1 + i):-i], resistances.shape[1] - i, axis=1)
 
     return word_line_i
 
@@ -263,7 +263,7 @@ def bit_line_currents(resistances, device_i_all):
     else:
         bit_line_i = np.zeros(resistances.shape)
         for i in range(resistances.shape[0]):
-            bit_line_i[i:, :] += np.repeat(device_i_all[i:i + 1, :],
-                                           resistances.shape[0] - i, axis=0)
+            bit_line_i[i:, :] += np.repeat(
+                device_i_all[i:i + 1, :], resistances.shape[0] - i, axis=0)
 
     return bit_line_i
