@@ -19,9 +19,12 @@ def crossbar_requirements(resistances, applied_voltages, r_i):
     resistances, applied_voltages : ndarray
         Potentially modified resistances and applied voltages.
     """
-    resistances, applied_voltages = matrix_type(resistances=resistances, applied_voltages=applied_voltages)
+    resistances, applied_voltages = \
+        matrix_type(resistances=resistances,
+                    applied_voltages=applied_voltages)
     empty(resistances=resistances, applied_voltages=applied_voltages)
-    match_shape(resistances=(resistances, 0), applied_voltages=(applied_voltages, 0))
+    match_shape(resistances=(resistances, 0),
+                applied_voltages=(applied_voltages, 0))
     number(r_i=r_i)
     negative_array(resistances=resistances)
     negative_number(r_i=r_i)
@@ -45,13 +48,17 @@ def number(**kwargs):
     """
     for key, value in kwargs.items():
         if not isinstance(value, (int, float)):
-            raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use int or float instead.')
+            raise TypeError('Type ' + str(type(
+                value)) + ' of variable \'' + key + '\' is not supported. Use '
+                                                    'int or float instead.')
 
 
 def matrix_type(**kwargs):
     """Checks if items can be used as numpy arrays.
 
-    If one of the arguments is already a numpy array, it is returned unchanged. If it is a list of lists, it is converted to numpy array and then returned. Else, an error is raised.
+    If one of the arguments is already a numpy array, it is returned
+    unchanged. If it is a list of lists, it is converted to numpy array and
+    then returned. Else, an error is raised.
 
     Parameters
     ----------
@@ -65,7 +72,8 @@ def matrix_type(**kwargs):
     Raises
     -------
     TypeError
-        If any of the items are not ndarray or list, or if they contain non-number elements.
+        If any of the items are not ndarray or list, or if they contain
+        non-number elements.
     """
     new_args = []
     good_type = True
@@ -82,9 +90,13 @@ def matrix_type(**kwargs):
             else:
                 good_type = False
         if good_type is False:
-            raise TypeError('Type ' + str(type(value)) + ' of variable \'' + key + '\' is not supported. Use np.ndarray or list of lists instead.')
+            raise TypeError('Type ' + str(type(
+                value)) + ' of variable \'' + key + '\' is not supported. Use '
+                                                    'np.ndarray or list of '
+                                                    'lists instead.')
         if np.issubdtype(new_args[-1].dtype, np.number) is False:
-            raise TypeError('Array \'' + key + '\' should only contain numbers!')
+            raise TypeError(
+                'Array \'' + key + '\' should only contain numbers!')
 
     if len(new_args) == 1:
         new_args = new_args[0]
@@ -129,7 +141,10 @@ def match_shape(**kwargs):
     dim = first_value[0].shape[first_value[1]]
     for key, value in kwargs.items():
         if value[0].shape[value[1]] != dim:
-            raise ValueError('Dimension ' + str(value[1]) + ' of array \'' + key + '\' should match dimension ' + str(first_value[1]) + ' of array \'' + first_key + '\'!')
+            raise ValueError('Dimension ' + str(value[
+                                                    1]) + ' of array \'' +
+                             key + '\' should match dimension ' + str(
+                first_value[1]) + ' of array \'' + first_key + '\'!')
 
 
 def negative_array(**kwargs):
@@ -147,7 +162,8 @@ def negative_array(**kwargs):
     """
     for key, value in kwargs.items():
         if (value < 0).any():
-            raise ValueError('Array \'' + str(key) + '\' contains at least one negative value!')
+            raise ValueError('Array \'' + str(
+                key) + '\' contains at least one negative value!')
 
 
 def negative_number(**kwargs):
@@ -186,6 +202,9 @@ def short_circuit(resistances, r_i):
 
     if 0 in resistances:
         if r_i == 0:
-            raise ValueError('At least some crossbar devices have zero resistance causing short circuit!')
+            raise ValueError(
+                'At least some crossbar devices have zero resistance causing '
+                'short circuit!')
         else:
-            display.message('Warning: some crossbar devices have zero resistance!')
+            display.message(
+                'Warning: some crossbar devices have zero resistance!')

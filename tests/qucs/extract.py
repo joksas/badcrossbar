@@ -3,7 +3,6 @@ import os
 import pickle
 from collections import namedtuple
 
-
 Solution = namedtuple('Solution', ['currents', 'voltages'])
 Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
 Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
@@ -15,7 +14,8 @@ def extract(filename, shape):
     V = one_dim(data, shape, var1='V')
     r_i = zero_dim(data, var1='r_i')
     I_o, I_d, I_w, I_b, V_w, V_b = solution(data, shape)
-    save_file((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename, allow_overwrite=True)
+    save_file((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename,
+              allow_overwrite=True)
 
 
 def two_dim(data, shape, var1, var2=None):
@@ -66,7 +66,8 @@ def solution(data, shape):
     word_line_voltages = two_dim(data, shape, var1='w', var2='.V')
     bit_line_voltages = two_dim(data, shape, var1='b', var2='.V')
 
-    return output_currents, device_currents, word_line_currents, bit_line_currents, word_line_voltages, bit_line_voltages
+    return output_currents, device_currents, word_line_currents, \
+           bit_line_currents, word_line_voltages, bit_line_voltages
 
 
 def between(data, delim1, delim2):
@@ -96,7 +97,8 @@ def save_file(variable, path, allow_overwrite=False, verbose=False):
 
             if os.path.exists(full_path) is False:
                 with open(full_path, 'wb') as handle:
-                    pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                    pickle.dump(variable, handle,
+                                protocol=pickle.HIGHEST_PROTOCOL)
                 if verbose is True:
                     print('Saving ' + str(full_path))
                 file_saved = True

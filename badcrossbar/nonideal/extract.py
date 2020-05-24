@@ -5,7 +5,8 @@ from badcrossbar.nonideal import fill, solve
 
 
 def solution(resistances, r_i, applied_voltages, **kwargs):
-    """Extracts branch currents and node voltages of a crossbar in a convenient form.
+    """Extracts branch currents and node voltages of a crossbar in a
+    convenient form.
 
     Parameters
     ----------
@@ -19,7 +20,8 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
         node_voltages : bool, optional
             If False, None is returned instead of node voltages.
         all_currents : bool, optional
-            If False, only output currents are returned, while all the other ones are set to None.
+            If False, only output currents are returned, while all the other
+            ones are set to None.
 
     Returns
     -------
@@ -27,7 +29,8 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
         Branch currents and node voltages of the crossbar.
     """
     if r_i == np.inf:
-        return insulating_interconnect_solution(resistances, applied_voltages, **kwargs)
+        return insulating_interconnect_solution(resistances, applied_voltages,
+                                                **kwargs)
 
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
@@ -41,7 +44,8 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     extracted_voltages = None
     if kwargs.get('node_voltages', True) is True:
         extracted_voltages = voltages(v, resistances)
-    extracted_currents = currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs)
+    extracted_currents = currents(v, resistances, r_i, applied_voltages,
+                                  removed_rows, **kwargs)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
     return extracted_solution
 
@@ -63,12 +67,16 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         Indices of rows removed from g and i.
     kwargs
         all_currents : bool, optional
-            If False, only output currents are returned, while all the other ones are set to None.
+            If False, only output currents are returned, while all the other
+            ones are set to None.
 
     Returns
     -------
     named tuple
-        Crossbar branch currents. Named tuple has fields 'output', 'device', 'word_line' and 'bit_line' that contain output currents, as well as currents flowing through the devices and interconnect segments of the word and bit lines.
+        Crossbar branch currents. Named tuple has fields 'output', 'device',
+        'word_line' and 'bit_line' that contain output currents, as well as
+        currents flowing through the devices and interconnect segments of the
+        word and bit lines.
     """
     output_i = output_currents(v, resistances, r_i)
     device_i = word_line_i = bit_line_i = None
@@ -86,7 +94,8 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
 
         display.message('Extracted currents from all branches in the crossbar.')
 
-    Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+    Currents = namedtuple('Currents',
+                          ['output', 'device', 'word_line', 'bit_line'])
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     return extracted_currents
 
@@ -104,7 +113,8 @@ def voltages(v, resistances):
     Returns
     -------
     named tuple
-        Crossbar node voltages. It has fields 'word_line' and 'bit_line' that contain the potentials at the nodes on the word and bit lines.
+        Crossbar node voltages. It has fields 'word_line' and 'bit_line' that
+        contain the potentials at the nodes on the word and bit lines.
     """
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
     word_line_v = word_line_voltages(v, resistances)
@@ -170,7 +180,7 @@ def output_currents(v, resistances, r_i):
         Output currents.
     """
     output_i = np.zeros((v.shape[1], resistances.shape[1]))
-    filled_output_i = v[-resistances.shape[1]:, ]/r_i
+    filled_output_i = v[-resistances.shape[1]:, ] / r_i
     filled_output_i = np.transpose(filled_output_i)
     output_i[:, :filled_output_i.shape[1]] = filled_output_i
     return output_i
@@ -196,14 +206,19 @@ def device_currents(v, resistances, removed_rows, word_line_i):
         Currents flowing through crossbar devices.
     """
     with np.errstate(invalid='ignore'):
-        i = np.divide(v[:resistances.size, ] - v[resistances.size:, ], np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
+        i = np.divide(v[:resistances.size, ] - v[resistances.size:, ],
+                      np.transpose(
+                          np.tile(resistances.flatten(), (v.shape[1], 1))))
     if removed_rows is not None:
-        i = superconductive_device_currents(i, removed_rows, resistances, word_line_i)
+        i = superconductive_device_currents(i, removed_rows, resistances,
+                                            word_line_i)
     return i
 
 
-def superconductive_device_currents(device_i, removed_rows, resistances, word_line_i):
-    """Extracts currents flowing through crossbar devices that have zero resistance.
+def superconductive_device_currents(device_i, removed_rows, resistances,
+                                    word_line_i):
+    """Extracts currents flowing through crossbar devices that have zero
+    resistance.
 
     Parameters
     ----------
@@ -221,18 +236,19 @@ def superconductive_device_currents(device_i, removed_rows, resistances, word_li
     ndarray
         Currents flowing through crossbar devices.
     """
-    rows = [x-resistances.size for x in removed_rows]
+    rows = [x - resistances.size for x in removed_rows]
 
     for row in rows:
-        if (row+1) % resistances.shape[1] == 0:
-            device_i[row, ] = word_line_i[row]
+        if (row + 1) % resistances.shape[1] == 0:
+            device_i[row,] = word_line_i[row]
         else:
-            device_i[row, ] = word_line_i[row] - word_line_i[row + 1]
+            device_i[row,] = word_line_i[row] - word_line_i[row + 1]
     return device_i
 
 
 def word_line_currents(v, resistances, r_i, applied_voltages):
-    """Extracts currents flowing through interconnect segments along the word lines.
+    """Extracts currents flowing through interconnect segments along the word
+    lines.
 
     Parameters
     ----------
@@ -251,14 +267,22 @@ def word_line_currents(v, resistances, r_i, applied_voltages):
         Currents flowing through interconnect segments along the word lines.
     """
     i = np.zeros((resistances.size, applied_voltages.shape[1]))
-    i[::resistances.shape[1], ] = (applied_voltages - v[:resistances.size:resistances.shape[1], ]) / r_i
+    i[::resistances.shape[1], ] = (applied_voltages - v[:resistances.size:
+                                                        resistances.shape[
+                                                            1], ]) / r_i
     for j in range(1, resistances.shape[1]):
-        i[j::resistances.shape[1], ] = (v[j-1:resistances.size:resistances.shape[1], ] - v[j:resistances.size:resistances.shape[1], ])/r_i
+        i[j::resistances.shape[1], ] = (v[j - 1:resistances.size:
+                                          resistances.shape[1], ] - v[
+                                                                    j:resistances.size:
+                                                                    resistances.shape[
+                                                                        1],
+                                                                    ]) / r_i
     return i
 
 
 def bit_line_currents(v, resistances, r_i):
-    """Extracts currents flowing through interconnect segments along the bit lines.
+    """Extracts currents flowing through interconnect segments along the bit
+    lines.
 
     Parameters
     ----------
@@ -275,9 +299,22 @@ def bit_line_currents(v, resistances, r_i):
         Currents flowing through interconnect segments along the bit lines.
     """
     i = np.zeros((resistances.size, v.shape[1]))
-    for j in range(resistances.shape[0]-1):
-        i[resistances.shape[1]*j:resistances.shape[1]*(j+1), ] = (v[resistances.size + resistances.shape[1]*j:resistances.size + resistances.shape[1]*(j+1), ] - v[resistances.size + resistances.shape[1]*(j+1):resistances.size + resistances.shape[1]*(j+2), ])/r_i
-    i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ]/r_i
+    for j in range(resistances.shape[0] - 1):
+        i[resistances.shape[1] * j:resistances.shape[1] * (j + 1), ] = (v[
+                                                                        resistances.size +
+                                                                        resistances.shape[
+                                                                            1] * j:resistances.size +
+                                                                                   resistances.shape[
+                                                                                       1] * (
+                                                                                               j + 1), ] - v[
+                                                                                                           resistances.size +
+                                                                                                           resistances.shape[
+                                                                                                               1] * (
+                                                                                                                       j + 1):resistances.size +
+                                                                                                                              resistances.shape[
+                                                                                                                                  1] * (
+                                                                                                                                          j + 2), ]) / r_i
+    i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ] / r_i
     return i
 
 
@@ -299,7 +336,8 @@ def distributed_array(flattened_array, model_array):
     if flattened_array.shape[1] > 1:
         reshaped_i = []
         for example in range(flattened_array.shape[1]):
-            reshaped_i.append(flattened_array[:, example].reshape(model_array.shape))
+            reshaped_i.append(
+                flattened_array[:, example].reshape(model_array.shape))
     else:
         reshaped_i = flattened_array.reshape(model_array.shape)
 
@@ -340,17 +378,20 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
         Applied voltages.
     kwargs
         all_currents : bool, optional
-            If False, only output currents are returned, while all the other ones are set to None.
+            If False, only output currents are returned, while all the other
+            ones are set to None.
 
     Returns
     -------
     named tuple
         Branch currents and node voltages of the crossbar.
     """
-    display.message('Warning: interconnects are perfectly insulating! Node voltages are undefined!')
+    display.message(
+        'Warning: interconnects are perfectly insulating! Node voltages are undefined!')
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
-    Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+    Currents = namedtuple('Currents',
+                          ['output', 'device', 'word_line', 'bit_line'])
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
     extracted_voltages = Voltages(None, None)
@@ -362,7 +403,9 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
         if applied_voltages.shape[1] == 1:
             device_i = word_line_i = bit_line_i = np.zeros(resistances.shape)
         else:
-            device_i = word_line_i = bit_line_i = [np.zeros(resistances.shape) for _ in range(applied_voltages.shape[1])]
+            device_i = word_line_i = bit_line_i = [np.zeros(resistances.shape)
+                                                   for _ in range(
+                    applied_voltages.shape[1])]
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
 
