@@ -1,7 +1,7 @@
 from badcrossbar import check, nonideal, ideal, display
 
 
-def compute(applied_voltages, resistances, r_i=0, **kwargs):
+def compute(applied_voltages, resistances, r_i, **kwargs):
     """Computes branch currents and node voltages of a crossbar.
 
     Parameters

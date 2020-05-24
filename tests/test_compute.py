@@ -13,7 +13,7 @@ double_inputs = [False, True]
 @pytest.mark.parametrize('double_input', double_inputs)
 def test_currents_qucs(file_name, double_input):
     resistances, voltages, r_i, expected_solution = qucs_data(file_name, double_input=double_input)
-    computed_solution = badcrossbar.compute(voltages, resistances, r_i=r_i)
+    computed_solution = badcrossbar.compute(voltages, resistances, r_i)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
@@ -21,7 +21,7 @@ def test_currents_qucs(file_name, double_input):
 @pytest.mark.parametrize('double_input', double_inputs)
 def test_voltages_qucs(file_name, double_input):
     resistances, voltages, r_i, expected_solution = qucs_data(file_name, double_input=double_input)
-    computed_solution = badcrossbar.compute(voltages, resistances, r_i=r_i)
+    computed_solution = badcrossbar.compute(voltages, resistances, r_i)
     compare_voltages(computed_solution.voltages, expected_solution.voltages)
 
 
