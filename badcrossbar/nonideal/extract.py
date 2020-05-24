@@ -240,9 +240,9 @@ def superconductive_device_currents(device_i, removed_rows, resistances,
 
     for row in rows:
         if (row + 1) % resistances.shape[1] == 0:
-            device_i[row,] = word_line_i[row]
+            device_i[row, ] = word_line_i[row]
         else:
-            device_i[row,] = word_line_i[row] - word_line_i[row + 1]
+            device_i[row, ] = word_line_i[row] - word_line_i[row + 1]
     return device_i
 
 
@@ -271,12 +271,9 @@ def word_line_currents(v, resistances, r_i, applied_voltages):
                                                         resistances.shape[
                                                             1], ]) / r_i
     for j in range(1, resistances.shape[1]):
-        i[j::resistances.shape[1], ] = (v[j - 1:resistances.size:
-                                          resistances.shape[1], ] - v[
-                                                                    j:resistances.size:
-                                                                    resistances.shape[
-                                                                        1],
-                                                                    ]) / r_i
+        i[j::resistances.shape[1], ] = \
+            (v[j - 1:resistances.size:resistances.shape[1], ]
+             - v[j:resistances.size:resistances.shape[1], ]) / r_i
     return i
 
 
@@ -300,20 +297,11 @@ def bit_line_currents(v, resistances, r_i):
     """
     i = np.zeros((resistances.size, v.shape[1]))
     for j in range(resistances.shape[0] - 1):
-        i[resistances.shape[1] * j:resistances.shape[1] * (j + 1), ] = (v[
-                                                                        resistances.size +
-                                                                        resistances.shape[
-                                                                            1] * j:resistances.size +
-                                                                                   resistances.shape[
-                                                                                       1] * (
-                                                                                               j + 1), ] - v[
-                                                                                                           resistances.size +
-                                                                                                           resistances.shape[
-                                                                                                               1] * (
-                                                                                                                       j + 1):resistances.size +
-                                                                                                                              resistances.shape[
-                                                                                                                                  1] * (
-                                                                                                                                          j + 2), ]) / r_i
+        i[resistances.shape[1] * j:resistances.shape[1] * (j + 1), ] = \
+            (v[resistances.size + resistances.shape[1] * j:resistances.size
+            + resistances.shape[1] * (j + 1), ] - v[resistances.size
+            + resistances.shape[1] * (j + 1):resistances.size
+            + resistances.shape[1] * (j + 2), ]) / r_i
     i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ] / r_i
     return i
 
@@ -387,7 +375,8 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
         Branch currents and node voltages of the crossbar.
     """
     display.message(
-        'Warning: interconnects are perfectly insulating! Node voltages are undefined!')
+        'Warning: interconnects are perfectly insulating! Node voltages are '
+        'undefined!')
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     Currents = namedtuple('Currents',
