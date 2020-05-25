@@ -1,20 +1,25 @@
 from datetime import datetime
 
 
-def message(message_str):
+def message(message_str, **kwargs):
     """Prints current time followed by a gap and a custom message.
 
     Parameters
     ----------
     message_str : str
         Message to be printed at the end of the line.
+    **kwargs
+        verbose : int
+            The message is shown only is verbose is equal to 1.
+
     Returns
     -------
     None
     """
-    time()
-    gap()
-    print(message_str)
+    if kwargs.get('verbose', 1) == 1:
+        time()
+        gap()
+        print(message_str)
 
 
 def gap(size=5):

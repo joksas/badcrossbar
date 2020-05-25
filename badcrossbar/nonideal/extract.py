@@ -36,14 +36,14 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     i = fill.i(applied_voltages, resistances, r_i)
     g, i, removed_rows = fill.superconductive(g, i, resistances, r_i)
 
-    v = solve.v(g, i)
+    v = solve.v(g, i, **kwargs)
     if removed_rows is not None:
         v = full_v(v, removed_rows, resistances)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = None
     if kwargs.get('node_voltages', True) is True:
-        extracted_voltages = voltages(v, resistances)
+        extracted_voltages = voltages(v, resistances, **kwargs)
     extracted_currents = currents(v, resistances, r_i, applied_voltages,
                                   removed_rows, **kwargs)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
@@ -82,7 +82,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
     device_i = word_line_i = bit_line_i = None
 
     if kwargs.get('all_currents', True) is False:
-        display.message('Extracted output currents.')
+        display.message('Extracted output currents.', **kwargs)
     else:
         word_line_i = word_line_currents(v, resistances, r_i, applied_voltages)
         bit_line_i = bit_line_currents(v, resistances, r_i)
@@ -92,7 +92,8 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         bit_line_i = distributed_array(bit_line_i, resistances)
         device_i = distributed_array(device_i, resistances)
 
-        display.message('Extracted currents from all branches in the crossbar.')
+        display.message('Extracted currents from all branches in the '
+                        'crossbar.', **kwargs)
 
     Currents = namedtuple('Currents',
                           ['output', 'device', 'word_line', 'bit_line'])
@@ -100,7 +101,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
     return extracted_currents
 
 
-def voltages(v, resistances):
+def voltages(v, resistances, **kwargs):
     """Extracts crossbar node voltages in a convenient format.
 
     Parameters
@@ -120,7 +121,7 @@ def voltages(v, resistances):
     word_line_v = word_line_voltages(v, resistances)
     bit_line_v = bit_line_voltages(v, resistances)
     extracted_voltages = Voltages(word_line_v, bit_line_v)
-    display.message('Extracted node voltages.')
+    display.message('Extracted node voltages.', **kwargs)
     return extracted_voltages
 
 
@@ -376,7 +377,7 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     """
     display.message(
         'Warning: interconnects are perfectly insulating! Node voltages are '
-        'undefined!')
+        'undefined!', **kwargs)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     Currents = namedtuple('Currents',

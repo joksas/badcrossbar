@@ -22,6 +22,9 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
             ones are set to None.
+        verbose : int, optional
+            If 0, no messages are shown. If 1, all messages are shown. If
+            anything else, only warnings are shown.
     Returns
     -------
     named tuple
@@ -35,9 +38,9 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
         while all the others are arrays of shape m x n if p = 1, or lists of
         length p with arrays of shape m x n as their elements if p > 1.
     """
-    display.message('Initialising simulation.')
+    display.message('Initialising simulation.', **kwargs)
     resistances, applied_voltages = check.crossbar_requirements(
-        resistances, applied_voltages, r_i)
+        resistances, applied_voltages, r_i, **kwargs)
     if r_i != 0:
         solution = nonideal.extract.solution(resistances, r_i, applied_voltages,
                                              **kwargs)

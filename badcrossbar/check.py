@@ -2,7 +2,7 @@ import numpy as np
 from badcrossbar import display
 
 
-def crossbar_requirements(resistances, applied_voltages, r_i):
+def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     """Checks if crossbar variables satisfy all requirements.
 
     Parameters
@@ -28,7 +28,7 @@ def crossbar_requirements(resistances, applied_voltages, r_i):
     number(r_i=r_i)
     negative_array(resistances=resistances)
     negative_number(r_i=r_i)
-    short_circuit(resistances, r_i)
+    short_circuit(resistances, r_i, **kwargs)
 
     return resistances, applied_voltages
 
@@ -184,7 +184,7 @@ def negative_number(**kwargs):
             raise ValueError('Variable \'' + str(key) + '\' is negative!')
 
 
-def short_circuit(resistances, r_i):
+def short_circuit(resistances, r_i, **kwargs):
     """Checks if crossbar will be short-circuited.
 
     Parameters
@@ -206,5 +206,7 @@ def short_circuit(resistances, r_i):
                 'At least some crossbar devices have zero resistance causing '
                 'short circuit!')
         else:
-            display.message(
-                'Warning: some crossbar devices have zero resistance!')
+            if kwargs.get('verbose') != 0:
+                display.message(
+                    'Warning: some crossbar devices have zero resistance!',
+                    verbose=1)
