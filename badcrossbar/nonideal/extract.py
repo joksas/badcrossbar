@@ -16,7 +16,7 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
         Interconnect resistance.
     applied_voltages :ndarray
         Applied voltages.
-    kwargs
+    **kwargs
         node_voltages : bool, optional
             If False, None is returned instead of node voltages.
 
@@ -62,7 +62,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         Applied voltages.
     removed_rows : list of int
         Indices of rows removed from g and i.
-    kwargs
+    **kwargs
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
             ones are set to None.
@@ -362,7 +362,7 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
         Resistances of crossbar devices.
     applied_voltages :ndarray
         Applied voltages.
-    kwargs
+    **kwargs
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
             ones are set to None.

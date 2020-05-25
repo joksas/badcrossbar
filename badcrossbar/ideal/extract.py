@@ -13,7 +13,7 @@ def solution(resistances, applied_voltages, **kwargs):
         Resistances of crossbar devices.
     applied_voltages : ndarray
         Applied voltages.
-    kwargs
+    **kwargs
         node_voltages : bool, optional
             If False, None is returned instead of node voltages.
 
@@ -120,7 +120,7 @@ def currents(resistances, applied_voltages, extracted_voltages, **kwargs):
         Applied voltages.
     extracted_voltages : ndarray
         Voltages at the nodes of the crossbar.
-    kwargs
+    **kwargs
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
             ones are set to None.

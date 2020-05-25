@@ -16,7 +16,7 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
     r_i : int or float
         Interconnect resistance. It is assumed that all interconnects have
         the same resistance.
-    kwargs
+    **kwargs
         node_voltages : bool, optional
             If False, None is returned instead of node voltages.
         all_currents : bool, optional
