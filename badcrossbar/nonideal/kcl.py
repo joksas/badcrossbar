@@ -22,7 +22,7 @@ def apply(g_matrix, resistances, r_i):
         Filled matrix g.
     """
     with np.errstate(divide='ignore'):
-        conductances = 1. / resistances
+        conductances = 1./resistances
     g_matrix = word_line_nodes(g_matrix, conductances, r_i)
     g_matrix = bit_line_nodes(g_matrix, conductances, r_i)
     return g_matrix
@@ -46,7 +46,7 @@ def word_line_nodes(g_matrix, conductances, r_i):
         Partially filled matrix g.
     """
     (num_word_lines, num_bit_lines) = conductances.shape
-    g_i = 1 / r_i
+    g_i = 1/r_i
 
     if num_bit_lines != 1:
         # first column
@@ -107,7 +107,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
         Filled matrix g (if this function is executed after word_line_nodes()).
     """
     (num_word_lines, num_bit_lines) = conductances.shape
-    g_i = 1 / r_i
+    g_i = 1/r_i
 
     if num_word_lines != 1:
         # first row

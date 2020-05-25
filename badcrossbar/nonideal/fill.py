@@ -47,7 +47,7 @@ def i(applied_voltages, resistances, r_i):
     """
     v_shape = (2*resistances.size, applied_voltages.shape[1])
     i_matrix = np.zeros(v_shape)
-    i_matrix[:resistances.size:resistances.shape[1], :] = applied_voltages / r_i
+    i_matrix[:resistances.size:resistances.shape[1], :] = applied_voltages/r_i
     return i_matrix
 
 
@@ -112,8 +112,8 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
     for row in rows:
         g_matrix[row, row] = -np.sum(g_matrix[row, :])
         if row % resistances.shape[1] == 0:
-            g_matrix[row, row] += 1 / r_i
+            g_matrix[row, row] += 1/r_i
         if resistances.size - row <= resistances.shape[1]:
-            g_matrix[row, row] += 1 / r_i
+            g_matrix[row, row] += 1/r_i
 
     return g_matrix, i_matrix, removed_rows

@@ -165,7 +165,7 @@ def output_currents(resistances, applied_voltages):
     ndarray
         Output currents.
     """
-    output_i = np.dot(np.transpose(1. / resistances), applied_voltages)
+    output_i = np.dot(np.transpose(1./resistances), applied_voltages)
 
     return np.transpose(output_i)
 

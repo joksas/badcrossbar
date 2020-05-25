@@ -178,7 +178,7 @@ def output_currents(v, resistances, r_i):
         Output currents.
     """
     output_i = np.zeros((v.shape[1], resistances.shape[1]))
-    filled_output_i = v[-resistances.shape[1]:, ] / r_i
+    filled_output_i = v[-resistances.shape[1]:, ]/r_i
     filled_output_i = np.transpose(filled_output_i)
     output_i[:, :filled_output_i.shape[1]] = filled_output_i
     return output_i
@@ -267,11 +267,11 @@ def word_line_currents(v, resistances, r_i, applied_voltages):
     i = np.zeros((resistances.size, applied_voltages.shape[1]))
     i[::resistances.shape[1], ] = (applied_voltages - v[:resistances.size:
                                                         resistances.shape[
-                                                            1], ]) / r_i
+                                                            1], ])/r_i
     for j in range(1, resistances.shape[1]):
         i[j::resistances.shape[1], ] = \
             (v[j - 1:resistances.size:resistances.shape[1], ]
-             - v[j:resistances.size:resistances.shape[1], ]) / r_i
+             - v[j:resistances.size:resistances.shape[1], ])/r_i
     return i
 
 
@@ -299,8 +299,8 @@ def bit_line_currents(v, resistances, r_i):
             (v[resistances.size + resistances.shape[1]*j:resistances.size
             + resistances.shape[1]*(j + 1), ] - v[resistances.size
             + resistances.shape[1]*(j + 1):resistances.size
-            + resistances.shape[1]*(j + 2), ]) / r_i
-    i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ] / r_i
+            + resistances.shape[1]*(j + 2), ])/r_i
+    i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ]/r_i
     return i
 
 
