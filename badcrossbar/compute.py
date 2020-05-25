@@ -23,8 +23,9 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
             If False, only output currents are returned, while all the other
             ones are set to None.
         verbose : int, optional
-            If 0, no messages are shown. If 1, all messages are shown. If
-            anything else, only warnings are shown.
+            If 1, all messages are shown. If 2, only warnings are shown. If
+            anything else, no messages are shown.
+
     Returns
     -------
     named tuple

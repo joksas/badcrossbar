@@ -206,7 +206,8 @@ def short_circuit(resistances, r_i, **kwargs):
                 'At least some crossbar devices have zero resistance causing '
                 'short circuit!')
         else:
-            if kwargs.get('verbose') != 0:
-                display.message(
-                    'Warning: some crossbar devices have zero resistance!',
-                    verbose=1)
+            if kwargs.get('verbose') == 2:
+                kwargs['verbose'] = 1
+            display.message(
+                'Warning: some crossbar devices have zero resistance!',
+                **kwargs)
