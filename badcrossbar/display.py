@@ -30,7 +30,7 @@ def gap(**kwargs):
 
     Parameters
     ----------
-    kwargs
+    **kwargs
         gap_size : int
             Number of whitespace characters to be printed.
     Returns
@@ -46,7 +46,7 @@ def time(**kwargs):
 
     Parameters
     ----------
-    kwargs
+    **kwargs
         keep_ms : bool
             If True, includes milliseconds.
     Returns

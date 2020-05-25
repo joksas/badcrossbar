@@ -193,6 +193,9 @@ def short_circuit(resistances, r_i, **kwargs):
         Resistances of crossbar devices.
     r_i : int or float
         Interconnect resistance.
+    **kwargs
+        verbose : int
+        If 2, makes sure that warning is displayed.
 
     Raises
     -------
