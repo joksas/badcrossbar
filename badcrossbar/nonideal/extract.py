@@ -295,11 +295,11 @@ def bit_line_currents(v, resistances, r_i):
     """
     i = np.zeros((resistances.size, v.shape[1]))
     for j in range(resistances.shape[0] - 1):
-        i[resistances.shape[1] * j:resistances.shape[1] * (j + 1), ] = \
-            (v[resistances.size + resistances.shape[1] * j:resistances.size
-            + resistances.shape[1] * (j + 1), ] - v[resistances.size
-            + resistances.shape[1] * (j + 1):resistances.size
-            + resistances.shape[1] * (j + 2), ]) / r_i
+        i[resistances.shape[1]*j:resistances.shape[1]*(j + 1), ] = \
+            (v[resistances.size + resistances.shape[1]*j:resistances.size
+            + resistances.shape[1]*(j + 1), ] - v[resistances.size
+            + resistances.shape[1]*(j + 1):resistances.size
+            + resistances.shape[1]*(j + 2), ]) / r_i
     i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ] / r_i
     return i
 

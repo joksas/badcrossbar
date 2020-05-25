@@ -19,7 +19,7 @@ def g(resistances, r_i):
     ndarray
         Filled matrix g.
     """
-    g_shape = tuple(2 * resistances.size for _ in range(2))
+    g_shape = tuple(2*resistances.size for _ in range(2))
     g_matrix = lil_matrix(g_shape)
     g_matrix = kcl.apply(g_matrix, resistances, r_i)
     return g_matrix
@@ -45,7 +45,7 @@ def i(applied_voltages, resistances, r_i):
     ndarray
         Filled matrix i.
     """
-    v_shape = (2 * resistances.size, applied_voltages.shape[1])
+    v_shape = (2*resistances.size, applied_voltages.shape[1])
     i_matrix = np.zeros(v_shape)
     i_matrix[:resistances.size:resistances.shape[1], :] = applied_voltages / r_i
     return i_matrix
@@ -100,7 +100,7 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
         g_matrix[:, row] += g_matrix[:, row + resistances.size]
 
     # transform matrices by removing redundant bit line nodes
-    removed_rows = list(map(int, rows + np.ones(rows.shape) * resistances.size))
+    removed_rows = list(map(int, rows + np.ones(rows.shape)*resistances.size))
     g_matrix = extract.except_rows(g_matrix, removed_rows)
     g_matrix = extract.except_columns(g_matrix, removed_rows)
     i_matrix = np.delete(i_matrix, removed_rows, 0)

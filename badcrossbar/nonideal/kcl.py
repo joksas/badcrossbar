@@ -52,38 +52,38 @@ def word_line_nodes(g_matrix, conductances, r_i):
         # first column
         word_lines = np.arange(num_word_lines)
         bit_lines = np.repeat(0, num_word_lines)
-        index = word_lines * num_bit_lines + bit_lines
+        index = word_lines*num_bit_lines + bit_lines
         g_matrix[index, index] = np.ones(
-            (num_word_lines,)) * 2 * g_i + conductances[:, 0]
-        g_matrix[index, index + 1] = -np.ones((num_word_lines,)) * g_i
+            (num_word_lines,))*2*g_i + conductances[:, 0]
+        g_matrix[index, index + 1] = -np.ones((num_word_lines,))*g_i
         g_matrix[index, index + conductances.size] = -conductances[:, 0]
 
         # middle columns
         for i in range(1, num_bit_lines - 1):
             word_lines = np.arange(num_word_lines)
             bit_lines = np.repeat(i, num_word_lines)
-            index = word_lines * num_bit_lines + bit_lines
+            index = word_lines*num_bit_lines + bit_lines
             g_matrix[index, index] = np.ones(
-                (num_word_lines,)) * 2 * g_i + conductances[:, i]
-            g_matrix[index, index - 1] = -np.ones((num_word_lines,)) * g_i
-            g_matrix[index, index + 1] = -np.ones((num_word_lines,)) * g_i
+                (num_word_lines,))*2*g_i + conductances[:, i]
+            g_matrix[index, index - 1] = -np.ones((num_word_lines,))*g_i
+            g_matrix[index, index + 1] = -np.ones((num_word_lines,))*g_i
             g_matrix[index, index + conductances.size] = -conductances[:, i]
 
         # last column
         word_lines = np.arange(num_word_lines)
         bit_lines = np.repeat(num_bit_lines - 1, num_word_lines)
-        index = word_lines * num_bit_lines + bit_lines
+        index = word_lines*num_bit_lines + bit_lines
         g_matrix[index, index] = np.ones(
-            (num_word_lines,)) * g_i + conductances[:, -1]
-        g_matrix[index, index - 1] = -np.ones((num_word_lines,)) * g_i
+            (num_word_lines,))*g_i + conductances[:, -1]
+        g_matrix[index, index - 1] = -np.ones((num_word_lines,))*g_i
         g_matrix[index, index + conductances.size] = -conductances[:, -1]
     else:
         # the only column
         word_lines = np.arange(num_word_lines)
         bit_lines = np.repeat(0, num_word_lines)
-        index = word_lines * num_bit_lines + bit_lines
+        index = word_lines*num_bit_lines + bit_lines
         g_matrix[index, index] = np.ones(
-            (num_word_lines,)) * g_i + conductances[:, 0]
+            (num_word_lines,))*g_i + conductances[:, 0]
         g_matrix[index, index + conductances.size] = -conductances[:, 0]
 
     return g_matrix
@@ -113,41 +113,41 @@ def bit_line_nodes(g_matrix, conductances, r_i):
         # first row
         word_lines = np.repeat(0, num_bit_lines)
         bit_lines = np.arange(num_bit_lines)
-        index = conductances.size + word_lines * num_bit_lines + bit_lines
-        g_matrix[index, index] = np.ones((num_bit_lines,)) * g_i + conductances[
+        index = conductances.size + word_lines*num_bit_lines + bit_lines
+        g_matrix[index, index] = np.ones((num_bit_lines,))*g_i + conductances[
                                                                    0, :]
         g_matrix[index, index + num_bit_lines] = -np.ones(
-            (num_bit_lines,)) * g_i
+            (num_bit_lines,))*g_i
         g_matrix[index, index - conductances.size] = -conductances[0, :]
 
         # middle rows
         for i in range(1, num_word_lines - 1):
             word_lines = np.repeat(i, num_bit_lines)
             bit_lines = np.arange(num_bit_lines)
-            index = conductances.size + word_lines * num_bit_lines + bit_lines
+            index = conductances.size + word_lines*num_bit_lines + bit_lines
             g_matrix[index, index] = np.ones(
-                (num_bit_lines,)) * 2 * g_i + conductances[i, :]
+                (num_bit_lines,))*2*g_i + conductances[i, :]
             g_matrix[index, index + num_bit_lines] = -np.ones(
-                (num_bit_lines,)) * g_i
+                (num_bit_lines,))*g_i
             g_matrix[index, index - num_bit_lines] = -np.ones(
-                (num_bit_lines,)) * g_i
+                (num_bit_lines,))*g_i
             g_matrix[index, index - conductances.size] = -conductances[i, :]
 
         # last row
         word_lines = np.repeat(num_word_lines - 1, num_bit_lines)
         bit_lines = np.arange(num_bit_lines)
-        index = conductances.size + word_lines * num_bit_lines + bit_lines
+        index = conductances.size + word_lines*num_bit_lines + bit_lines
         g_matrix[index, index] = np.ones(
-            (num_bit_lines,)) * 2 * g_i + conductances[-1, :]
+            (num_bit_lines,))*2*g_i + conductances[-1, :]
         g_matrix[index, index - num_bit_lines] = -np.ones(
-            (num_bit_lines,)) * g_i
+            (num_bit_lines,))*g_i
         g_matrix[index, index - conductances.size] = -conductances[-1, :]
     else:
         # the only row
         word_lines = np.repeat(0, num_bit_lines)
         bit_lines = np.arange(num_bit_lines)
-        index = conductances.size + word_lines * num_bit_lines + bit_lines
-        g_matrix[index, index] = np.ones((num_bit_lines,)) * g_i + conductances[
+        index = conductances.size + word_lines*num_bit_lines + bit_lines
+        g_matrix[index, index] = np.ones((num_bit_lines,))*g_i + conductances[
                                                                    0, :]
         g_matrix[index, index - conductances.size] = -conductances[0, :]
 
