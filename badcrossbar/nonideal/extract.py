@@ -364,12 +364,16 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
             ones are set to None.
+        verbose : int
+            If 2, makes sure that warning is displayed.
 
     Returns
     -------
     named tuple
         Branch currents and node voltages of the crossbar.
     """
+    if kwargs.get('verbose') == 2:
+        kwargs['verbose'] = 1
     display.message(
         'Warning: interconnects are perfectly insulating! Node voltages are '
         'undefined!', **kwargs)
