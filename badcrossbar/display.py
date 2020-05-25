@@ -11,8 +11,6 @@ def message(message_str, **kwargs):
     **kwargs
         verbose : int
             The message is shown only is verbose is equal to 1.
-        show_time : bool
-            If False, current time is not displayed.
 
     Returns
     -------
