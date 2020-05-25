@@ -41,8 +41,8 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     extracted_voltages = None
     if kwargs.get('node_voltages', True) is True:
         extracted_voltages = voltages(v, resistances, **kwargs)
-    extracted_currents = currents(v, resistances, r_i, applied_voltages,
-                                  removed_rows, **kwargs)
+    extracted_currents = currents(
+        v, resistances, r_i, applied_voltages, removed_rows, **kwargs)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
     return extracted_solution
 
@@ -89,11 +89,11 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         bit_line_i = distributed_array(bit_line_i, resistances)
         device_i = distributed_array(device_i, resistances)
 
-        display.message('Extracted currents from all branches in the '
-                        'crossbar.', **kwargs)
+        display.message(
+            'Extracted currents from all branches in the crossbar.', **kwargs)
 
-    Currents = namedtuple('Currents',
-                          ['output', 'device', 'word_line', 'bit_line'])
+    Currents = namedtuple(
+        'Currents', ['output', 'device', 'word_line', 'bit_line'])
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     return extracted_currents
 
@@ -204,17 +204,17 @@ def device_currents(v, resistances, removed_rows, word_line_i):
         Currents flowing through crossbar devices.
     """
     with np.errstate(invalid='ignore'):
-        i = np.divide(v[:resistances.size, ] - v[resistances.size:, ],
-                      np.transpose(
-                          np.tile(resistances.flatten(), (v.shape[1], 1))))
+        i = np.divide(
+            v[:resistances.size, ] - v[resistances.size:, ],
+            np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
     if removed_rows is not None:
-        i = superconductive_device_currents(i, removed_rows, resistances,
-                                            word_line_i)
+        i = superconductive_device_currents(
+            i, removed_rows, resistances, word_line_i)
     return i
 
 
-def superconductive_device_currents(device_i, removed_rows, resistances,
-                                    word_line_i):
+def superconductive_device_currents(
+        device_i, removed_rows, resistances, word_line_i):
     """Extracts currents flowing through crossbar devices that have zero
     resistance.
 
@@ -265,13 +265,12 @@ def word_line_currents(v, resistances, r_i, applied_voltages):
         Currents flowing through interconnect segments along the word lines.
     """
     i = np.zeros((resistances.size, applied_voltages.shape[1]))
-    i[::resistances.shape[1], ] = (applied_voltages - v[:resistances.size:
-                                                        resistances.shape[
-                                                            1], ])/r_i
+    v_diff = applied_voltages - v[:resistances.size:resistances.shape[1], ]
+    i[::resistances.shape[1], ] = v_diff/r_i
     for j in range(1, resistances.shape[1]):
-        i[j::resistances.shape[1], ] = \
-            (v[j - 1:resistances.size:resistances.shape[1], ]
-             - v[j:resistances.size:resistances.shape[1], ])/r_i
+        v_diff = v[j - 1:resistances.size:resistances.shape[1], ] - v[
+                 j:resistances.size:resistances.shape[1], ]
+        i[j::resistances.shape[1], ] = v_diff/r_i
     return i
 
 
@@ -295,11 +294,10 @@ def bit_line_currents(v, resistances, r_i):
     """
     i = np.zeros((resistances.size, v.shape[1]))
     for j in range(resistances.shape[0] - 1):
-        i[resistances.shape[1]*j:resistances.shape[1]*(j + 1), ] = \
-            (v[resistances.size + resistances.shape[1]*j:resistances.size
-            + resistances.shape[1]*(j + 1), ] - v[resistances.size
-            + resistances.shape[1]*(j + 1):resistances.size
-            + resistances.shape[1]*(j + 2), ])/r_i
+        v_sub = v[resistances.size + resistances.shape[1]*j:, ]
+        v_diff = v_sub[:resistances.shape[1], ] - v_sub[
+                 resistances.shape[1]:, ][:resistances.shape[1], ]
+        i[resistances.shape[1]*j:, ][:resistances.shape[1], ] = v_diff/r_i
     i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ]/r_i
     return i
 

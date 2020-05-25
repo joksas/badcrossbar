@@ -215,12 +215,11 @@ def word_line_currents(resistances, device_i_all):
         word_line_i = []
         for device_i in device_i_all:
             temp_word_line_i = np.zeros(resistances.shape)
-            temp_word_line_i[:, :] += np.repeat(device_i[:, -1:],
-                                                resistances.shape[1], axis=1)
+            temp_word_line_i[:, :] += np.repeat(
+                device_i[:, -1:], resistances.shape[1], axis=1)
             for i in range(1, resistances.shape[1]):
-                temp_word_line_i[:, :-i] += np.repeat(device_i[:, -(1 + i):-i],
-                                                      resistances.shape[1] - i,
-                                                      axis=1)
+                temp_word_line_i[:, :-i] += np.repeat(
+                    device_i[:, -(1 + i):-i], resistances.shape[1] - i, axis=1)
             word_line_i.append(temp_word_line_i)
     else:
         word_line_i = np.zeros(resistances.shape)
@@ -254,9 +253,8 @@ def bit_line_currents(resistances, device_i_all):
         for device_i in device_i_all:
             temp_bit_line_i = np.zeros(resistances.shape)
             for i in range(resistances.shape[0]):
-                temp_bit_line_i[i:, :] += np.repeat(device_i[i:i + 1, :],
-                                                    resistances.shape[0] - i,
-                                                    axis=0)
+                temp_bit_line_i[i:, :] += np.repeat(
+                    device_i[i:i + 1, :], resistances.shape[0] - i, axis=0)
             bit_line_i.append(temp_bit_line_i)
     else:
         bit_line_i = np.zeros(resistances.shape)
