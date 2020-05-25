@@ -20,7 +20,7 @@ def message(message_str, **kwargs):
     """
     if kwargs.get('verbose', 1) == 1:
         if kwargs.get('show_time', True):
-            time()
+            time(**kwargs)
             gap(**kwargs)
         print(message_str)
 
@@ -41,18 +41,19 @@ def gap(**kwargs):
     print(gap_str, end='')
 
 
-def time(keep_ms=False):
+def time(**kwargs):
     """Prints current time.
 
     Parameters
     ----------
-    keep_ms : bool
-        If True, includes milliseconds.
+    kwargs
+        keep_ms : bool
+            If True, includes milliseconds.
     Returns
     -------
     None
     """
     time_str = str(datetime.now())
-    if keep_ms is False:
+    if kwargs.get('keep_ms', False) is False:
         time_str = time_str.split('.')[0]
     print(time_str, end='')
