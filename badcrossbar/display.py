@@ -21,22 +21,23 @@ def message(message_str, **kwargs):
     if kwargs.get('verbose', 1) == 1:
         if kwargs.get('show_time', True):
             time()
-            gap()
+            gap(**kwargs)
         print(message_str)
 
 
-def gap(size=5):
+def gap(**kwargs):
     """Prints a given number of whitespace characters.
 
     Parameters
     ----------
-    size : int
-        Number of whitespace characters to be printed.
+    kwargs
+        gap_size : int
+            Number of whitespace characters to be printed.
     Returns
     -------
     None
     """
-    gap_str = size*' '
+    gap_str = kwargs.get('gap_size', 5)*' '
     print(gap_str, end='')
 
 
