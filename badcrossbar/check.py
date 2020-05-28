@@ -19,9 +19,8 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     resistances, applied_voltages : ndarray
         Potentially modified resistances and applied voltages.
     """
-    resistances, applied_voltages = \
-        matrix_type(resistances=resistances,
-                    applied_voltages=applied_voltages)
+    resistances, applied_voltages = matrix_type(
+        resistances=resistances, applied_voltages=applied_voltages)
     empty(resistances=resistances, applied_voltages=applied_voltages)
     match_shape(resistances=(resistances, 0),
                 applied_voltages=(applied_voltages, 0))
@@ -48,10 +47,9 @@ def number(**kwargs):
     """
     for key, value in kwargs.items():
         if not isinstance(value, (int, float)):
-            raise TypeError('Type ' + str(type(
-                value).__name__) + ' of variable \'' + key + '\' is not '
-                                                          'supported. Use '
-                                                    'int or float instead.')
+            raise TypeError(
+                'Type {} of variable \'{}\' is not supported. Use int or '
+                'float instead.'.format(type(value).__name__, key))
 
 
 def matrix_type(**kwargs):
@@ -91,14 +89,12 @@ def matrix_type(**kwargs):
             else:
                 good_type = False
         if good_type is False:
-            raise TypeError('Type ' + str(type(
-                value).__name__) + ' of variable \'' + key + '\' is not '
-                                                          'supported. Use '
-                                                    'np.ndarray or list of '
-                                                    'lists instead.')
+            raise TypeError(
+                'Type {} of variable \'{}\' is not supported. Use ndarray or '
+                'list of lists instead.'.format(type(value).__name__, key))
         if np.issubdtype(new_args[-1].dtype, np.number) is False:
             raise TypeError(
-                'Array \'' + key + '\' should only contain numbers!')
+                'Array \'{}\' should only contain numbers!'.format(key))
 
     if len(new_args) == 1:
         new_args = new_args[0]
@@ -122,7 +118,7 @@ def empty(**kwargs):
     """
     for key, value in kwargs.items():
         if value.size == 0:
-            raise ValueError('Array \'' + key + '\' is empty!')
+            raise ValueError('Array \'{}\' is empty!'. format(key))
 
 
 def match_shape(**kwargs):
@@ -143,10 +139,10 @@ def match_shape(**kwargs):
     dim = first_value[0].shape[first_value[1]]
     for key, value in kwargs.items():
         if value[0].shape[value[1]] != dim:
-            raise ValueError('Dimension ' + str(value[
-                                                    1]) + ' of array \'' +
-                             key + '\' should match dimension ' + str(
-                first_value[1]) + ' of array \'' + first_key + '\'!')
+            raise ValueError(
+                'Dimension {} of array \'{}\' should match dimension {} of '
+                'array \'{}\'!'.format(value[1], key, first_value[1], first_key)
+            )
 
 
 def negative_array(**kwargs):
@@ -164,8 +160,9 @@ def negative_array(**kwargs):
     """
     for key, value in kwargs.items():
         if (value < 0).any():
-            raise ValueError('Array \'' + str(
-                key) + '\' contains at least one negative value!')
+            raise ValueError(
+                'Array \'{}\' contains at least one negative value!'.format(key)
+            )
 
 
 def negative_number(**kwargs):
@@ -183,7 +180,7 @@ def negative_number(**kwargs):
     """
     for key, value in kwargs.items():
         if value < 0:
-            raise ValueError('Variable \'' + str(key) + '\' is negative!')
+            raise ValueError('Variable \'{}\' is negative!'. format(key))
 
 
 def short_circuit(resistances, r_i, **kwargs):
