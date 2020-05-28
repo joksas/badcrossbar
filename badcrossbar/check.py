@@ -49,7 +49,8 @@ def number(**kwargs):
     for key, value in kwargs.items():
         if not isinstance(value, (int, float)):
             raise TypeError('Type ' + str(type(
-                value)) + ' of variable \'' + key + '\' is not supported. Use '
+                value).__name__) + ' of variable \'' + key + '\' is not '
+                                                          'supported. Use '
                                                     'int or float instead.')
 
 
@@ -91,7 +92,8 @@ def matrix_type(**kwargs):
                 good_type = False
         if good_type is False:
             raise TypeError('Type ' + str(type(
-                value)) + ' of variable \'' + key + '\' is not supported. Use '
+                value).__name__) + ' of variable \'' + key + '\' is not '
+                                                          'supported. Use '
                                                     'np.ndarray or list of '
                                                     'lists instead.')
         if np.issubdtype(new_args[-1].dtype, np.number) is False:
