@@ -26,7 +26,7 @@ def complete_path(context, rgb=(0, 0, 0), width=1):
 
 
 def rgb_interpolation(array, low=0, high=1,
-                      low_rgb=(0, 0, 0), high_rgb=(255, 255, 255)):
+                      low_rgb=(240, 228, 66), high_rgb=(255, 0, 0)):
     """Linearly interpolates RGB colors for an array in a specified range.
 
     Parameters
