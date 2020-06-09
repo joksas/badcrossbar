@@ -69,12 +69,17 @@ def rgb_interpolation(array, low=0, high=1,
     """
     rgb = []
     for low_x, high_x in zip(low_rgb, high_rgb):
-        x = low_x + (array - low) * (high_x-low_x)/(high-low)
+        if low != high:
+            x = low_x + (array - low) * (high_x-low_x)/(high-low)
+        else:
+            x = low_x
         rgb.append(x)
 
     rgb = np.array(rgb)
     rgb = np.moveaxis(rgb, 0, -1)
     rgb = nlr.unstructured_to_structured(rgb)
+    if len(rgb.shape) == 0:
+        rgb = rgb.reshape(1)
     return rgb
 
 
