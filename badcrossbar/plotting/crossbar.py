@@ -4,7 +4,7 @@ import badcrossbar.plotting.devices as devices
 import badcrossbar.plotting.utils as utils
 
 
-def word_line(context, colors, width=1, segment_length=120, first=False):
+def word_line(context, colors, segment_length=120, first=False):
     """Draws a word line of a crossbar array.
 
     Parameters
@@ -13,13 +13,12 @@ def word_line(context, colors, width=1, segment_length=120, first=False):
         Context.
     colors : list of tuple of int
         Colors of the word line segments in RGB (max value of 255).
-    width : float
-        Width of the path.
     segment_length : float
         The length of each segment.
     first : bool
         If True, draws the first (from the top) word line.
     """
+    width = segment_length/120*3
     for idx, color in enumerate(colors):
         if idx == 0 or first:
             shapes.line(context, segment_length)
@@ -32,7 +31,7 @@ def word_line(context, colors, width=1, segment_length=120, first=False):
         utils.complete_path(context, rgb=color, width=width)
 
 
-def bit_line(context, colors, width=1, segment_length=120):
+def bit_line(context, colors, segment_length=120):
     """Draws a bit line of a crossbar array.
 
     Parameters
@@ -41,17 +40,16 @@ def bit_line(context, colors, width=1, segment_length=120):
         Context.
     colors : list of tuple of int
         Colors of the bit line segments in RGB (max value of 255).
-    width : float
-        Width of the path.
     segment_length : float
         The length of each segment.
     """
+    width = segment_length/120*3
     for color in colors:
         shapes.line(context, segment_length, angle=np.pi/2)
         utils.complete_path(context, rgb=color, width=width)
 
 
-def device_row(context, colors, width=5, segment_length=120):
+def device_row(context, colors, segment_length=120):
     """Draws a row of crossbar devices.
 
     Parameters
@@ -60,11 +58,10 @@ def device_row(context, colors, width=5, segment_length=120):
         Context.
     colors : list of tuple of int
         Colors of the crossbar devices in RGB (max value of 255).
-    width : float
-        Width of the path.
     segment_length : float
         The length of each segment.
     """
+    width = segment_length/120*5
     x, y = context.get_current_point()
     device_length = segment_length/2*np.sqrt(2)  # Pythagorean theorem
     for color in colors:
@@ -74,7 +71,7 @@ def device_row(context, colors, width=5, segment_length=120):
         utils.complete_path(context, rgb=color, width=width)
 
 
-def nodes(context, colors, diameter=7, segment_length=120, bit_line_nodes=True):
+def nodes(context, colors, segment_length=120, bit_line_nodes=True):
     """Draws a row of nodes.
 
     Parameters
@@ -83,13 +80,12 @@ def nodes(context, colors, diameter=7, segment_length=120, bit_line_nodes=True):
         Context.
     colors : list of tuple of int
         Colors of the nodes in RGB (max value of 255).
-    diameter : float
-        Diameter of the nodes.
     segment_length : float
         The length of each segment.
     bit_line_nodes : bool
         If True, draws nodes on the bit lines.
     """
+    diameter = segment_length/120*7
     x, y = context.get_current_point()
     if bit_line_nodes:
         x += segment_length/2
