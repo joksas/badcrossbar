@@ -7,7 +7,8 @@ def complete_path(context, rgb=(0, 0, 0), width=1):
         Context.
     rgb : tuple of int
         Color of the path in RGB (max value of 255 for each).
-    width : Width of the path.
+    width : float
+        Width of the path.
     """
     x, y = context.get_current_point()
 
