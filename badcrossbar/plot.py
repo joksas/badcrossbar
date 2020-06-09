@@ -27,6 +27,27 @@ def currents(device_currents, word_line_currents, bit_line_currents):
 
 def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
               segment_length=120, width=3):
+    """Draws bit lines.
+
+    Parameters
+    ----------
+    context : cairo.Context
+        Context.
+    bit_line_currents : ndarray
+        Currents flowing through bit line segments.
+    x_start : float
+        x coordinate of the top left point of the diagram.
+    y_start : float
+        x coordinate of the top left point of the diagram.
+    low : float
+        Lower limit of the linear range.
+    high : float
+        Upper limit of the linear range.
+    segment_length : float
+        The length of each segment.
+    width : float
+        Width of the path.
+    """
     x, y = x_start + 1.5*segment_length, y_start + 0.5*segment_length
     context.move_to(x, y)
 
@@ -40,7 +61,28 @@ def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
 
 
 def word_lines(context, word_line_currents, x_start, y_start, low, high,
-              segment_length=120, width=3):
+               segment_length=120, width=3):
+    """Draws word lines.
+
+    Parameters
+    ----------
+    context : cairo.Context
+        Context.
+    word_line_currents : ndarray
+        Currents flowing through word line segments.
+    x_start : float
+        x coordinate of the top left point of the diagram.
+    y_start : float
+        x coordinate of the top left point of the diagram.
+    low : float
+        Lower limit of the linear range.
+    high : float
+        Upper limit of the linear range.
+    segment_length : float
+        The length of each segment.
+    width : float
+        Width of the path.
+    """
     x, y = x_start, y_start
     context.move_to(x, y)
 
@@ -59,6 +101,31 @@ def word_lines(context, word_line_currents, x_start, y_start, low, high,
 def devices(context, device_currents, x_start, y_start, low, high,
             segment_length=120, width=3, node_color=(0, 0, 0),
             node_diameter=7):
+    """Draws crossbar devices and the nodes.
+
+    Parameters
+    ----------
+    context : cairo.Context
+        Context.
+    device_currents : ndarray
+        Currents flowing through crossbar devices.
+    x_start : float
+        x coordinate of the top left point of the diagram.
+    y_start : float
+        x coordinate of the top left point of the diagram.
+    low : float
+        Lower limit of the linear range.
+    high : float
+        Upper limit of the linear range.
+    segment_length : float
+        The length of each segment.
+    width : float
+        Width of the path.
+    node_color : tuple of int
+        Color of the node in RGB (max value of 255 for each).
+    node_diameter : float
+        Diameter of the node.
+    """
     x, y = x_start, y_start
     context.move_to(x, y)
     for device_row in device_currents:
