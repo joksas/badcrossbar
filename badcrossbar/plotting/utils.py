@@ -72,7 +72,7 @@ def rgb_interpolation(array, low=0, high=1,
         if low != high:
             x = low_x + (array - low) * (high_x-low_x)/(high-low)
         else:
-            x = low_x
+            x = low_x*np.ones(array.shape)
         rgb.append(x)
 
     rgb = np.array(rgb)
