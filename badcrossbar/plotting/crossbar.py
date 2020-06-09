@@ -15,12 +15,10 @@ def word_line(context, colors, width=1, segment_length=150, first=False):
     width : float
         Width of the path.
     segment_length : float
-        The length of regular (not the leftmost one) word line segments.
+        The length of each segment.
     first : bool
         If True, draws the first (from the top) word line.
     """
-    segment_length *= 4/3
-
     for idx, color in enumerate(colors):
         if idx == 0 or first:
             shapes.line(context, segment_length)
@@ -29,9 +27,6 @@ def word_line(context, colors, width=1, segment_length=150, first=False):
             shapes.line(context, 1.5*unit)
             shapes.semicircle(context, unit)
             shapes.line(context, 1.5*unit)
-
-        if idx == 0:
-            segment_length *= 3/4
 
         utils.complete_path(context, rgb=color, width=width)
 
@@ -48,13 +43,8 @@ def bit_line(context, colors, width=1, segment_length=150):
     width : float
         Width of the path.
     segment_length : float
-        The length of regular (not the bottom one) bit line segments.
+        The length of each segment.
     """
-    num_segments = len(colors)
-
     for idx, color in enumerate(colors):
-        if idx+1 == num_segments:
-            segment_length *= 4/3
-
         shapes.line(context, segment_length, angle=np.pi/2)
         utils.complete_path(context, rgb=color, width=width)
