@@ -72,3 +72,32 @@ def device_row(context, colors, width=5, segment_length=120):
         context.move_to(x, y)
         devices.memristor(context, length=device_length, angle=np.pi/4)
         utils.complete_path(context, rgb=color, width=width)
+
+
+def nodes(context, colors, diameter=7, segment_length=120, bit_line_nodes=True):
+    """Draws a row of nodes.
+
+    Parameters
+    ----------
+    context : cairo.Context
+        Context.
+    colors : list of tuple of int
+        Colors of the nodes in RGB (max value of 255).
+    diameter : float
+        Diameter of the nodes.
+    segment_length : float
+        The length of each segment.
+    bit_line_nodes : bool
+        If True, draws nodes on the bit lines.
+    """
+    x, y = context.get_current_point()
+    if bit_line_nodes:
+        x += segment_length/2
+        y += segment_length/2
+    radius = diameter/2
+    for color in colors:
+        x += segment_length
+        context.move_to(x, y)
+        context.arc(x, y, radius, 0, 2*np.pi)
+        context.move_to(x, y)
+        utils.complete_fill(context, color)
