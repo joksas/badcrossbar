@@ -3,7 +3,7 @@ import badcrossbar.plotting.shapes as shapes
 import badcrossbar.plotting.utils as utils
 
 
-def word_line(context, colors, width=1, segment_length=150, first=False):
+def word_line(context, colors, width=1, segment_length=120, first=False):
     """Draws a word line of a crossbar array.
 
     Parameters
@@ -31,7 +31,7 @@ def word_line(context, colors, width=1, segment_length=150, first=False):
         utils.complete_path(context, rgb=color, width=width)
 
 
-def bit_line(context, colors, width=1, segment_length=150):
+def bit_line(context, colors, width=1, segment_length=120):
     """Draws a bit line of a crossbar array.
 
     Parameters
