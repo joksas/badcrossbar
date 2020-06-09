@@ -76,3 +76,32 @@ def rgb_interpolation(array, low=0, high=1,
     rgb = np.moveaxis(rgb, 0, -1)
     rgb = nlr.unstructured_to_structured(rgb)
     return rgb
+
+
+def arrays_range(*arrays):
+    """Finds the minimum and maximum value in arbitrary number of arrays.
+
+    Parameters
+    ----------
+    arrays : ndarray
+        Arrays.
+
+    Returns
+    -------
+    tuple of float
+        Minimum and maximum values in the provided arrays.
+    """
+    low = np.inf
+    high = -np.inf
+
+    for array in arrays:
+        if array is not None:
+            minimum = np.min(array)
+            if minimum < low:
+                low = minimum
+
+            maximum = np.max(array)
+            if maximum > high:
+                high = maximum
+
+    return low, high
