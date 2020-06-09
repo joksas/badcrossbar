@@ -45,6 +45,6 @@ def bit_line(context, colors, width=1, segment_length=120):
     segment_length : float
         The length of each segment.
     """
-    for idx, color in enumerate(colors):
+    for color in colors:
         shapes.line(context, segment_length, angle=np.pi/2)
         utils.complete_path(context, rgb=color, width=width)
