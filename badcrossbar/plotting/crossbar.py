@@ -1,6 +1,5 @@
 import numpy as np
 import badcrossbar.plotting.shapes as shapes
-import badcrossbar.plotting.devices as devices
 import badcrossbar.plotting.utils as utils
 
 
@@ -46,16 +45,6 @@ def bit_line(context, colors, width=1, segment_length=120):
     segment_length : float
         The length of each segment.
     """
-    for color in colors:
+    for idx, color in enumerate(colors):
         shapes.line(context, segment_length, angle=np.pi/2)
-        utils.complete_path(context, rgb=color, width=width)
-
-
-def device_row(context, colors, width=5, segment_length=120):
-    x, y = context.get_current_point()
-    device_length = segment_length/2*np.sqrt(2)  # Pythagorean theorem
-    for color in colors:
-        x += segment_length
-        context.move_to(x, y)
-        devices.memristor(context, length=device_length, angle=np.pi/4)
         utils.complete_path(context, rgb=color, width=width)
