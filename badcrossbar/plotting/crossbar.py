@@ -23,10 +23,10 @@ def word_line(context, colors, segment_length=120, first=False):
         if idx == 0 or first:
             shapes.line(context, segment_length)
         else:
-            unit = segment_length/4
-            shapes.line(context, 1.5*unit)
+            unit = segment_length/5
+            shapes.line(context, 2*unit)
             shapes.semicircle(context, unit)
-            shapes.line(context, 1.5*unit)
+            shapes.line(context, 2*unit)
 
         utils.complete_path(context, rgb=color, width=width)
 
