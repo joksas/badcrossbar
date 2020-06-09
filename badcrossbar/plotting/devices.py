@@ -2,7 +2,7 @@ import badcrossbar.plotting.shapes as shapes
 import numpy as np
 
 
-def memristor(context, length=120, angle=0):
+def memristor(context, length=140, angle=0):
     """Draws a memristor.
 
     Parameters
@@ -15,9 +15,9 @@ def memristor(context, length=120, angle=0):
         Angle in radians of the rotation of plane from the positive x axis
         towards positive y axis.
     """
-    unit = length/12
+    unit = length/14
     context.rotate(angle)
-    shapes.line(context, 3*unit)
+    shapes.line(context, 4*unit)
     shapes.line(context, 1.5*unit, -np.pi/2)
     shapes.line(context, 2*unit)
     shapes.line(context, 3*unit, np.pi/2)
@@ -25,5 +25,5 @@ def memristor(context, length=120, angle=0):
     shapes.line(context, 3*unit, -np.pi/2)
     shapes.line(context, 2*unit)
     shapes.line(context, 1.5*unit, np.pi/2)
-    shapes.line(context, 3*unit)
+    shapes.line(context, 4*unit)
     context.rotate(-angle)
