@@ -25,6 +25,25 @@ def complete_path(context, rgb=(0, 0, 0), width=1):
     context.move_to(x, y)
 
 
+def complete_fill(context, rgb=(0, 0, 0)):
+    """Completes the current fill.
+
+    Parameters
+    ----------
+    context : cairo.Context
+        Context.
+    rgb : tuple of int
+        Color of the fill in RGB (max value of 255 for each).
+    """
+    x, y = context.get_current_point()
+
+    rgb = tuple(i/255 for i in rgb)
+    context.set_source_rgb(*rgb)
+
+    context.fill()
+    context.move_to(x, y)
+
+
 def rgb_interpolation(array, low=0, high=1,
                       low_rgb=(240, 228, 66), high_rgb=(255, 0, 0)):
     """Linearly interpolates RGB colors for an array in a specified range.
