@@ -3,44 +3,44 @@ import numpy.lib.recfunctions as nlr
 from sigfig import round
 
 
-def complete_path(context, rgb=(0, 0, 0), width=1):
+def complete_path(ctx, rgb=(0, 0, 0), width=1):
     """Completes the current path.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     rgb : tuple of int
         Color of the path in RGB (normalized to 1).
     width : float
         Width of the path.
     """
-    x, y = context.get_current_point()
+    x, y = ctx.get_current_point()
 
-    context.set_line_width(width)
+    ctx.set_line_width(width)
 
-    context.set_source_rgb(*rgb)
+    ctx.set_source_rgb(*rgb)
 
-    context.stroke()
-    context.move_to(x, y)
+    ctx.stroke()
+    ctx.move_to(x, y)
 
 
-def complete_fill(context, rgb=(0, 0, 0)):
+def complete_fill(ctx, rgb=(0, 0, 0)):
     """Completes the current fill.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     rgb : tuple of int
         Color of the fill in RGB (normalized to 1).
     """
-    x, y = context.get_current_point()
+    x, y = ctx.get_current_point()
 
-    context.set_source_rgb(*rgb)
+    ctx.set_source_rgb(*rgb)
 
-    context.fill()
-    context.move_to(x, y)
+    ctx.fill()
+    ctx.move_to(x, y)
 
 
 def rgb_interpolation(array, low=0, high=1,

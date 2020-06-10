@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def line(context, length, angle=0):
+def line(ctx, length, angle=0):
     """Draws a line at a specified angle.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     length : float
         Length of the line.
@@ -14,17 +14,17 @@ def line(context, length, angle=0):
         Angle in radians of the rotation of plane from the positive x axis
         towards positive y axis.
     """
-    context.rotate(angle)
-    context.rel_line_to(length, 0)
-    context.rotate(-angle)
+    ctx.rotate(angle)
+    ctx.rel_line_to(length, 0)
+    ctx.rotate(-angle)
 
 
-def semicircle(context, diameter, angle=0):
+def semicircle(ctx, diameter, angle=0):
     """Draws a semicircle at a specified angle.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     diameter : float
         Diameter of the semicircle.
@@ -32,8 +32,8 @@ def semicircle(context, diameter, angle=0):
         Angle in radians of the rotation of plane from the positive x axis
         towards positive y axis.
     """
-    context.rotate(angle)
-    x, y = context.get_current_point()
+    ctx.rotate(angle)
+    x, y = ctx.get_current_point()
     radius = diameter/2
-    context.arc(x+radius, y, radius, np.pi, 2*np.pi)
-    context.rotate(-angle)
+    ctx.arc(x + radius, y, radius, np.pi, 2 * np.pi)
+    ctx.rotate(-angle)

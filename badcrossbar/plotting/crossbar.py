@@ -2,12 +2,12 @@ import numpy as np
 import badcrossbar.plotting as plotting
 
 
-def word_line(context, colors, segment_length=120, first=False):
+def word_line(ctx, colors, segment_length=120, first=False):
     """Draws a word line of a crossbar array.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     colors : list of tuple of int
         Colors of the word line segments in RGB (max value of 255).
@@ -19,22 +19,22 @@ def word_line(context, colors, segment_length=120, first=False):
     width = segment_length/120*3
     for idx, color in enumerate(colors):
         if idx == 0 or first:
-            plotting.shapes.line(context, segment_length)
+            plotting.shapes.line(ctx, segment_length)
         else:
             unit = segment_length/5
-            plotting.shapes.line(context, 2*unit)
-            plotting.shapes.semicircle(context, unit)
-            plotting.shapes.line(context, 2*unit)
+            plotting.shapes.line(ctx, 2 * unit)
+            plotting.shapes.semicircle(ctx, unit)
+            plotting.shapes.line(ctx, 2 * unit)
 
-        plotting.utils.complete_path(context, rgb=color, width=width)
+        plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def bit_line(context, colors, segment_length=120):
+def bit_line(ctx, colors, segment_length=120):
     """Draws a bit line of a crossbar array.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     colors : list of tuple of int
         Colors of the bit line segments in RGB (max value of 255).
@@ -43,16 +43,16 @@ def bit_line(context, colors, segment_length=120):
     """
     width = segment_length/120*3
     for color in colors:
-        plotting.shapes.line(context, segment_length, angle=np.pi/2)
-        plotting.utils.complete_path(context, rgb=color, width=width)
+        plotting.shapes.line(ctx, segment_length, angle=np.pi / 2)
+        plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def device_row(context, colors, segment_length=120):
+def device_row(ctx, colors, segment_length=120):
     """Draws a row of crossbar devices.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     colors : list of tuple of int
         Colors of the crossbar devices in RGB (max value of 255).
@@ -60,21 +60,21 @@ def device_row(context, colors, segment_length=120):
         The length of each segment.
     """
     width = segment_length/120*5
-    x, y = context.get_current_point()
+    x, y = ctx.get_current_point()
     device_length = segment_length/2*np.sqrt(2)  # Pythagorean theorem
     for color in colors:
         x += segment_length
-        context.move_to(x, y)
-        plotting.devices.memristor(context, length=device_length, angle=np.pi/4)
-        plotting.utils.complete_path(context, rgb=color, width=width)
+        ctx.move_to(x, y)
+        plotting.devices.memristor(ctx, length=device_length, angle=np.pi / 4)
+        plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def nodes(context, colors, segment_length=120, bit_line_nodes=True):
+def nodes(ctx, colors, segment_length=120, bit_line_nodes=True):
     """Draws a row of nodes.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     colors : list of tuple of int
         Colors of the nodes in RGB (max value of 255).
@@ -84,26 +84,26 @@ def nodes(context, colors, segment_length=120, bit_line_nodes=True):
         If True, draws nodes on the bit lines.
     """
     diameter = segment_length/120*7
-    x, y = context.get_current_point()
+    x, y = ctx.get_current_point()
     if bit_line_nodes:
         x += segment_length/2
         y += segment_length/2
     radius = diameter/2
     for color in colors:
         x += segment_length
-        context.move_to(x, y)
-        context.arc(x, y, radius, 0, 2*np.pi)
-        context.move_to(x, y)
-        plotting.utils.complete_fill(context, color)
+        ctx.move_to(x, y)
+        ctx.arc(x, y, radius, 0, 2 * np.pi)
+        ctx.move_to(x, y)
+        plotting.utils.complete_fill(ctx, color)
 
 
-def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
+def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
               segment_length=120, crossbar_shape=(128, 64)):
     """Draws bit lines.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     bit_line_currents : ndarray
         Currents flowing through bit line segments.
@@ -121,33 +121,33 @@ def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
         Shape of the crossbar array. Used when bit_line_currents is None.
     """
     x, y = x_start + 1.5*segment_length, y_start + 0.5*segment_length
-    context.move_to(x, y)
+    ctx.move_to(x, y)
 
     if bit_line_currents is not None:
         for single_bit_line in np.transpose(bit_line_currents):
             colors = plotting.utils.rgb_interpolation(
                 single_bit_line, low=low, high=high)
-            bit_line(context, colors, segment_length=segment_length)
+            bit_line(ctx, colors, segment_length=segment_length)
             x += segment_length
-            context.move_to(x, y)
+            ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
             crossbar_shape, color=(0, 0, 0))
         for colors in np.transpose(colors_list):
-            bit_line(context, colors, segment_length=segment_length)
+            bit_line(ctx, colors, segment_length=segment_length)
             x += segment_length
-            context.move_to(x, y)
+            ctx.move_to(x, y)
 
-    context.move_to(x_start, y_start)
+    ctx.move_to(x_start, y_start)
 
 
-def word_lines(context, word_line_currents, x_start, y_start, low, high,
+def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
                segment_length=120, crossbar_shape=(128, 64)):
     """Draws word lines.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     word_line_currents : ndarray
         Currents flowing through word line segments.
@@ -165,7 +165,7 @@ def word_lines(context, word_line_currents, x_start, y_start, low, high,
         Shape of the crossbar array. Used when word_line_currents is None.
     """
     x, y = x_start, y_start
-    context.move_to(x, y)
+    ctx.move_to(x, y)
 
     if word_line_currents is not None:
         for idx, single_word_line in enumerate(word_line_currents):
@@ -175,32 +175,33 @@ def word_lines(context, word_line_currents, x_start, y_start, low, high,
                 first = True
             else:
                 first = False
-            word_line(context, colors, first=first,
+            word_line(ctx, colors, first=first,
                       segment_length=segment_length)
             y += segment_length
-            context.move_to(x, y)
+            ctx.move_to(x, y)
     else:
-        colors_list = plotting.utils.rgb_single_color(crossbar_shape, color=(0, 0, 0))
+        colors_list = plotting.utils.rgb_single_color(
+            crossbar_shape, color=(0, 0, 0))
         for idx, colors in enumerate(colors_list):
             if idx == 0:
                 first = True
             else:
                 first = False
-            word_line(context, colors, first=first,
+            word_line(ctx, colors, first=first,
                       segment_length=segment_length)
             y += segment_length
-            context.move_to(x, y)
+            ctx.move_to(x, y)
 
-    context.move_to(x_start, y_start)
+    ctx.move_to(x_start, y_start)
 
 
-def devices(context, device_currents, x_start, y_start, low, high,
-             segment_length=120, node_color=(0, 0, 0), crossbar_shape=(128, 64)):
+def devices(ctx, device_currents, x_start, y_start, low, high,
+            segment_length=120, node_color=(0, 0, 0), crossbar_shape=(128, 64)):
     """Draws crossbar devices and the nodes.
 
     Parameters
     ----------
-    context : cairo.Context
+    ctx : cairo.Context
         Context.
     device_currents : ndarray
         Currents flowing through crossbar devices.
@@ -220,66 +221,66 @@ def devices(context, device_currents, x_start, y_start, low, high,
         Shape of the crossbar array. Used when device_currents is None.
     """
     x, y = x_start, y_start
-    context.move_to(x, y)
+    ctx.move_to(x, y)
 
     if device_currents is not None:
         for single_device_row in device_currents:
             colors = plotting.utils.rgb_interpolation(
                 single_device_row, low=low, high=high)
-            device_row(context, colors, segment_length=segment_length)
+            device_row(ctx, colors, segment_length=segment_length)
             y += segment_length
-            context.move_to(x, y)
+            ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
             crossbar_shape, color=node_color)
         for colors in colors_list:
             plotting.crossbar.device_row(
-                context, colors, segment_length=segment_length)
+                ctx, colors, segment_length=segment_length)
             y += segment_length
-            context.move_to(x, y)
+            ctx.move_to(x, y)
 
     x, y = x_start, y_start
-    context.move_to(x, y)
+    ctx.move_to(x, y)
     colors_list = plotting.utils.rgb_single_color(
         crossbar_shape, color=node_color)
     for colors in colors_list:
         for i in [True, False]:
-            context.move_to(x, y)
-            plotting.crossbar.nodes(context, colors, bit_line_nodes=i,
+            ctx.move_to(x, y)
+            plotting.crossbar.nodes(ctx, colors, bit_line_nodes=i,
                                     segment_length=segment_length)
         y += segment_length
-        context.move_to(x, y)
+        ctx.move_to(x, y)
 
-    context.move_to(x_start, y_start)
+    ctx.move_to(x_start, y_start)
 
 
-def dimensions(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
-               border=0.05):
+def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
+               border_fraction=0.05):
     adjusted_shape = (shape[0]+0.5, shape[1]+0.5)
-    active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border
+    active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border_fraction
     if adjusted_shape[1]/adjusted_shape[0] > active_horizontal_fraction:
         width_fraction = active_horizontal_fraction
         segment_fraction = width_fraction/adjusted_shape[1]
         height_fraction = segment_fraction*adjusted_shape[0]
-        width = max_dimension
-        height = (height_fraction + 2*border)*max_dimension
+        width = max_dim
+        height = (height_fraction + 2 * border_fraction) * max_dim
     else:
-        height_fraction = 1 - 2*border
+        height_fraction = 1 - 2 * border_fraction
         segment_fraction = height_fraction/adjusted_shape[0]
         width_fraction = segment_fraction*adjusted_shape[1]
-        height = max_dimension
+        height = max_dim
         width = (width_fraction +
-                 color_bar_fraction[1] + 2*border) * max_dimension
+                 color_bar_fraction[1] + 2 * border_fraction) * max_dim
 
-    if height/width < (color_bar_fraction[0] + 2*border):
-        height = max_dimension * (color_bar_fraction[0] + 2*border)
+    if height/width < (color_bar_fraction[0] + 2 * border_fraction):
+        height = max_dim * (color_bar_fraction[0] + 2 * border_fraction)
 
-    segment_length = segment_fraction*max_dimension
+    segment_length = segment_fraction * max_dim
 
-    x_start = border*max_dimension
+    x_start = border_fraction * max_dim
     y_start = height/2 - adjusted_shape[0]*segment_length/2
     pos_start = (x_start, y_start)
-    dimensions = (width, height)
+    surface_dims = (width, height)
     color_bar_dims = plotting.color_bar.dimensions(
-        dimensions, color_bar_fraction, border)
-    return dimensions, pos_start, segment_length, color_bar_dims
+        surface_dims, color_bar_fraction, border_fraction)
+    return surface_dims, pos_start, segment_length, color_bar_dims
