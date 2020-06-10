@@ -89,6 +89,28 @@ def rgb_interpolation(array, low=0, high=1,
     return rgb
 
 
+def rgb_single_color(shape, color=(0, 0, 0)):
+    """Return array with RGB values of a single color.
+
+    Parameters
+    ----------
+    shape : tuple of int
+        Shape of the array.
+    color : tuple of int
+        RGB (normalized to 1) of the color.
+
+    Returns
+    -------
+    ndarray of tuple of int
+        Array with RGB values.
+    """
+    rgb = np.ones((*shape, len(color))) * color
+    rgb = nlr.unstructured_to_structured(rgb)
+    if len(rgb.shape) == 0:
+        rgb = rgb.reshape(1)
+    return rgb
+
+
 def arrays_range(*arrays):
     """Finds the minimum and maximum value in arbitrary number of arrays.
 
