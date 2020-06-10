@@ -28,7 +28,7 @@ def get(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
     y_start = height/2 - adjusted_shape[0]*segment_length/2
     pos_start = (x_start, y_start)
     dimensions = (width, height)
-    color_bar_dims = plotting.color_bar.color_bar(
+    color_bar_dims = plotting.color_bar.dimensions(
         dimensions, color_bar_fraction, border)
     return dimensions, pos_start, segment_length, color_bar_dims
 

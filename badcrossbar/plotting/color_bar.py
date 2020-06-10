@@ -90,7 +90,7 @@ def draw(context, color_bar_dims, low, high):
     context.rotate(angle)
 
 
-def color_bar(dimensions, color_bar_fraction, border):
+def dimensions(dimensions, color_bar_fraction, border):
     height = np.max(dimensions) * color_bar_fraction[0]
     width = np.max(dimensions) * color_bar_fraction[1]/4
     x_start = dimensions[0]*(1-border) - 3*width
