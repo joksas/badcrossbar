@@ -2,31 +2,32 @@ import cairo
 import numpy as np
 import badcrossbar.plotting.utils as utils
 import badcrossbar.plotting.crossbar as crossbar
+import badcrossbar.plotting.dimensions as mydimensions
 
 
 def currents(device_currents, word_line_currents, bit_line_currents):
-    WIDTH, HEIGHT = 1000, 1000
-    surface = cairo.PDFSurface('crossbar_currents.pdf', WIDTH, HEIGHT)
+    dimensions, pos_start, segment_length, color_bar_dims = mydimensions.get(
+        device_currents.shape, max_dimension=1000)
+    surface = cairo.PDFSurface('crossbar_currents.pdf', *dimensions)
     ctx = cairo.Context(surface)
 
-    x_start, y_start = 50, 50
-    segment_length = 120
     low, high = utils.arrays_range(
         device_currents, word_line_currents, bit_line_currents)
 
-    bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
-              segment_length=segment_length, width=3)
+    bit_lines(ctx, bit_line_currents, *pos_start, low, high,
+              segment_length=segment_length)
 
-    word_lines(ctx, word_line_currents, x_start, y_start, low, high,
-               segment_length=segment_length, width=3)
+    word_lines(ctx, word_line_currents, *pos_start, low, high,
+               segment_length=segment_length)
 
-    devices(ctx, device_currents, x_start, y_start, low, high,
-            segment_length=segment_length, width=3, node_color=(0, 0, 0),
-            node_diameter=7)
+    devices(ctx, device_currents, *pos_start, low, high,
+            segment_length=segment_length, node_color=(0, 0, 0))
+
+    color_bar(ctx, color_bar_dims, low, high)
 
 
 def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
-              segment_length=120, width=3):
+              segment_length=120):
     """Draws bit lines.
 
     Parameters
@@ -53,7 +54,8 @@ def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
 
     for bit_line in np.transpose(bit_line_currents):
         colors = utils.rgb_interpolation(bit_line, low=low, high=high)
-        crossbar.bit_line(context, colors, width=width)
+        crossbar.bit_line(context, colors,
+                          segment_length=segment_length)
         x += segment_length
         context.move_to(x, y)
 
@@ -61,7 +63,7 @@ def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
 
 
 def word_lines(context, word_line_currents, x_start, y_start, low, high,
-               segment_length=120, width=3):
+               segment_length=120):
     """Draws word lines.
 
     Parameters
@@ -89,9 +91,11 @@ def word_lines(context, word_line_currents, x_start, y_start, low, high,
     for idx, word_line in enumerate(word_line_currents):
         colors = utils.rgb_interpolation(word_line, low=low, high=high)
         if idx == 0:
-            crossbar.word_line(context, colors, width=width, first=True)
+            first = True
         else:
-            crossbar.word_line(context, colors, width=width)
+            first = False
+        crossbar.word_line(context, colors, first=first,
+                           segment_length=segment_length)
         y += segment_length
         context.move_to(x, y)
 
@@ -99,8 +103,7 @@ def word_lines(context, word_line_currents, x_start, y_start, low, high,
 
 
 def devices(context, device_currents, x_start, y_start, low, high,
-            segment_length=120, width=3, node_color=(0, 0, 0),
-            node_diameter=7):
+            segment_length=120, node_color=(0, 0, 0)):
     """Draws crossbar devices and the nodes.
 
     Parameters
@@ -130,7 +133,7 @@ def devices(context, device_currents, x_start, y_start, low, high,
     context.move_to(x, y)
     for device_row in device_currents:
         colors = utils.rgb_interpolation(device_row, low=low, high=high)
-        crossbar.device_row(context, colors, width=width)
+        crossbar.device_row(context, colors, segment_length=segment_length)
 
         colors = utils.rgb_interpolation(np.zeros(device_row.shape),
                                          low_rgb=node_color,
