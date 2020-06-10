@@ -77,8 +77,11 @@ def rgb_interpolation(array, low=0, high=1,
         else:
             if high > 0:
                 x = high_x * np.ones(array.shape)
-            else:
+            elif high < 0:
                 x = low_x * np.ones(array.shape)
+            else:
+                x = zero_x * np.ones(array.shape)
+
         rgb.append(x)
 
     rgb = np.array(rgb)
