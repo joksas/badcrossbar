@@ -4,7 +4,7 @@ import numpy as np
 from badcrossbar import plotting as plotting
 
 
-def color_bar(context, color_bar_dims, low, high):
+def draw(context, color_bar_dims, low, high):
     context.rectangle(*color_bar_dims)
     pattern = cairo.LinearGradient(color_bar_dims[0], color_bar_dims[1],
                                    color_bar_dims[0] + color_bar_dims[2],

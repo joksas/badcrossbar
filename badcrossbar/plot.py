@@ -29,4 +29,4 @@ def currents(device_currents, word_line_currents, bit_line_currents):
         segment_length=segment_length, node_color=(0, 0, 0),
         crossbar_shape=crossbar_shape)
 
-    plotting.color_bar(ctx, color_bar_dims, low, high)
+    plotting.color_bar.draw(ctx, color_bar_dims, low, high)
