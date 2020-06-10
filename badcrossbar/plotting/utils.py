@@ -164,3 +164,25 @@ def arrays_shape(*arrays):
         if array is not None:
             shape = array.shape
             return shape
+
+
+def average_if_list(*arrays):
+    """If an argument is a list, the function returns element-wise average of
+    arrays in the list.
+
+    Parameters
+    ----------
+    arrays : ndarray or list of ndarray
+        Arrays or lists of arrays.
+
+    Returns
+    -------
+    Potentially averaged arrays.
+    """
+    new_arrays = []
+    for array in arrays:
+        if isinstance(array, list):
+            array = np.mean(array, axis=0)
+        new_arrays.append(array)
+
+    return new_arrays
