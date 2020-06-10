@@ -6,8 +6,11 @@ import badcrossbar.plotting.dimensions as mydimensions
 
 
 def currents(device_currents, word_line_currents, bit_line_currents):
+    crossbar_shape = utils.arrays_shape(
+        device_currents, word_line_currents, bit_line_currents)
+
     dimensions, pos_start, segment_length, color_bar_dims = mydimensions.get(
-        device_currents.shape, max_dimension=1000)
+        crossbar_shape, max_dimension=1000)
     surface = cairo.PDFSurface('crossbar_currents.pdf', *dimensions)
     ctx = cairo.Context(surface)
 
@@ -15,19 +18,19 @@ def currents(device_currents, word_line_currents, bit_line_currents):
         device_currents, word_line_currents, bit_line_currents)
 
     bit_lines(ctx, bit_line_currents, *pos_start, low, high,
-              segment_length=segment_length)
+              segment_length=segment_length, crossbar_shape=crossbar_shape)
 
     word_lines(ctx, word_line_currents, *pos_start, low, high,
-               segment_length=segment_length)
+               segment_length=segment_length, crossbar_shape=crossbar_shape)
 
     devices(ctx, device_currents, *pos_start, low, high,
-            segment_length=segment_length, node_color=(0, 0, 0))
-
+            segment_length=segment_length, node_color=(0, 0, 0),
+            crossbar_shape=crossbar_shape)
     color_bar(ctx, color_bar_dims, low, high)
 
 
 def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
-              segment_length=120):
+              segment_length=120, crossbar_shape=(128, 64)):
     """Draws bit lines.
 
     Parameters
@@ -46,24 +49,30 @@ def bit_lines(context, bit_line_currents, x_start, y_start, low, high,
         Upper limit of the linear range.
     segment_length : float
         The length of each segment.
-    width : float
-        Width of the path.
+    crossbar_shape : tuple of int
+        Shape of the crossbar array. Used when bit_line_currents is None.
     """
     x, y = x_start + 1.5*segment_length, y_start + 0.5*segment_length
     context.move_to(x, y)
 
-    for bit_line in np.transpose(bit_line_currents):
-        colors = utils.rgb_interpolation(bit_line, low=low, high=high)
-        crossbar.bit_line(context, colors,
-                          segment_length=segment_length)
-        x += segment_length
-        context.move_to(x, y)
+    if bit_line_currents is not None:
+        for bit_line in np.transpose(bit_line_currents):
+            colors = utils.rgb_interpolation(bit_line, low=low, high=high)
+            crossbar.bit_line(context, colors, segment_length=segment_length)
+            x += segment_length
+            context.move_to(x, y)
+    else:
+        colors_list = utils.rgb_single_color(crossbar_shape, color=(0, 0, 0))
+        for colors in np.transpose(colors_list):
+            crossbar.bit_line(context, colors, segment_length=segment_length)
+            x += segment_length
+            context.move_to(x, y)
 
     context.move_to(x_start, y_start)
 
 
 def word_lines(context, word_line_currents, x_start, y_start, low, high,
-               segment_length=120):
+               segment_length=120, crossbar_shape=(128, 64)):
     """Draws word lines.
 
     Parameters
@@ -82,28 +91,40 @@ def word_lines(context, word_line_currents, x_start, y_start, low, high,
         Upper limit of the linear range.
     segment_length : float
         The length of each segment.
-    width : float
-        Width of the path.
+    crossbar_shape : tuple of int
+        Shape of the crossbar array. Used when word_line_currents is None.
     """
     x, y = x_start, y_start
     context.move_to(x, y)
 
-    for idx, word_line in enumerate(word_line_currents):
-        colors = utils.rgb_interpolation(word_line, low=low, high=high)
-        if idx == 0:
-            first = True
-        else:
-            first = False
-        crossbar.word_line(context, colors, first=first,
-                           segment_length=segment_length)
-        y += segment_length
-        context.move_to(x, y)
+    if word_line_currents is not None:
+        for idx, word_line in enumerate(word_line_currents):
+            colors = utils.rgb_interpolation(word_line, low=low, high=high)
+            if idx == 0:
+                first = True
+            else:
+                first = False
+            crossbar.word_line(context, colors, first=first,
+                               segment_length=segment_length)
+            y += segment_length
+            context.move_to(x, y)
+    else:
+        colors_list = utils.rgb_single_color(crossbar_shape, color=(0, 0, 0))
+        for idx, colors in enumerate(colors_list):
+            if idx == 0:
+                first = True
+            else:
+                first = False
+            crossbar.word_line(context, colors, first=first,
+                               segment_length=segment_length)
+            y += segment_length
+            context.move_to(x, y)
 
     context.move_to(x_start, y_start)
 
 
 def devices(context, device_currents, x_start, y_start, low, high,
-            segment_length=120, node_color=(0, 0, 0)):
+            segment_length=120, node_color=(0, 0, 0), crossbar_shape=(128, 64)):
     """Draws crossbar devices and the nodes.
 
     Parameters
@@ -122,23 +143,31 @@ def devices(context, device_currents, x_start, y_start, low, high,
         Upper limit of the linear range.
     segment_length : float
         The length of each segment.
-    width : float
-        Width of the path.
     node_color : tuple of int
         Color of the node in RGB.
-    node_diameter : float
-        Diameter of the node.
+    crossbar_shape : tuple of int
+        Shape of the crossbar array. Used when device_currents is None.
     """
     x, y = x_start, y_start
     context.move_to(x, y)
-    for device_row in device_currents:
-        colors = utils.rgb_interpolation(device_row, low=low, high=high)
-        crossbar.device_row(context, colors, segment_length=segment_length)
 
-        colors = utils.rgb_interpolation(np.zeros(device_row.shape),
-                                         low_rgb=node_color,
-                                         zero_rgb=node_color,
-                                         high_rgb=node_color, low=1)
+    if device_currents is not None:
+        for device_row in device_currents:
+            colors = utils.rgb_interpolation(device_row, low=low, high=high)
+            crossbar.device_row(context, colors, segment_length=segment_length)
+            y += segment_length
+            context.move_to(x, y)
+    else:
+        colors_list = utils.rgb_single_color(crossbar_shape, color=node_color)
+        for colors in colors_list:
+            crossbar.device_row(context, colors, segment_length=segment_length)
+            y += segment_length
+            context.move_to(x, y)
+
+    x, y = x_start, y_start
+    context.move_to(x, y)
+    colors_list = utils.rgb_single_color(crossbar_shape, color=node_color)
+    for colors in colors_list:
         for i in [True, False]:
             context.move_to(x, y)
             crossbar.nodes(context, colors, bit_line_nodes=i,
