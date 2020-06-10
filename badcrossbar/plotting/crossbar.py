@@ -253,8 +253,8 @@ def devices(context, device_currents, x_start, y_start, low, high,
     context.move_to(x_start, y_start)
 
 
-def get(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
-        border=0.05):
+def dimensions(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
+               border=0.05):
     adjusted_shape = (shape[0]+0.5, shape[1]+0.5)
     active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border
     if adjusted_shape[1]/adjusted_shape[0] > active_horizontal_fraction:
