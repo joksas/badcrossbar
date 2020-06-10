@@ -96,3 +96,58 @@ def dimensions(surface_dims, color_bar_fraction, border_fraction):
     y_start = surface_dims[1] * 0.5 - height / 2
     color_bar_dims = (x_start, y_start, width, height)
     return color_bar_dims
+
+
+def rgb(low, high):
+    """Extracts RGB values for the color map gradient.
+
+    Parameters
+    ----------
+    low : float
+        Lower limit of the linear range.
+    high : float
+        Upper limit of the linear range.
+
+    Returns
+    -------
+    tuple of int
+        RGB values for the bottom, middle and top parts of the color map
+        gradient. If only two colors are used, middle_rgb is returned as None.
+    """
+    if low < 0 < high:
+        top_rgb = plotting.utils.rgb_interpolation(
+            np.array([high]), low=low, high=high)[0]
+        middle_rgb = plotting.utils.rgb_interpolation(
+            np.array([0]), low=low, high=high)[0]
+        bottom_rgb = plotting.utils.rgb_interpolation(
+            np.array([low]), low=low, high=high)[0]
+    else:
+        middle_rgb = None
+
+    if high > low >= 0:
+        top_rgb = plotting.utils.rgb_interpolation(
+            np.array([high]), low=low, high=high)[0]
+        bottom_rgb = plotting.utils.rgb_interpolation(
+            np.array([0]), low=low, high=high)[0]
+    if low < high <= 0:
+        top_rgb = plotting.utils.rgb_interpolation(
+            np.array([0]), low=low, high=high)[0]
+        bottom_rgb = plotting.utils.rgb_interpolation(
+            np.array([low]), low=low, high=high)[0]
+    if low == high > 0:
+        top_rgb = plotting.utils.rgb_interpolation(
+            np.array([high]), low=low, high=high)[0]
+        bottom_rgb = plotting.utils.rgb_interpolation(
+            np.array([high]), low=low, high=high)[0]
+    if low == high < 0:
+        top_rgb = plotting.utils.rgb_interpolation(
+            np.array([low]), low=low, high=high)[0]
+        bottom_rgb = plotting.utils.rgb_interpolation(
+            np.array([low]), low=low, high=high)[0]
+    if low == high == 0:
+        top_rgb = plotting.utils.rgb_interpolation(
+            np.array([0]), low=low, high=high)[0]
+        bottom_rgb = plotting.utils.rgb_interpolation(
+            np.array([0]), low=low, high=high)[0]
+
+    return bottom_rgb, middle_rgb, top_rgb
