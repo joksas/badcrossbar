@@ -1,4 +1,4 @@
-import numpy as np
+import badcrossbar.plotting as plotting
 
 
 def get(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
@@ -28,14 +28,8 @@ def get(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
     y_start = height/2 - adjusted_shape[0]*segment_length/2
     pos_start = (x_start, y_start)
     dimensions = (width, height)
-    color_bar_dims = color_bar(dimensions, color_bar_fraction, border)
+    color_bar_dims = plotting.color_bar.color_bar(
+        dimensions, color_bar_fraction, border)
     return dimensions, pos_start, segment_length, color_bar_dims
 
 
-def color_bar(dimensions, color_bar_fraction, border):
-    height = np.max(dimensions) * color_bar_fraction[0]
-    width = np.max(dimensions) * color_bar_fraction[1]/4
-    x_start = dimensions[0]*(1-border) - 3*width
-    y_start = dimensions[1]*0.5 - height/2
-    color_bar_dims = (x_start, y_start, width, height)
-    return color_bar_dims

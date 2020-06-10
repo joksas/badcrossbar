@@ -88,3 +88,12 @@ def draw(context, color_bar_dims, low, high):
     context.rotate(-angle)
     context.show_text('Current (A)')
     context.rotate(angle)
+
+
+def color_bar(dimensions, color_bar_fraction, border):
+    height = np.max(dimensions) * color_bar_fraction[0]
+    width = np.max(dimensions) * color_bar_fraction[1]/4
+    x_start = dimensions[0]*(1-border) - 3*width
+    y_start = dimensions[1]*0.5 - height/2
+    color_bar_dims = (x_start, y_start, width, height)
+    return color_bar_dims
