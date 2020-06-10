@@ -144,3 +144,54 @@ def devices(context, device_currents, x_start, y_start, low, high,
         context.move_to(x, y)
 
     context.move_to(x_start, y_start)
+
+
+def color_bar(context, color_bar_dims, low, high):
+    context.rectangle(*color_bar_dims)
+    pattern = cairo.LinearGradient(color_bar_dims[0], color_bar_dims[1],
+                                   color_bar_dims[0] + color_bar_dims[2],
+                                   color_bar_dims[1] + color_bar_dims[3])
+
+    top_rgb = utils.rgb_interpolation(np.array([high]), low=low, high=high)
+    middle_rgb = utils.rgb_interpolation(np.array([0]), low=low, high=high)
+    bottom_rgb = utils.rgb_interpolation(np.array([low]), low=low, high=high)
+    top_rgb = [i/255 for i in top_rgb[0]]
+    middle_rgb = [i/255 for i in middle_rgb[0]]
+    bottom_rgb = [i/255 for i in bottom_rgb[0]]
+
+    pattern.add_color_stop_rgb(0, *top_rgb)
+    if low < 0:
+        pattern.add_color_stop_rgb(0.5, *middle_rgb)
+        pattern.add_color_stop_rgb(1, *bottom_rgb)
+    else:
+        pattern.add_color_stop_rgb(1, *middle_rgb)
+
+    context.set_source(pattern)
+    context.fill()
+
+    context.set_source_rgb(0, 0, 0)
+    font_size = color_bar_dims[2]/3
+
+    x = color_bar_dims[0] + color_bar_dims[2]*1.2
+    y = color_bar_dims[1] + 0.5*font_size
+    context.move_to(x, y)
+    context.set_font_size(font_size)
+    context.show_text(str(high))
+
+    if low < 0:
+        x = color_bar_dims[0] + color_bar_dims[2]*1.2
+        y = color_bar_dims[1] + 0.5*color_bar_dims[3] + 0.5*font_size
+        context.move_to(x, y)
+        context.show_text(str(0))
+
+        x = color_bar_dims[0] + color_bar_dims[2]*1.2
+        y = color_bar_dims[1] + color_bar_dims[3] + 0.5*font_size
+        context.move_to(x, y)
+        context.show_text(str(low))
+    else:
+        x = color_bar_dims[0] + color_bar_dims[2]*1.2
+        y = color_bar_dims[1] + color_bar_dims[3] + 0.5*font_size
+        context.move_to(x, y)
+        context.show_text(str(0))
+
+
