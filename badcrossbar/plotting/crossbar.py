@@ -98,7 +98,8 @@ def nodes(ctx, colors, segment_length=120, bit_line_nodes=True):
 
 
 def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
-              segment_length=120, crossbar_shape=(128, 64)):
+              segment_length=120, crossbar_shape=(128, 64),
+              default_color=(0, 0, 0)):
     """Draws bit lines.
 
     Parameters
@@ -119,6 +120,8 @@ def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
         The length of each segment.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when bit_line_currents is None.
+    default_color : tuple of float
+        The colour (in RGB) of bit lines if their currents are not provided.
     """
     x, y = x_start + 1.5*segment_length, y_start + 0.5*segment_length
     ctx.move_to(x, y)
@@ -132,7 +135,7 @@ def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=(0, 0, 0))
+            crossbar_shape, color=default_color)
         for colors in np.transpose(colors_list):
             bit_line(ctx, colors, segment_length=segment_length)
             x += segment_length
@@ -142,7 +145,8 @@ def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
 
 
 def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
-               segment_length=120, crossbar_shape=(128, 64)):
+               segment_length=120, crossbar_shape=(128, 64),
+               default_color=(0, 0, 0)):
     """Draws word lines.
 
     Parameters
@@ -163,6 +167,8 @@ def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
         The length of each segment.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when word_line_currents is None.
+    default_color : tuple of float
+        The colour (in RGB) of word lines if their currents are not provided.
     """
     x, y = x_start, y_start
     ctx.move_to(x, y)
@@ -181,7 +187,7 @@ def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=(0, 0, 0))
+            crossbar_shape, color=default_color)
         for idx, colors in enumerate(colors_list):
             if idx == 0:
                 first = True
@@ -196,7 +202,8 @@ def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
 
 
 def devices(ctx, device_currents, x_start, y_start, low, high,
-            segment_length=120, node_color=(0, 0, 0), crossbar_shape=(128, 64)):
+            segment_length=120, default_color=(0, 0, 0),
+            crossbar_shape=(128, 64)):
     """Draws crossbar devices and the nodes.
 
     Parameters
@@ -215,8 +222,9 @@ def devices(ctx, device_currents, x_start, y_start, low, high,
         Upper limit of the linear range.
     segment_length : float
         The length of each segment.
-    node_color : tuple of int
-        Color of the node in RGB.
+    default_color : tuple of float
+        The colour (in RGB) of crossbar devices (if their currents are not
+        provided), as well as of nodes.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when device_currents is None.
     """
@@ -232,22 +240,20 @@ def devices(ctx, device_currents, x_start, y_start, low, high,
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=node_color)
+            crossbar_shape, color=default_color)
         for colors in colors_list:
-            plotting.crossbar.device_row(
-                ctx, colors, segment_length=segment_length)
+            device_row(ctx, colors, segment_length=segment_length)
             y += segment_length
             ctx.move_to(x, y)
 
     x, y = x_start, y_start
     ctx.move_to(x, y)
     colors_list = plotting.utils.rgb_single_color(
-        crossbar_shape, color=node_color)
+        crossbar_shape, color=default_color)
     for colors in colors_list:
         for i in [True, False]:
             ctx.move_to(x, y)
-            plotting.crossbar.nodes(ctx, colors, bit_line_nodes=i,
-                                    segment_length=segment_length)
+            nodes(ctx, colors, bit_line_nodes=i, segment_length=segment_length)
         y += segment_length
         ctx.move_to(x, y)
 
