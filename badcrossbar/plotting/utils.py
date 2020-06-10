@@ -75,8 +75,10 @@ def rgb_interpolation(array, low=0, high=1,
                          zero_x + (array - 0) * (high_x-zero_x)/(high-0),
                          low_x + (array - low) * (zero_x-low_x)/(0-low))
         else:
-            # TODO: differentiate between positive and negative current
-            x = low_x*np.ones(array.shape)
+            if high > 0:
+                x = high_x * np.ones(array.shape)
+            else:
+                x = low_x * np.ones(array.shape)
         rgb.append(x)
 
     rgb = np.array(rgb)
