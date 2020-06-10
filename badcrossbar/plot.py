@@ -1,5 +1,6 @@
 import cairo
 import badcrossbar.plotting as plotting
+import badcrossbar.plotting.crossbar
 
 
 def currents(device_currents, word_line_currents, bit_line_currents):
@@ -10,7 +11,7 @@ def currents(device_currents, word_line_currents, bit_line_currents):
         device_currents, word_line_currents, bit_line_currents)
 
     dimensions, pos_start, segment_length, color_bar_dims = \
-        plotting.dimensions.get(crossbar_shape, max_dimension=1000)
+        badcrossbar.plotting.crossbar.get(crossbar_shape, max_dimension=1000)
     surface = cairo.PDFSurface('crossbar_currents.pdf', *dimensions)
     ctx = cairo.Context(surface)
 
