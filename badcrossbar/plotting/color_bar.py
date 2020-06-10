@@ -170,9 +170,8 @@ def rectangle(ctx, color_bar_dims, low, high):
 
     Returns
     -------
-    tuple of int
-        RGB values for the bottom, middle and top parts of the color map
-        gradient. If only two colors are used, middle_rgb is returned as None.
+    bool
+        If False, only two colors were used for the gradient.
     """
     ctx.rectangle(*color_bar_dims)
     x_start = color_bar_dims[0] + color_bar_dims[2]
@@ -182,14 +181,15 @@ def rectangle(ctx, color_bar_dims, low, high):
     pattern = cairo.LinearGradient(x_start, y_start, x_end, y_end)
 
     bottom_rgb, middle_rgb, top_rgb = rgb(low, high)
-    if bottom_rgb is not None:
-        pattern.add_color_stop_rgb(0, *bottom_rgb)
+    pattern.add_color_stop_rgb(0, *bottom_rgb)
+    pattern.add_color_stop_rgb(1, *top_rgb)
     if middle_rgb is not None:
         pattern.add_color_stop_rgb(0.5, *middle_rgb)
-    if top_rgb is not None:
-        pattern.add_color_stop_rgb(1, *top_rgb)
+        middle = True
+    else:
+        middle = False
 
     ctx.set_source(pattern)
     ctx.fill()
 
-    return bottom_rgb, middle_rgb, top_rgb
+    return middle
