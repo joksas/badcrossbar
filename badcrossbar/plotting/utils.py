@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.lib.recfunctions as nlr
+from sigfig import round
 
 
 def complete_path(context, rgb=(0, 0, 0), width=1):
@@ -116,6 +117,9 @@ def arrays_range(*arrays):
             maximum = np.max(array)
             if maximum > high:
                 high = maximum
+
+    low = round(float(low), sigfigs=2)
+    high = round(float(high), sigfigs=2)
 
     if np.sign(low) != np.sign(high):
         maximum_absolute = np.max([np.abs(low), np.abs(high)])
