@@ -123,3 +123,22 @@ def arrays_range(*arrays):
         low = -maximum_absolute
         high = maximum_absolute
     return low, high
+
+
+def arrays_shape(*arrays):
+    """Returns the shape of the first array that is not None.
+
+    Parameters
+    ----------
+    arrays : ndarray
+        Arrays.
+
+    Returns
+    -------
+    tuple of int
+        Shape.
+    """
+    for array in arrays:
+        if array is not None:
+            shape = array.shape
+            return shape
