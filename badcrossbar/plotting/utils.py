@@ -140,8 +140,14 @@ def arrays_range(*arrays):
             if maximum > high:
                 high = maximum
 
-    low = round(float(low), sigfigs=2)
-    high = round(float(high), sigfigs=2)
+    if low == 0:
+        low = 0
+    if high == 0:
+        high = 0
+
+    if not (low == 0 and high == 0):
+        low = round(float(low), sigfigs=2)
+        high = round(float(high), sigfigs=2)
 
     if np.sign(low) != np.sign(high):
         maximum_absolute = np.max([np.abs(low), np.abs(high)])
