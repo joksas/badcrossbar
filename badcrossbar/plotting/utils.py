@@ -69,18 +69,15 @@ def rgb_interpolation(array, low=0, high=1,
         RGB values associated with each of the entries in the array.
     """
     rgb = []
+    if low == 0:
+        low = -1
+    if high == 0:
+        high = 1
+
     for low_x, zero_x, high_x in zip(low_rgb, zero_rgb, high_rgb):
-        if low != high:
-            x = np.where(array > 0,
-                         zero_x + (array - 0) * (high_x-zero_x)/(high-0),
-                         low_x + (array - low) * (zero_x-low_x)/(0-low))
-        else:
-            if high > 0:
-                x = high_x * np.ones(array.shape)
-            elif high < 0:
-                x = low_x * np.ones(array.shape)
-            else:
-                x = zero_x * np.ones(array.shape)
+        x = np.where(array > 0,
+                     zero_x + (array - 0) * (high_x-zero_x)/(high-0),
+                     low_x + (array - low) * (zero_x-low_x)/(0-low))
 
         rgb.append(x)
 
@@ -145,11 +142,12 @@ def arrays_range(*arrays):
     if high == 0:
         high = 0
 
-    if not (low == 0 and high == 0):
+    if low != 0:
         low = round(float(low), sigfigs=2)
+    if high != 0:
         high = round(float(high), sigfigs=2)
 
-    if np.sign(low) != np.sign(high):
+    if np.sign(low) != np.sign(high) and low != 0 and high != 0:
         maximum_absolute = np.max([np.abs(low), np.abs(high)])
         low = -maximum_absolute
         high = maximum_absolute
