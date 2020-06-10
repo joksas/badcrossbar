@@ -1,6 +1,5 @@
 import cairo
 import numpy as np
-
 from badcrossbar import plotting as plotting
 
 
