@@ -45,7 +45,9 @@ def complete_fill(context, rgb=(0, 0, 0)):
 
 
 def rgb_interpolation(array, low=0, high=1,
-                      low_rgb=(255, 255, 0), high_rgb=(255, 0, 0)):
+                      low_rgb=(180, 4, 38),
+                      zero_rgb=(220, 220, 220),
+                      high_rgb=(59, 76, 192)):
     """Linearly interpolates RGB colors for an array in a specified range.
 
     Parameters
@@ -59,6 +61,9 @@ def rgb_interpolation(array, low=0, high=1,
     low_rgb : tuple of int
         Colour (in RGB) associated with the lower limit (max value
         of 255 for each).
+    zero_rgb : tuple of int
+        Colour (in RGB) associated with value of zero (max value
+        of 255 for each).
     high_rgb : tuple of int
         Colour (in RGB) associated with the upper limit (max value
         of 255 for each).
@@ -68,10 +73,13 @@ def rgb_interpolation(array, low=0, high=1,
         RGB values associated with each of the entries in the array.
     """
     rgb = []
-    for low_x, high_x in zip(low_rgb, high_rgb):
+    for low_x, zero_x, high_x in zip(low_rgb, zero_rgb, high_rgb):
         if low != high:
-            x = low_x + (array - low) * (high_x-low_x)/(high-low)
+            x = np.where(array > 0,
+                         zero_x + (array - 0) * (high_x-zero_x)/(high-0),
+                         low_x + (array - low) * (zero_x-low_x)/(0-low))
         else:
+            # TODO: differentiate between positive and negative current
             x = low_x*np.ones(array.shape)
         rgb.append(x)
 
@@ -109,4 +117,8 @@ def arrays_range(*arrays):
             if maximum > high:
                 high = maximum
 
+    if np.sign(low) != np.sign(high):
+        maximum_absolute = np.max([np.abs(low), np.abs(high)])
+        low = -maximum_absolute
+        high = maximum_absolute
     return low, high
