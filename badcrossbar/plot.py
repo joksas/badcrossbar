@@ -133,13 +133,13 @@ def devices(context, device_currents, x_start, y_start, low, high,
         crossbar.device_row(context, colors, width=width)
 
         colors = utils.rgb_interpolation(np.zeros(device_row.shape),
-                                         low_rgb=node_color)
-        context.move_to(x, y)
-        crossbar.nodes(context, colors, diameter=node_diameter,
-                       bit_line_nodes=True)
-        context.move_to(x, y)
-        crossbar.nodes(context, colors, diameter=node_diameter,
-                       bit_line_nodes=False)
+                                         low_rgb=node_color,
+                                         zero_rgb=node_color,
+                                         high_rgb=node_color, low=1)
+        for i in [True, False]:
+            context.move_to(x, y)
+            crossbar.nodes(context, colors, bit_line_nodes=i,
+                           segment_length=segment_length)
         y += segment_length
         context.move_to(x, y)
 
