@@ -11,7 +11,7 @@ def complete_path(context, rgb=(0, 0, 0), width=1):
     context : cairo.Context
         Context.
     rgb : tuple of int
-        Color of the path in RGB (max value of 255 for each).
+        Color of the path in RGB (normalized to 1).
     width : float
         Width of the path.
     """
@@ -19,7 +19,6 @@ def complete_path(context, rgb=(0, 0, 0), width=1):
 
     context.set_line_width(width)
 
-    rgb = tuple(i/255 for i in rgb)
     context.set_source_rgb(*rgb)
 
     context.stroke()
@@ -34,11 +33,10 @@ def complete_fill(context, rgb=(0, 0, 0)):
     context : cairo.Context
         Context.
     rgb : tuple of int
-        Color of the fill in RGB (max value of 255 for each).
+        Color of the fill in RGB (normalized to 1).
     """
     x, y = context.get_current_point()
 
-    rgb = tuple(i/255 for i in rgb)
     context.set_source_rgb(*rgb)
 
     context.fill()
@@ -46,9 +44,9 @@ def complete_fill(context, rgb=(0, 0, 0)):
 
 
 def rgb_interpolation(array, low=0, high=1,
-                      low_rgb=(180, 4, 38),
-                      zero_rgb=(220, 220, 220),
-                      high_rgb=(59, 76, 192)):
+                      low_rgb=(0.706, 0.016, 0.150),
+                      zero_rgb=(0.865, 0.865, 0.865),
+                      high_rgb=(0.230, 0.299, 0.754)):
     """Linearly interpolates RGB colors for an array in a specified range.
 
     Parameters
@@ -60,14 +58,11 @@ def rgb_interpolation(array, low=0, high=1,
     high : float
         Upper limit of the linear range.
     low_rgb : tuple of int
-        Colour (in RGB) associated with the lower limit (max value
-        of 255 for each).
+        Colour (in RGB) associated with the lower limit.
     zero_rgb : tuple of int
-        Colour (in RGB) associated with value of zero (max value
-        of 255 for each).
+        Colour (in RGB) associated with value of zero.
     high_rgb : tuple of int
-        Colour (in RGB) associated with the upper limit (max value
-        of 255 for each).
+        Colour (in RGB) associated with the upper limit.
     Returns
     -------
     ndarray of tuple of int

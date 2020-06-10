@@ -122,7 +122,7 @@ def devices(context, device_currents, x_start, y_start, low, high,
     width : float
         Width of the path.
     node_color : tuple of int
-        Color of the node in RGB (max value of 255 for each).
+        Color of the node in RGB.
     node_diameter : float
         Diameter of the node.
     """
@@ -152,12 +152,9 @@ def color_bar(context, color_bar_dims, low, high):
                                    color_bar_dims[0] + color_bar_dims[2],
                                    color_bar_dims[1] + color_bar_dims[3])
 
-    top_rgb = utils.rgb_interpolation(np.array([high]), low=low, high=high)
-    middle_rgb = utils.rgb_interpolation(np.array([0]), low=low, high=high)
-    bottom_rgb = utils.rgb_interpolation(np.array([low]), low=low, high=high)
-    top_rgb = [i/255 for i in top_rgb[0]]
-    middle_rgb = [i/255 for i in middle_rgb[0]]
-    bottom_rgb = [i/255 for i in bottom_rgb[0]]
+    top_rgb = utils.rgb_interpolation(np.array([high]), low=low, high=high)[0]
+    middle_rgb = utils.rgb_interpolation(np.array([0]), low=low, high=high)[0]
+    bottom_rgb = utils.rgb_interpolation(np.array([low]), low=low, high=high)[0]
 
     pattern.add_color_stop_rgb(0, *top_rgb)
     if low < 0:
