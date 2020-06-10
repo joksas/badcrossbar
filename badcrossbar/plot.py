@@ -6,6 +6,9 @@ import badcrossbar.plotting.dimensions as mydimensions
 
 
 def currents(device_currents, word_line_currents, bit_line_currents):
+    device_currents, word_line_currents, bit_line_currents =\
+        utils.average_if_list(
+            device_currents, word_line_currents, bit_line_currents)
     crossbar_shape = utils.arrays_shape(
         device_currents, word_line_currents, bit_line_currents)
 
