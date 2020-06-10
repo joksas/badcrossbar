@@ -153,29 +153,28 @@ def color_bar(context, color_bar_dims, low, high):
                                    color_bar_dims[1] + color_bar_dims[3])
 
     top_rgb = utils.rgb_interpolation(np.array([high]), low=low, high=high)[0]
-    middle_rgb = utils.rgb_interpolation(np.array([0]), low=low, high=high)[0]
-    bottom_rgb = utils.rgb_interpolation(np.array([low]), low=low, high=high)[0]
-
-    pattern.add_color_stop_rgb(0, *top_rgb)
-    if low < 0:
-        pattern.add_color_stop_rgb(0.5, *middle_rgb)
-        pattern.add_color_stop_rgb(1, *bottom_rgb)
+    if low != high:
+        middle_rgb = utils.rgb_interpolation(
+            np.array([0]), low=low, high=high)[0]
     else:
-        pattern.add_color_stop_rgb(1, *middle_rgb)
-
-    context.set_source(pattern)
-    context.fill()
+        middle_rgb = utils.rgb_interpolation(
+            np.array([0]), low=-1, high=1)[0]
+    bottom_rgb = utils.rgb_interpolation(np.array([low]), low=low, high=high)[0]
 
     context.set_source_rgb(0, 0, 0)
     font_size = color_bar_dims[2]/3
-
-    x = color_bar_dims[0] + color_bar_dims[2]*1.2
-    y = color_bar_dims[1] + 0.5*font_size
-    context.move_to(x, y)
     context.set_font_size(font_size)
-    context.show_text(str(high))
 
-    if low < 0:
+    if low < 0 < high:
+        pattern.add_color_stop_rgb(0, *top_rgb)
+        pattern.add_color_stop_rgb(0.5, *middle_rgb)
+        pattern.add_color_stop_rgb(1, *bottom_rgb)
+
+        x = color_bar_dims[0] + color_bar_dims[2]*1.2
+        y = color_bar_dims[1] + 0.5*font_size
+        context.move_to(x, y)
+        context.show_text(str(high))
+
         x = color_bar_dims[0] + color_bar_dims[2]*1.2
         y = color_bar_dims[1] + 0.5*color_bar_dims[3] + 0.5*font_size
         context.move_to(x, y)
@@ -186,9 +185,34 @@ def color_bar(context, color_bar_dims, low, high):
         context.move_to(x, y)
         context.show_text(str(low))
     else:
-        x = color_bar_dims[0] + color_bar_dims[2]*1.2
-        y = color_bar_dims[1] + color_bar_dims[3] + 0.5*font_size
-        context.move_to(x, y)
-        context.show_text(str(0))
+        if high > 0:
+            pattern.add_color_stop_rgb(0, *top_rgb)
+            pattern.add_color_stop_rgb(1, *middle_rgb)
+
+            x = color_bar_dims[0] + color_bar_dims[2]*1.2
+            y = color_bar_dims[1] + 0.5*font_size
+            context.move_to(x, y)
+            context.show_text(str(high))
+
+            x = color_bar_dims[0] + color_bar_dims[2]*1.2
+            y = color_bar_dims[1] + color_bar_dims[3] + 0.5*font_size
+            context.move_to(x, y)
+            context.show_text(str(0))
+        else:
+            pattern.add_color_stop_rgb(0, *middle_rgb)
+            pattern.add_color_stop_rgb(1, *bottom_rgb)
+
+            x = color_bar_dims[0] + color_bar_dims[2]*1.2
+            y = color_bar_dims[1] + 0.5*font_size
+            context.move_to(x, y)
+            context.show_text(str(0))
+
+            x = color_bar_dims[0] + color_bar_dims[2]*1.2
+            y = color_bar_dims[1] + color_bar_dims[3] + 0.5*font_size
+            context.move_to(x, y)
+            context.show_text(str(low))
+
+    context.set_source(pattern)
+    context.fill()
 
 
