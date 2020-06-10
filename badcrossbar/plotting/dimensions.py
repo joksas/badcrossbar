@@ -13,7 +13,8 @@ def get(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
         segment_fraction = height_fraction/adjusted_shape[0]
         width_fraction = segment_fraction*adjusted_shape[1]
         height = max_dimension
-        width = (width_fraction + color_bar_fraction[1] + 2*border) * max_dimension
+        width = (width_fraction +
+                 color_bar_fraction[1] + 2*border) * max_dimension
 
     if height/width < color_bar_fraction[0]:
         height = max_dimension * color_bar_fraction[0]
@@ -22,5 +23,7 @@ def get(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
 
     x_start = border*max_dimension
     y_start = height/2 - adjusted_shape[0]*segment_length/2
+    pos_start = (x_start, y_start)
+    dimensions = (width, height)
 
-    return width, height, segment_length, x_start, y_start
+    return dimensions, pos_start, segment_length
