@@ -19,8 +19,8 @@ def get(shape, max_dimension=1000, color_bar_fraction=(0.5, 0.15),
         width = (width_fraction +
                  color_bar_fraction[1] + 2*border) * max_dimension
 
-    if height/width < color_bar_fraction[0]:
-        height = max_dimension * color_bar_fraction[0]
+    if height/width < (color_bar_fraction[0] + 2*border):
+        height = max_dimension * (color_bar_fraction[0] + 2*border)
 
     segment_length = segment_fraction*max_dimension
 
