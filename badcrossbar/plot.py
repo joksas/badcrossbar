@@ -197,7 +197,7 @@ def color_bar(context, color_bar_dims, low, high):
     bottom_rgb = utils.rgb_interpolation(np.array([low]), low=low, high=high)[0]
 
     context.set_source_rgb(0, 0, 0)
-    font_size = color_bar_dims[2]/3
+    font_size = color_bar_dims[2]/2.5
     context.set_font_size(font_size)
 
     if low < 0 < high:
@@ -250,4 +250,16 @@ def color_bar(context, color_bar_dims, low, high):
     context.set_source(pattern)
     context.fill()
 
+    font_size *= 1.5
+    context.set_font_size(font_size)
+    context.set_source_rgb(0, 0, 0)
+    angle = np.pi/2
 
+    _, _, width, height, _, _ = context.text_extents('Current (A)')
+    x = color_bar_dims[0] + 2*color_bar_dims[2] + height
+    y = color_bar_dims[1] + 0.5*color_bar_dims[3] + 0.5*width
+    context.move_to(x, y)
+
+    context.rotate(-angle)
+    context.show_text('Current (A)')
+    context.rotate(angle)
