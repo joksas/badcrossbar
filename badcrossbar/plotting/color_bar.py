@@ -80,9 +80,9 @@ def rectangle(ctx, color_bar_dims, low, high):
     ----------
     ctx : cairo.Context
         Context.
-    color_bar_dims : tuple of tuple of float
-        The first tuple is the top left position of the rectangle, while the
-        second tuple represent width and height.
+    color_bar_dims : tuple of float
+        The first two elements represent top left position of the rectangle,
+        while the last two elements represent width and height.
     low : float
         Lower limit of the linear range.
     high : float
@@ -128,9 +128,9 @@ def tick_labels(ctx, middle, low, high, color_bar_dims):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    color_bar_dims : tuple of tuple of float
-        The first tuple is the top left position of the rectangle, while the
-        second tuple represent width and height.
+    color_bar_dims : tuple of float
+        The first two elements represent top left position of the rectangle,
+        while the last two elements represent width and height.
     """
     ctx.set_source_rgb(0, 0, 0)
     font_size = color_bar_dims[2]/2.5
