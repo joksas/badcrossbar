@@ -193,3 +193,48 @@ def rectangle(ctx, color_bar_dims, low, high):
     ctx.fill()
 
     return middle
+
+
+def tick_labels(ctx, middle, low, high, color_bar_dims):
+    """Draws tick labels of the color bar.
+
+    Parameters
+    ----------
+    ctx : cairo.Context
+        Context.
+    middle : bool
+        If False, only two colors were used for the gradient.
+    low : float
+        Lower limit of the linear range.
+    high : float
+        Upper limit of the linear range.
+    color_bar_dims : tuple of tuple of float
+        The first tuple is the top left position of the rectangle, while the
+        second tuple represent width and height.
+    """
+    ctx.set_source_rgb(0, 0, 0)
+    font_size = color_bar_dims[2]/2.5
+    ctx.set_font_size(font_size)
+
+    x = color_bar_dims[0] + color_bar_dims[2]*1.2
+    y = color_bar_dims[1] + 0.5*font_size
+    ctx.move_to(x, y)
+    if high > 0 or middle:
+        ctx.show_text(str(high))
+    else:
+        ctx.show_text('0')
+
+    if middle:
+        x = color_bar_dims[0] + color_bar_dims[2]*1.2
+        y = color_bar_dims[1] + 0.5*color_bar_dims[3] + 0.5*font_size
+        ctx.move_to(x, y)
+        ctx.show_text('0')
+
+    x = color_bar_dims[0] + color_bar_dims[2]*1.2
+    y = color_bar_dims[1] + color_bar_dims[3] + 0.5*font_size
+    ctx.move_to(x, y)
+    if low < 0 or middle:
+        ctx.show_text(str(low))
+    else:
+        ctx.show_text('0')
+
