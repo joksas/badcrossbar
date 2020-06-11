@@ -178,7 +178,8 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
         Shape of the crossbar array. Used when word_line_currents is None.
     kwargs:
         default_color : tuple of float
-            The colour (in RGB) of word lines if their currents are not provided.
+            The colour (in RGB) of word lines if their currents are not
+            provided.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
@@ -193,7 +194,8 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
                 first = True
             else:
                 first = False
-            draw_word_line(ctx, colors, first=first, segment_length=segment_length,
+            draw_word_line(ctx, colors, first=first,
+                           segment_length=segment_length,
                            scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
@@ -205,7 +207,8 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
                 first = True
             else:
                 first = False
-            draw_word_line(ctx, colors, first=first, segment_length=segment_length,
+            draw_word_line(ctx, colors, first=first,
+                           segment_length=segment_length,
                            scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
@@ -215,7 +218,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
 
 def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
             crossbar_shape=(128, 64), **kwargs):
-    """Draws crossbar devices and the nodes.
+    """Draws crossbar devices.
 
     Parameters
     ----------
@@ -260,19 +263,67 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
             y += segment_length
             ctx.move_to(x, y)
 
+    ctx.move_to(*diagram_pos)
+
+
+def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
+          crossbar_shape=(128, 64), bit_line=False, **kwargs):
+    """Draws nodes.
+
+    Parameters
+    ----------
+    ctx : cairo.Context
+        Context.
+    node_voltages : ndarray
+        Voltages at the nodes.
+    diagram_pos : tuple of float
+        Coordinates of the top left point of the diagram.
+    low : float
+        Lower limit of the linear range.
+    high : float
+        Upper limit of the linear range.
+    segment_length : float
+        The length of each segment.
+    crossbar_shape : tuple of int
+        Shape of the crossbar array. Used when device_currents is None.
+    bit_line : bool
+        If True, draws nodes on the bit lines.
+    kwargs
+        device_scaling_factor : float
+            Scaling factor for the width of the device. Also scales the nodes.
+        node_scaling_factor : float
+            Scaling factor for the diameter of the nodes which is combined
+            with device_scaling_factor. For example, if one wanted to only
+            scale the device width by a factor of 2, but keep the node diameter
+            the same, arguments device_scaling_factor = 2 and
+            node_scaling_factor = 1/2 would have to be passed.
+    """
     x, y = diagram_pos
     ctx.move_to(x, y)
-    colors_list = plotting.utils.rgb_single_color(
-        crossbar_shape, color=kwargs.get('default_color'))
-    for colors in colors_list:
-        for i in [True, False]:
-            ctx.move_to(x, y)
-            node_scaling_factor = kwargs.get('device_scaling_factor') * \
-                kwargs.get('node_scaling_factor')
-            draw_node_row(ctx, colors, bit_line_nodes=i, segment_length=segment_length,
+    node_scaling_factor = kwargs.get('device_scaling_factor') * \
+        kwargs.get('node_scaling_factor')
+
+    if node_voltages is not None:
+        for node_row in node_voltages:
+            colors = plotting.utils.rgb_interpolation(
+                node_row, low=low, high=high,
+                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
+                high_rgb=kwargs.get('high_rgb'))
+            draw_node_row(ctx, colors, segment_length=segment_length,
+                          bit_line_nodes=bit_line,
                           scaling_factor=node_scaling_factor)
-        y += segment_length
-        ctx.move_to(x, y)
+            y += segment_length
+            ctx.move_to(x, y)
+    else:
+        colors_list = plotting.utils.rgb_single_color(
+            crossbar_shape, color=kwargs.get('default_color'))
+        for colors in colors_list:
+            ctx.move_to(x, y)
+            draw_node_row(ctx, colors, bit_line_nodes=bit_line,
+                          segment_length=segment_length,
+                          scaling_factor=node_scaling_factor)
+            y += segment_length
+            ctx.move_to(x, y)
 
     ctx.move_to(*diagram_pos)
 
