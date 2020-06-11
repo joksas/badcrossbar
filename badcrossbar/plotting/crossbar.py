@@ -97,7 +97,7 @@ def nodes(ctx, colors, segment_length=120, bit_line_nodes=True):
         plotting.utils.complete_fill(ctx, color)
 
 
-def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
+def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
               segment_length=120, crossbar_shape=(128, 64),
               default_color=(0, 0, 0)):
     """Draws bit lines.
@@ -108,10 +108,8 @@ def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
         Context.
     bit_line_currents : ndarray
         Currents flowing through bit line segments.
-    x_start : float
-        x coordinate of the top left point of the diagram.
-    y_start : float
-        x coordinate of the top left point of the diagram.
+    diagram_pos : tuple of float
+        Coordinates of the top left point of the diagram.
     low : float
         Lower limit of the linear range.
     high : float
@@ -123,7 +121,8 @@ def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
     default_color : tuple of float
         The colour (in RGB) of bit lines if their currents are not provided.
     """
-    x, y = x_start + 1.5*segment_length, y_start + 0.5*segment_length
+    x = diagram_pos[0] + 1.5*segment_length
+    y = diagram_pos[1] + 0.5*segment_length
     ctx.move_to(x, y)
 
     if bit_line_currents is not None:
@@ -141,10 +140,10 @@ def bit_lines(ctx, bit_line_currents, x_start, y_start, low, high,
             x += segment_length
             ctx.move_to(x, y)
 
-    ctx.move_to(x_start, y_start)
+    ctx.move_to(*diagram_pos)
 
 
-def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
+def word_lines(ctx, word_line_currents, diagram_pos, low, high,
                segment_length=120, crossbar_shape=(128, 64),
                default_color=(0, 0, 0)):
     """Draws word lines.
@@ -155,10 +154,8 @@ def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
         Context.
     word_line_currents : ndarray
         Currents flowing through word line segments.
-    x_start : float
-        x coordinate of the top left point of the diagram.
-    y_start : float
-        x coordinate of the top left point of the diagram.
+    diagram_pos : tuple of float
+        Coordinates of the top left point of the diagram.
     low : float
         Lower limit of the linear range.
     high : float
@@ -170,7 +167,7 @@ def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
     default_color : tuple of float
         The colour (in RGB) of word lines if their currents are not provided.
     """
-    x, y = x_start, y_start
+    x, y = diagram_pos
     ctx.move_to(x, y)
 
     if word_line_currents is not None:
@@ -198,10 +195,10 @@ def word_lines(ctx, word_line_currents, x_start, y_start, low, high,
             y += segment_length
             ctx.move_to(x, y)
 
-    ctx.move_to(x_start, y_start)
+    ctx.move_to(*diagram_pos)
 
 
-def devices(ctx, device_currents, x_start, y_start, low, high,
+def devices(ctx, device_currents, diagram_pos, low, high,
             segment_length=120, default_color=(0, 0, 0),
             crossbar_shape=(128, 64)):
     """Draws crossbar devices and the nodes.
@@ -212,10 +209,8 @@ def devices(ctx, device_currents, x_start, y_start, low, high,
         Context.
     device_currents : ndarray
         Currents flowing through crossbar devices.
-    x_start : float
-        x coordinate of the top left point of the diagram.
-    y_start : float
-        x coordinate of the top left point of the diagram.
+    diagram_pos : tuple of float
+        Coordinates of the top left point of the diagram.
     low : float
         Lower limit of the linear range.
     high : float
@@ -228,7 +223,7 @@ def devices(ctx, device_currents, x_start, y_start, low, high,
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when device_currents is None.
     """
-    x, y = x_start, y_start
+    x, y = diagram_pos
     ctx.move_to(x, y)
 
     if device_currents is not None:
@@ -246,7 +241,7 @@ def devices(ctx, device_currents, x_start, y_start, low, high,
             y += segment_length
             ctx.move_to(x, y)
 
-    x, y = x_start, y_start
+    x, y = diagram_pos
     ctx.move_to(x, y)
     colors_list = plotting.utils.rgb_single_color(
         crossbar_shape, color=default_color)
@@ -257,7 +252,7 @@ def devices(ctx, device_currents, x_start, y_start, low, high,
         y += segment_length
         ctx.move_to(x, y)
 
-    ctx.move_to(x_start, y_start)
+    ctx.move_to(*diagram_pos)
 
 
 def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
@@ -280,13 +275,14 @@ def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
     -------
     surface_dims : tuple of float
         Dimensions of the surface.
-    pos_start : tuple of float
+    diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
     segment_length : float
         The length of each segment.
+    color_bar_pos : tuple of float
+        Coordinates of the top left point of the color bar.
     color_bar_dims : tuple of float
-        The first two elements represent top left position of the rectangle,
-        while the last two elements represent width and height.
+        Width and height of the color bar.
     """
     adjusted_shape = (shape[0]+0.5, shape[1]+0.5)
     active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border_fraction
@@ -311,8 +307,9 @@ def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
 
     x_start = border_fraction * max_dim
     y_start = height/2 - adjusted_shape[0]*segment_length/2
-    pos_start = (x_start, y_start)
+    diagram_pos = (x_start, y_start)
     surface_dims = (width, height)
-    color_bar_dims = plotting.color_bar.dimensions(
+    color_bar_pos, color_bar_dims = plotting.color_bar.dimensions(
         surface_dims, color_bar_fraction, border_fraction)
-    return surface_dims, pos_start, segment_length, color_bar_dims
+    return surface_dims, diagram_pos, segment_length,\
+        color_bar_pos, color_bar_dims

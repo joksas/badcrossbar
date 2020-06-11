@@ -3,24 +3,25 @@ import numpy as np
 from badcrossbar import plotting as plotting
 
 
-def draw(ctx, color_bar_dims, low, high):
+def draw(ctx, color_bar_pos, color_bar_dims, low, high):
     """Draws the color bar together with its labels.
 
     Parameters
     ----------
     ctx : cairo.Context
         Context.
+    color_bar_pos : tuple of float
+        Coordinates of the top left point of the color bar.
     color_bar_dims : tuple of float
-        The first two elements represent top left position of the rectangle,
-        while the last two elements represent width and height.
+        Width and height of the color bar.
     low : float
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
     """
-    middle = rectangle(ctx, color_bar_dims, low, high)
-    tick_labels(ctx, middle, low, high, color_bar_dims)
-    axis_label(ctx, color_bar_dims)
+    middle = rectangle(ctx, color_bar_pos, color_bar_dims, low, high)
+    tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims)
+    axis_label(ctx, color_bar_pos, color_bar_dims)
 
 
 def dimensions(surface_dims, color_bar_fraction, border_fraction):
@@ -38,16 +39,18 @@ def dimensions(surface_dims, color_bar_fraction, border_fraction):
 
     Returns
     -------
-    tuple of float
-        The first two elements represent top left position of the rectangle,
-        while the last two elements represent width and height.
+    color_bar_pos : tuple of float
+        Coordinates of the top left point of the color bar.
+    color_bar_dims : tuple of float
+        Width and height of the color bar.
     """
     height = np.max(surface_dims) * color_bar_fraction[0]
-    width = np.max(surface_dims) * color_bar_fraction[1] / 4
-    x_start = surface_dims[0] * (1 - border_fraction) - 3 * width
-    y_start = surface_dims[1] * 0.5 - height / 2
-    color_bar_dims = (x_start, y_start, width, height)
-    return color_bar_dims
+    width = np.max(surface_dims) * color_bar_fraction[1]/4
+    x_start = surface_dims[0] * (1 - border_fraction) - 3*width
+    y_start = 0.5*surface_dims[1] - height/2
+    color_bar_dims = (width, height)
+    color_bar_pos = (x_start, y_start)
+    return color_bar_pos, color_bar_dims
 
 
 def rgb(low, high):
@@ -105,16 +108,17 @@ def rgb(low, high):
     return bottom_rgb, middle_rgb, top_rgb
 
 
-def rectangle(ctx, color_bar_dims, low, high):
+def rectangle(ctx, color_bar_pos, color_bar_dims, low, high):
     """Draws rectangle with color gradient.
 
     Parameters
     ----------
     ctx : cairo.Context
         Context.
+    color_bar_pos : tuple of float
+        Coordinates of the top left point of the color bar.
     color_bar_dims : tuple of float
-        The first two elements represent top left position of the rectangle,
-        while the last two elements represent width and height.
+        Width and height of the color bar.
     low : float
         Lower limit of the linear range.
     high : float
@@ -125,11 +129,11 @@ def rectangle(ctx, color_bar_dims, low, high):
     bool
         If False, only two colors were used for the gradient.
     """
-    ctx.rectangle(*color_bar_dims)
-    x_start = color_bar_dims[0] + color_bar_dims[2]
-    y_start = color_bar_dims[1] + color_bar_dims[3]
-    x_end = color_bar_dims[0]
-    y_end = color_bar_dims[1]
+    ctx.rectangle(*color_bar_pos, *color_bar_dims)
+    x_start = color_bar_pos[0] + color_bar_dims[0]
+    y_start = color_bar_pos[1] + color_bar_dims[1]
+    x_end = color_bar_pos[0]
+    y_end = color_bar_pos[1]
     pattern = cairo.LinearGradient(x_start, y_start, x_end, y_end)
 
     bottom_rgb, middle_rgb, top_rgb = rgb(low, high)
@@ -147,7 +151,7 @@ def rectangle(ctx, color_bar_dims, low, high):
     return middle
 
 
-def tick_labels(ctx, middle, low, high, color_bar_dims):
+def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
     """Draws tick labels of the color bar.
 
     Parameters
@@ -160,16 +164,17 @@ def tick_labels(ctx, middle, low, high, color_bar_dims):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
+    color_bar_pos : tuple of float
+        Coordinates of the top left point of the color bar.
     color_bar_dims : tuple of float
-        The first two elements represent top left position of the rectangle,
-        while the last two elements represent width and height.
+        Width and height of the color bar.
     """
     ctx.set_source_rgb(0, 0, 0)
-    font_size = color_bar_dims[2]/2.5
+    font_size = color_bar_dims[0]/2.5
     ctx.set_font_size(font_size)
 
-    x = color_bar_dims[0] + color_bar_dims[2]*1.2
-    y = color_bar_dims[1] + 0.5*font_size
+    x = color_bar_pos[0] + color_bar_dims[0]*1.2
+    y = color_bar_pos[1] + 0.5*font_size
     ctx.move_to(x, y)
     if high > 0 or middle:
         ctx.show_text(str(high))
@@ -177,13 +182,13 @@ def tick_labels(ctx, middle, low, high, color_bar_dims):
         ctx.show_text('0')
 
     if middle:
-        x = color_bar_dims[0] + color_bar_dims[2]*1.2
-        y = color_bar_dims[1] + 0.5*color_bar_dims[3] + 0.5*font_size
+        x = color_bar_pos[0] + color_bar_dims[0]*1.2
+        y = color_bar_pos[1] + 0.5*color_bar_dims[1] + 0.5*font_size
         ctx.move_to(x, y)
         ctx.show_text('0')
 
-    x = color_bar_dims[0] + color_bar_dims[2]*1.2
-    y = color_bar_dims[1] + color_bar_dims[3] + 0.5*font_size
+    x = color_bar_pos[0] + color_bar_dims[0]*1.2
+    y = color_bar_pos[1] + color_bar_dims[1] + 0.5*font_size
     ctx.move_to(x, y)
     if low < 0 or middle:
         ctx.show_text(str(low))
@@ -191,14 +196,14 @@ def tick_labels(ctx, middle, low, high, color_bar_dims):
         ctx.show_text('0')
 
 
-def axis_label(ctx, color_bar_dims, label='Current (A)'):
+def axis_label(ctx, color_bar_pos, color_bar_dims, label='Current (A)'):
     ctx.set_source_rgb(0, 0, 0)
-    font_size = 0.6*color_bar_dims[2]
+    font_size = 0.6*color_bar_dims[0]
     ctx.set_font_size(font_size)
 
     _, _, width, height, _, _ = ctx.text_extents(label)
-    x = color_bar_dims[0] + 2*color_bar_dims[2] + height
-    y = color_bar_dims[1] + 0.5*color_bar_dims[3] + 0.5*width
+    x = color_bar_pos[0] + 2*color_bar_dims[0] + height
+    y = color_bar_pos[1] + 0.5*color_bar_dims[1] + 0.5*width
     ctx.move_to(x, y)
 
     ctx.rotate(-np.pi/2)
