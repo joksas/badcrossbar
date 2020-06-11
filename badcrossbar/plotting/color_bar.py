@@ -176,9 +176,10 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
     ctx.set_source_rgb(0, 0, 0)
     font_size = color_bar_dims[0]/2.5
     ctx.set_font_size(font_size)
+    _, _, _, text_height, _, _ = ctx.text_extents(str(0))
 
     x = color_bar_pos[0] + color_bar_dims[0]*1.2
-    y = color_bar_pos[1] + 0.5*font_size
+    y = color_bar_pos[1] + 0.5*text_height
     ctx.move_to(x, y)
     if high > 0 or middle:
         ctx.show_text(str(high))
@@ -187,12 +188,12 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
 
     if middle:
         x = color_bar_pos[0] + color_bar_dims[0]*1.2
-        y = color_bar_pos[1] + 0.5*color_bar_dims[1] + 0.5*font_size
+        y = color_bar_pos[1] + 0.5*color_bar_dims[1] + 0.5*text_height
         ctx.move_to(x, y)
         ctx.show_text('0')
 
     x = color_bar_pos[0] + color_bar_dims[0]*1.2
-    y = color_bar_pos[1] + color_bar_dims[1] + 0.5*font_size
+    y = color_bar_pos[1] + color_bar_dims[1] + 0.5*text_height
     ctx.move_to(x, y)
     if low < 0 or middle:
         ctx.show_text(str(low))
