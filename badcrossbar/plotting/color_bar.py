@@ -58,7 +58,7 @@ def dimensions(surface_dims, color_bar_fraction, border_fraction):
 
 
 def rgb(low, high):
-    """Extracts RGB values for the color map gradient.
+    """Extracts RGB values for the color bar gradient.
 
     Parameters
     ----------
