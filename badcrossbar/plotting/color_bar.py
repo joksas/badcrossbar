@@ -201,6 +201,19 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
 
 
 def axis_label(ctx, color_bar_pos, color_bar_dims, label='Current (A)'):
+    """Draws axis label of a color bar.
+
+    Parameters
+    ----------
+    ctx : cairo.Context
+        Context.
+    color_bar_pos : tuple of float
+        Coordinates of the top left point of the color bar.
+    color_bar_dims : tuple of float
+        Width and height of the color bar.
+    label : str
+        Axis label of the color bar.
+    """
     ctx.set_source_rgb(0, 0, 0)
     font_size = 0.6*color_bar_dims[0]
     ctx.set_font_size(font_size)
