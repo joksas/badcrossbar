@@ -8,6 +8,7 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('wire_scaling_factor', 1)
     kwargs.setdefault('device_scaling_factor', 1)
     kwargs.setdefault('node_scaling_factor', 1)
+    kwargs.setdefault('axis_label', 'Current (A)')
 
     if all_currents is not None:
         device_currents = all_currents.device
@@ -43,4 +44,5 @@ def currents(device_currents=None, word_line_currents=None,
         segment_length=segment_length,
         crossbar_shape=crossbar_shape, **kwargs)
 
-    plotting.color_bar.draw(context, color_bar_pos, color_bar_dims, low, high)
+    plotting.color_bar.draw(context, color_bar_pos, color_bar_dims,
+                            low, high, **kwargs)

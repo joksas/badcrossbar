@@ -3,7 +3,7 @@ import numpy as np
 from badcrossbar import plotting as plotting
 
 
-def draw(ctx, color_bar_pos, color_bar_dims, low, high):
+def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     """Draws the color bar together with its labels.
 
     Parameters
@@ -18,10 +18,14 @@ def draw(ctx, color_bar_pos, color_bar_dims, low, high):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
+    kwargs:
+        axis_label : str
+            Axis label of the color bar.
     """
     middle = rectangle(ctx, color_bar_pos, color_bar_dims, low, high)
     tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims)
-    axis_label(ctx, color_bar_pos, color_bar_dims)
+    axis_label(ctx, color_bar_pos, color_bar_dims,
+               label=kwargs.get('axis_label'))
 
 
 def dimensions(surface_dims, color_bar_fraction, border_fraction):
@@ -201,11 +205,11 @@ def axis_label(ctx, color_bar_pos, color_bar_dims, label='Current (A)'):
     font_size = 0.6*color_bar_dims[0]
     ctx.set_font_size(font_size)
 
-    _, _, width, height, _, _ = ctx.text_extents(label)
+    _, _, width, height, _, _ = ctx.text_extents(str(label))
     x = color_bar_pos[0] + 2*color_bar_dims[0] + height
     y = color_bar_pos[1] + 0.5*color_bar_dims[1] + 0.5*width
     ctx.move_to(x, y)
 
     ctx.rotate(-np.pi/2)
-    ctx.show_text(label)
+    ctx.show_text(str(label))
     ctx.rotate(np.pi/2)
