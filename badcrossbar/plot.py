@@ -52,3 +52,54 @@ def currents(device_currents=None, word_line_currents=None,
 
     plotting.color_bar.draw(context, color_bar_pos, color_bar_dims,
                             low, high, **kwargs)
+
+
+def voltages(word_line_voltages=None, bit_line_voltages=None,
+             all_voltages=None, **kwargs):
+    kwargs.setdefault('default_color', (0, 0, 0))
+    kwargs.setdefault('wire_scaling_factor', 1)
+    kwargs.setdefault('device_scaling_factor', 1)
+    kwargs.setdefault('node_scaling_factor', 1.5)
+    kwargs.setdefault('axis_label', 'Voltage (V)')
+    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
+    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
+    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
+
+    if all_voltages is not None:
+        word_line_voltages = all_voltages.word_line
+        bit_line_voltages = all_voltages.bit_line
+
+    word_line_voltages, bit_line_voltages =\
+        plotting.utils.average_if_list(word_line_voltages, bit_line_voltages)
+    crossbar_shape = plotting.utils.arrays_shape(word_line_voltages,
+                                                 bit_line_voltages)
+
+    surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
+        plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
+    surface = cairo.PDFSurface('crossbar_voltages.pdf', *surface_dims)
+    context = cairo.Context(surface)
+
+    low, high = plotting.utils.arrays_range(word_line_voltages,
+                                            bit_line_voltages)
+
+    plotting.crossbar.bit_lines(
+        context, None, diagram_pos, low, high,
+        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+
+    plotting.crossbar.word_lines(
+        context, None, diagram_pos, low, high,
+        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+
+    plotting.crossbar.devices(
+        context, None, diagram_pos, low, high,
+        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+
+    for node_voltages, bit_line in zip([word_line_voltages, bit_line_voltages],
+                                       [False, True]):
+        plotting.crossbar.nodes(
+            context, node_voltages, diagram_pos, low, high, bit_line=bit_line,
+            segment_length=segment_length, crossbar_shape=crossbar_shape,
+            **kwargs)
+
+    plotting.color_bar.draw(context, color_bar_pos, color_bar_dims,
+                            low, high, **kwargs)
