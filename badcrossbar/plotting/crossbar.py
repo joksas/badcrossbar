@@ -137,7 +137,9 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
     if bit_line_currents is not None:
         for single_bit_line in np.transpose(bit_line_currents):
             colors = plotting.utils.rgb_interpolation(
-                single_bit_line, low=low, high=high)
+                single_bit_line, low=low, high=high,
+                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
+                high_rgb=kwargs.get('high_rgb'))
             bit_line(ctx, colors, segment_length=segment_length,
                      scaling_factor=kwargs.get('wire_scaling_factor'))
             x += segment_length
@@ -184,7 +186,9 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
     if word_line_currents is not None:
         for idx, single_word_line in enumerate(word_line_currents):
             colors = plotting.utils.rgb_interpolation(
-                single_word_line, low=low, high=high)
+                single_word_line, low=low, high=high,
+                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
+                high_rgb=kwargs.get('high_rgb'))
             if idx == 0:
                 first = True
             else:
@@ -240,7 +244,9 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     if device_currents is not None:
         for single_device_row in device_currents:
             colors = plotting.utils.rgb_interpolation(
-                single_device_row, low=low, high=high)
+                single_device_row, low=low, high=high,
+                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
+                high_rgb=kwargs.get('high_rgb'))
             device_row(ctx, colors, segment_length=segment_length,
                        scaling_factor=kwargs.get('device_scaling_factor'))
             y += segment_length

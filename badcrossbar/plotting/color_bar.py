@@ -1,6 +1,5 @@
 import cairo
 import numpy as np
-from badcrossbar import plotting as plotting
 
 
 def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
@@ -22,7 +21,7 @@ def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
         axis_label : str
             Axis label of the color bar.
     """
-    middle = rectangle(ctx, color_bar_pos, color_bar_dims, low, high)
+    middle = rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs)
     tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims)
     axis_label(ctx, color_bar_pos, color_bar_dims,
                label=kwargs.get('axis_label'))
@@ -57,7 +56,7 @@ def dimensions(surface_dims, color_bar_fraction, border_fraction):
     return color_bar_pos, color_bar_dims
 
 
-def rgb(low, high):
+def rgb(low, high, low_rgb, zero_rgb, high_rgb):
     """Extracts RGB values for the color bar gradient.
 
     Parameters
@@ -66,6 +65,12 @@ def rgb(low, high):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
+    low_rgb : tuple of int
+        Colour (in RGB) associated with the lower limit.
+    zero_rgb : tuple of int
+        Colour (in RGB) associated with value of zero.
+    high_rgb : tuple of int
+        Colour (in RGB) associated with the upper limit.
 
     Returns
     -------
@@ -74,45 +79,29 @@ def rgb(low, high):
         gradient. If only two colors are used, middle_rgb is returned as None.
     """
     if low < 0 < high:
-        top_rgb = plotting.utils.rgb_interpolation(
-            np.array([high]), low=low, high=high)[0]
-        middle_rgb = plotting.utils.rgb_interpolation(
-            np.array([0]), low=low, high=high)[0]
-        bottom_rgb = plotting.utils.rgb_interpolation(
-            np.array([low]), low=low, high=high)[0]
+        top_rgb = high_rgb
+        middle_rgb = zero_rgb
+        bottom_rgb = low_rgb
     else:
         middle_rgb = None
 
     if high > low >= 0:
-        top_rgb = plotting.utils.rgb_interpolation(
-            np.array([high]), low=low, high=high)[0]
-        bottom_rgb = plotting.utils.rgb_interpolation(
-            np.array([0]), low=low, high=high)[0]
+        top_rgb = high_rgb
+        bottom_rgb = zero_rgb
     if low < high <= 0:
-        top_rgb = plotting.utils.rgb_interpolation(
-            np.array([0]), low=low, high=high)[0]
-        bottom_rgb = plotting.utils.rgb_interpolation(
-            np.array([low]), low=low, high=high)[0]
+        top_rgb = zero_rgb
+        bottom_rgb = low_rgb
     if low == high > 0:
-        top_rgb = plotting.utils.rgb_interpolation(
-            np.array([high]), low=low, high=high)[0]
-        bottom_rgb = plotting.utils.rgb_interpolation(
-            np.array([high]), low=low, high=high)[0]
+        top_rgb = bottom_rgb = high_rgb
     if low == high < 0:
-        top_rgb = plotting.utils.rgb_interpolation(
-            np.array([low]), low=low, high=high)[0]
-        bottom_rgb = plotting.utils.rgb_interpolation(
-            np.array([low]), low=low, high=high)[0]
+        top_rgb = bottom_rgb = low_rgb
     if low == high == 0:
-        top_rgb = plotting.utils.rgb_interpolation(
-            np.array([0]), low=low, high=high)[0]
-        bottom_rgb = plotting.utils.rgb_interpolation(
-            np.array([0]), low=low, high=high)[0]
+        top_rgb = bottom_rgb = zero_rgb
 
     return bottom_rgb, middle_rgb, top_rgb
 
 
-def rectangle(ctx, color_bar_pos, color_bar_dims, low, high):
+def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     """Draws rectangle with color gradient.
 
     Parameters
@@ -127,6 +116,13 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
+    kwargs:
+        low_rgb : tuple of int
+            Colour (in RGB) associated with the lower limit.
+        zero_rgb : tuple of int
+            Colour (in RGB) associated with value of zero.
+        high_rgb : tuple of int
+            Colour (in RGB) associated with the upper limit.
 
     Returns
     -------
@@ -140,7 +136,9 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high):
     y_end = color_bar_pos[1]
     pattern = cairo.LinearGradient(x_start, y_start, x_end, y_end)
 
-    bottom_rgb, middle_rgb, top_rgb = rgb(low, high)
+    bottom_rgb, middle_rgb, top_rgb = rgb(
+        low, high, low_rgb=kwargs.get('low_rgb'),
+        zero_rgb=kwargs.get('zero_rgb'), high_rgb=kwargs.get('high_rgb'))
     pattern.add_color_stop_rgb(0, *bottom_rgb)
     pattern.add_color_stop_rgb(1, *top_rgb)
     if middle_rgb is not None:

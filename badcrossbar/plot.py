@@ -9,6 +9,9 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('device_scaling_factor', 1)
     kwargs.setdefault('node_scaling_factor', 1)
     kwargs.setdefault('axis_label', 'Current (A)')
+    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
+    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
+    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
 
     if all_currents is not None:
         device_currents = all_currents.device
