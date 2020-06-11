@@ -238,3 +238,17 @@ def tick_labels(ctx, middle, low, high, color_bar_dims):
     else:
         ctx.show_text('0')
 
+
+def axis_label(ctx, color_bar_dims, label='Current (A)'):
+    ctx.set_source_rgb(0, 0, 0)
+    font_size = 0.6*color_bar_dims[2]
+    ctx.set_font_size(font_size)
+
+    _, _, width, height, _, _ = ctx.text_extents(label)
+    x = color_bar_dims[0] + 2*color_bar_dims[2] + height
+    y = color_bar_dims[1] + 0.5*color_bar_dims[3] + 0.5*width
+    ctx.move_to(x, y)
+
+    ctx.rotate(-np.pi/2)
+    ctx.show_text(label)
+    ctx.rotate(np.pi/2)
