@@ -107,8 +107,7 @@ def nodes(ctx, colors, segment_length=120, bit_line_nodes=True,
 
 
 def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
-              segment_length=120, crossbar_shape=(128, 64),
-              default_color=(0, 0, 0), **kwargs):
+              segment_length=120, crossbar_shape=(128, 64), **kwargs):
     """Draws bit lines.
 
     Parameters
@@ -127,8 +126,9 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
         The length of each segment.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when bit_line_currents is None.
-    default_color : tuple of float
-        The colour (in RGB) of bit lines if their currents are not provided.
+    kwargs:
+        default_color : tuple of float
+            The colour (in RGB) of bit lines if their currents are not provided.
     """
     x = diagram_pos[0] + 1.5*segment_length
     y = diagram_pos[1] + 0.5*segment_length
@@ -144,7 +144,7 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=default_color)
+            crossbar_shape, color=kwargs.get('default_color'))
         for colors in np.transpose(colors_list):
             bit_line(ctx, colors, segment_length=segment_length,
                      scaling_factor=kwargs.get('wire_scaling_factor', 1))
@@ -155,8 +155,7 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
 
 
 def word_lines(ctx, word_line_currents, diagram_pos, low, high,
-               segment_length=120, crossbar_shape=(128, 64),
-               default_color=(0, 0, 0), **kwargs):
+               segment_length=120, crossbar_shape=(128, 64), **kwargs):
     """Draws word lines.
 
     Parameters
@@ -175,8 +174,9 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
         The length of each segment.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when word_line_currents is None.
-    default_color : tuple of float
-        The colour (in RGB) of word lines if their currents are not provided.
+    kwargs:
+        default_color : tuple of float
+            The colour (in RGB) of word lines if their currents are not provided.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
@@ -195,7 +195,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=default_color)
+            crossbar_shape, color=kwargs.get('default_color'))
         for idx, colors in enumerate(colors_list):
             if idx == 0:
                 first = True
@@ -210,7 +210,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
 
 
 def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
-            default_color=(0, 0, 0), crossbar_shape=(128, 64), **kwargs):
+            crossbar_shape=(128, 64), **kwargs):
     """Draws crossbar devices and the nodes.
 
     Parameters
@@ -227,11 +227,12 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
         Upper limit of the linear range.
     segment_length : float
         The length of each segment.
-    default_color : tuple of float
-        The colour (in RGB) of crossbar devices (if their currents are not
-        provided), as well as of nodes.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when device_currents is None.
+    kwargs:
+        default_color : tuple of float
+            The colour (in RGB) of crossbar devices (if their currents are not
+            provided), as well as of nodes.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
@@ -246,7 +247,7 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=default_color)
+            crossbar_shape, color=kwargs.get('default_color'))
         for colors in colors_list:
             device_row(ctx, colors, segment_length=segment_length,
                        scaling_factor=kwargs.get('device_scaling_factor', 1))
@@ -256,7 +257,7 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     x, y = diagram_pos
     ctx.move_to(x, y)
     colors_list = plotting.utils.rgb_single_color(
-        crossbar_shape, color=default_color)
+        crossbar_shape, color=kwargs.get('default_color'))
     for colors in colors_list:
         for i in [True, False]:
             ctx.move_to(x, y)
