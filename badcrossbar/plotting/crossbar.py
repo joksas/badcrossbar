@@ -114,7 +114,7 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
     ----------
     ctx : cairo.Context
         Context.
-    bit_line_currents : ndarray
+    bit_line_currents : ndarray or None
         Currents flowing through bit line segments.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
@@ -164,7 +164,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
     ----------
     ctx : cairo.Context
         Context.
-    word_line_currents : ndarray
+    word_line_currents : ndarray or None
         Currents flowing through word line segments.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
@@ -224,7 +224,7 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     ----------
     ctx : cairo.Context
         Context.
-    device_currents : ndarray
+    device_currents : ndarray or None
         Currents flowing through crossbar devices.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
@@ -274,7 +274,7 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
     ----------
     ctx : cairo.Context
         Context.
-    node_voltages : ndarray
+    node_voltages : ndarray or None
         Voltages at the nodes.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
