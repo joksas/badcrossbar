@@ -34,18 +34,21 @@ def currents(device_currents=None, word_line_currents=None,
 
     plotting.crossbar.bit_lines(
         context, bit_line_currents, diagram_pos, low, high,
-        segment_length=segment_length,
-        crossbar_shape=crossbar_shape, **kwargs)
+        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
 
     plotting.crossbar.word_lines(
         context, word_line_currents, diagram_pos, low, high,
-        segment_length=segment_length,
-        crossbar_shape=crossbar_shape, **kwargs)
+        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
 
     plotting.crossbar.devices(
         context, device_currents, diagram_pos, low, high,
-        segment_length=segment_length,
-        crossbar_shape=crossbar_shape, **kwargs)
+        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+
+    for bit_line in [False, True]:
+        plotting.crossbar.nodes(
+            context, None, diagram_pos, low, high, bit_line=bit_line,
+            segment_length=segment_length, crossbar_shape=crossbar_shape,
+            **kwargs)
 
     plotting.color_bar.draw(context, color_bar_pos, color_bar_dims,
                             low, high, **kwargs)
