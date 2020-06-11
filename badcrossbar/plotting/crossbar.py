@@ -2,7 +2,7 @@ import numpy as np
 import badcrossbar.plotting as plotting
 
 
-def word_line(ctx, colors, segment_length=120, first=False, scaling_factor=1):
+def draw_word_line(ctx, colors, segment_length=120, first=False, scaling_factor=1):
     """Draws a word line of a crossbar array.
 
     Parameters
@@ -31,7 +31,7 @@ def word_line(ctx, colors, segment_length=120, first=False, scaling_factor=1):
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def bit_line(ctx, colors, segment_length=120, scaling_factor=1):
+def draw_bit_line(ctx, colors, segment_length=120, scaling_factor=1):
     """Draws a bit line of a crossbar array.
 
     Parameters
@@ -51,7 +51,7 @@ def bit_line(ctx, colors, segment_length=120, scaling_factor=1):
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def device_row(ctx, colors, segment_length=120, scaling_factor=1):
+def draw_device_row(ctx, colors, segment_length=120, scaling_factor=1):
     """Draws a row of crossbar devices.
 
     Parameters
@@ -75,8 +75,8 @@ def device_row(ctx, colors, segment_length=120, scaling_factor=1):
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def nodes(ctx, colors, segment_length=120, bit_line_nodes=True,
-          scaling_factor=1):
+def draw_node_row(ctx, colors, segment_length=120, bit_line_nodes=True,
+                  scaling_factor=1):
     """Draws a row of nodes.
 
     Parameters
@@ -135,21 +135,21 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
     ctx.move_to(x, y)
 
     if bit_line_currents is not None:
-        for single_bit_line in np.transpose(bit_line_currents):
+        for bit_line in np.transpose(bit_line_currents):
             colors = plotting.utils.rgb_interpolation(
-                single_bit_line, low=low, high=high,
+                bit_line, low=low, high=high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
-            bit_line(ctx, colors, segment_length=segment_length,
-                     scaling_factor=kwargs.get('wire_scaling_factor'))
+            draw_bit_line(ctx, colors, segment_length=segment_length,
+                          scaling_factor=kwargs.get('wire_scaling_factor'))
             x += segment_length
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
             crossbar_shape, color=kwargs.get('default_color'))
         for colors in np.transpose(colors_list):
-            bit_line(ctx, colors, segment_length=segment_length,
-                     scaling_factor=kwargs.get('wire_scaling_factor'))
+            draw_bit_line(ctx, colors, segment_length=segment_length,
+                          scaling_factor=kwargs.get('wire_scaling_factor'))
             x += segment_length
             ctx.move_to(x, y)
 
@@ -184,17 +184,17 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
     ctx.move_to(x, y)
 
     if word_line_currents is not None:
-        for idx, single_word_line in enumerate(word_line_currents):
+        for idx, word_line in enumerate(word_line_currents):
             colors = plotting.utils.rgb_interpolation(
-                single_word_line, low=low, high=high,
+                word_line, low=low, high=high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
             if idx == 0:
                 first = True
             else:
                 first = False
-            word_line(ctx, colors, first=first, segment_length=segment_length,
-                      scaling_factor=kwargs.get('wire_scaling_factor'))
+            draw_word_line(ctx, colors, first=first, segment_length=segment_length,
+                           scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
     else:
@@ -205,8 +205,8 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
                 first = True
             else:
                 first = False
-            word_line(ctx, colors, first=first, segment_length=segment_length,
-                      scaling_factor=kwargs.get('wire_scaling_factor'))
+            draw_word_line(ctx, colors, first=first, segment_length=segment_length,
+                           scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
 
@@ -242,21 +242,21 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     ctx.move_to(x, y)
 
     if device_currents is not None:
-        for single_device_row in device_currents:
+        for device_row in device_currents:
             colors = plotting.utils.rgb_interpolation(
-                single_device_row, low=low, high=high,
+                device_row, low=low, high=high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
-            device_row(ctx, colors, segment_length=segment_length,
-                       scaling_factor=kwargs.get('device_scaling_factor'))
+            draw_device_row(ctx, colors, segment_length=segment_length,
+                            scaling_factor=kwargs.get('device_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
             crossbar_shape, color=kwargs.get('default_color'))
         for colors in colors_list:
-            device_row(ctx, colors, segment_length=segment_length,
-                       scaling_factor=kwargs.get('device_scaling_factor'))
+            draw_device_row(ctx, colors, segment_length=segment_length,
+                            scaling_factor=kwargs.get('device_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
 
@@ -269,8 +269,8 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
             ctx.move_to(x, y)
             node_scaling_factor = kwargs.get('device_scaling_factor') * \
                 kwargs.get('node_scaling_factor')
-            nodes(ctx, colors, bit_line_nodes=i, segment_length=segment_length,
-                  scaling_factor=node_scaling_factor)
+            draw_node_row(ctx, colors, bit_line_nodes=i, segment_length=segment_length,
+                          scaling_factor=node_scaling_factor)
         y += segment_length
         ctx.move_to(x, y)
 
