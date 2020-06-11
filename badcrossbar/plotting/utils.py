@@ -44,9 +44,9 @@ def complete_fill(ctx, rgb=(0, 0, 0)):
 
 
 def rgb_interpolation(array, low=0, high=1,
-                      low_rgb=(0.706, 0.016, 0.150),
+                      low_rgb=(213/255, 94/255, 0),
                       zero_rgb=(0.865, 0.865, 0.865),
-                      high_rgb=(0.230, 0.299, 0.754)):
+                      high_rgb=(0, 114/255, 178/255)):
     """Linearly interpolates RGB colors for an array in a specified range.
 
     Parameters
