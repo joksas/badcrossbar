@@ -139,7 +139,7 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
             colors = plotting.utils.rgb_interpolation(
                 single_bit_line, low=low, high=high)
             bit_line(ctx, colors, segment_length=segment_length,
-                     scaling_factor=kwargs.get('wire_scaling_factor', 1))
+                     scaling_factor=kwargs.get('wire_scaling_factor'))
             x += segment_length
             ctx.move_to(x, y)
     else:
@@ -147,7 +147,7 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
             crossbar_shape, color=kwargs.get('default_color'))
         for colors in np.transpose(colors_list):
             bit_line(ctx, colors, segment_length=segment_length,
-                     scaling_factor=kwargs.get('wire_scaling_factor', 1))
+                     scaling_factor=kwargs.get('wire_scaling_factor'))
             x += segment_length
             ctx.move_to(x, y)
 
@@ -190,7 +190,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
             else:
                 first = False
             word_line(ctx, colors, first=first, segment_length=segment_length,
-                      scaling_factor=kwargs.get('wire_scaling_factor', 1))
+                      scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
     else:
@@ -202,7 +202,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
             else:
                 first = False
             word_line(ctx, colors, first=first, segment_length=segment_length,
-                      scaling_factor=kwargs.get('wire_scaling_factor', 1))
+                      scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
 
@@ -242,7 +242,7 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
             colors = plotting.utils.rgb_interpolation(
                 single_device_row, low=low, high=high)
             device_row(ctx, colors, segment_length=segment_length,
-                       scaling_factor=kwargs.get('device_scaling_factor', 1))
+                       scaling_factor=kwargs.get('device_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
     else:
@@ -250,7 +250,7 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
             crossbar_shape, color=kwargs.get('default_color'))
         for colors in colors_list:
             device_row(ctx, colors, segment_length=segment_length,
-                       scaling_factor=kwargs.get('device_scaling_factor', 1))
+                       scaling_factor=kwargs.get('device_scaling_factor'))
             y += segment_length
             ctx.move_to(x, y)
 
@@ -261,8 +261,8 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     for colors in colors_list:
         for i in [True, False]:
             ctx.move_to(x, y)
-            node_scaling_factor = kwargs.get('device_scaling_factor', 1) * \
-                kwargs.get('node_scaling_factor', 1)
+            node_scaling_factor = kwargs.get('device_scaling_factor') * \
+                kwargs.get('node_scaling_factor')
             nodes(ctx, colors, bit_line_nodes=i, segment_length=segment_length,
                   scaling_factor=node_scaling_factor)
         y += segment_length

@@ -4,6 +4,9 @@ import badcrossbar.plotting as plotting
 
 def currents(device_currents, word_line_currents, bit_line_currents, **kwargs):
     kwargs.setdefault('default_color', (0, 0, 0))
+    kwargs.setdefault('wire_scaling_factor', 1)
+    kwargs.setdefault('device_scaling_factor', 1)
+    kwargs.setdefault('node_scaling_factor', 1)
 
     device_currents, word_line_currents, bit_line_currents =\
         plotting.utils.average_if_list(
