@@ -262,6 +262,32 @@ def devices(ctx, device_currents, x_start, y_start, low, high,
 
 def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
                border_fraction=0.05):
+    """Extracts dimensions of the surface.
+
+    Parameters
+    ----------
+    shape : tuple of int
+        Shape of the crossbar array (num_word_lines, num_bit_lines).
+    max_dim : float
+        The length of the longest side.
+    color_bar_fraction : tuple of float
+        The fraction of the surface that the color bar region will take on
+        the right (vertically and horizontally.
+    border_fraction : float
+        Fraction of the max_dim that will be blank on all sides of the surface.
+
+    Returns
+    -------
+    surface_dims : tuple of float
+        Dimensions of the surface.
+    pos_start : tuple of float
+        Coordinates of the top left point of the diagram.
+    segment_length : float
+        The length of each segment.
+    color_bar_dims : tuple of float
+        The first two elements represent top left position of the rectangle,
+        while the last two elements represent width and height.
+    """
     adjusted_shape = (shape[0]+0.5, shape[1]+0.5)
     active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border_fraction
     if adjusted_shape[1]/adjusted_shape[0] > active_horizontal_fraction:

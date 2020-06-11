@@ -4,12 +4,44 @@ from badcrossbar import plotting as plotting
 
 
 def draw(ctx, color_bar_dims, low, high):
+    """Draws the color bar together with its labels.
+
+    Parameters
+    ----------
+    ctx : cairo.Context
+        Context.
+    color_bar_dims : tuple of float
+        The first two elements represent top left position of the rectangle,
+        while the last two elements represent width and height.
+    low : float
+        Lower limit of the linear range.
+    high : float
+        Upper limit of the linear range.
+    """
     middle = rectangle(ctx, color_bar_dims, low, high)
     tick_labels(ctx, middle, low, high, color_bar_dims)
     axis_label(ctx, color_bar_dims)
 
 
 def dimensions(surface_dims, color_bar_fraction, border_fraction):
+    """Extracts dimensions of the color bar.
+
+    Parameters
+    ----------
+    surface_dims : tuple of float
+        Dimensions of the surface.
+    color_bar_fraction : tuple of float
+        The fraction of the surface that the color bar region will take on
+        the right (vertically and horizontally.
+    border_fraction : float
+        Fraction of the max_dim that will be blank on all sides of the surface.
+
+    Returns
+    -------
+    tuple of float
+        The first two elements represent top left position of the rectangle,
+        while the last two elements represent width and height.
+    """
     height = np.max(surface_dims) * color_bar_fraction[0]
     width = np.max(surface_dims) * color_bar_fraction[1] / 4
     x_start = surface_dims[0] * (1 - border_fraction) - 3 * width
