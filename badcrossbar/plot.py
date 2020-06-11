@@ -2,11 +2,17 @@ import cairo
 import badcrossbar.plotting as plotting
 
 
-def currents(device_currents, word_line_currents, bit_line_currents, **kwargs):
+def currents(device_currents=None, word_line_currents=None,
+             bit_line_currents=None, all_currents=None, **kwargs):
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
     kwargs.setdefault('device_scaling_factor', 1)
     kwargs.setdefault('node_scaling_factor', 1)
+
+    if all_currents is not None:
+        device_currents = all_currents.device
+        word_line_currents = all_currents.word_line
+        bit_line_currents = all_currents.bit_line
 
     device_currents, word_line_currents, bit_line_currents =\
         plotting.utils.average_if_list(
