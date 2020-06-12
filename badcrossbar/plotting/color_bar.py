@@ -17,7 +17,7 @@ def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    kwargs:
+    **kwargs
         axis_label : str
             Axis label of the color bar.
     """
@@ -116,7 +116,7 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    kwargs:
+    **kwargs
         low_rgb : tuple of int
             Colour (in RGB) associated with the lower limit.
         zero_rgb : tuple of int

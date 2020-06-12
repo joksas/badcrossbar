@@ -126,7 +126,7 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
         The length of each segment.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when bit_line_currents is None.
-    kwargs:
+    **kwargs
         default_color : tuple of float
             The colour (in RGB) of bit lines if their currents are not provided.
     """
@@ -176,7 +176,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
         The length of each segment.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when word_line_currents is None.
-    kwargs:
+    **kwargs
         default_color : tuple of float
             The colour (in RGB) of word lines if their currents are not
             provided.
@@ -236,7 +236,7 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
         The length of each segment.
     crossbar_shape : tuple of int
         Shape of the crossbar array. Used when device_currents is None.
-    kwargs:
+    **kwargs
         default_color : tuple of float
             The colour (in RGB) of crossbar devices (if their currents are not
             provided), as well as of nodes.
