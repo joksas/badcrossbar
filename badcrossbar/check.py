@@ -89,7 +89,7 @@ def not_none(**kwargs):
 
     Parameters
     ----------
-    kwargs : any
+    **kwargs : dict of any
         Items of arbitrary type.
 
     Returns
@@ -120,7 +120,7 @@ def number(**kwargs):
 
     Parameters
     ----------
-    kwargs : any
+    **kwargs : dict of any
         Items of arbitrary type.
 
     Raises
@@ -144,7 +144,7 @@ def matrix_type(**kwargs):
 
     Parameters
     ----------
-    kwargs : any
+    **kwargs : dict of any
         Items of arbitrary type.
 
     Returns
@@ -191,7 +191,7 @@ def empty(**kwargs):
 
     Parameters
     ----------
-    kwargs : ndarray
+    **kwargs : dict of ndarray
         Arrays.
 
     Raises
@@ -209,7 +209,7 @@ def match_shape(**kwargs):
 
     Parameters
     ----------
-    kwargs : tuple of ndarray and int
+    **kwargs : dict of tuple of (ndarray and int)
         Arrays and the dimension along which they should be matched.
 
     Raises
@@ -233,7 +233,7 @@ def negative_array(**kwargs):
 
     Parameters
     ----------
-    kwargs : ndarray
+    **kwargs : dict of ndarray
         Arrays.
 
     Raises
@@ -253,7 +253,7 @@ def negative_number(**kwargs):
 
     Parameters
     ----------
-    kwargs : int or float
+    **kwargs : dict of (int or float)
         Numbers.
 
     Raises
