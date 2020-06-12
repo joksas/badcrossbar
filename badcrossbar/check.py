@@ -32,6 +32,29 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     return resistances, applied_voltages
 
 
+def not_none(**kwargs):
+    """Confirms that at least one of the variables is not None.
+
+    Parameters
+    ----------
+    kwargs : any
+        Items of arbitrary type.
+
+    Raises
+    -------
+    ValueError
+        If all of the items are None.
+    """
+    all_none = True
+    for _, value in kwargs.items():
+        if value is not None:
+            all_none = False
+            break
+    if all_none:
+        raise ValueError('At least one of {{{}}} should be not None!'.format(
+            ', '.join(kwargs)))
+
+
 def number(**kwargs):
     """Confirms that items are int or float.
 
@@ -170,7 +193,7 @@ def negative_number(**kwargs):
 
     Parameters
     ----------
-    kwargs : int
+    kwargs : int or float
         Numbers.
 
     Raises
