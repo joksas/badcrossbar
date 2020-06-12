@@ -1,5 +1,6 @@
 import cairo
 import badcrossbar.plotting as plotting
+import badcrossbar.check as check
 
 
 def currents(device_currents=None, word_line_currents=None,
@@ -17,10 +18,14 @@ def currents(device_currents=None, word_line_currents=None,
         device_currents = all_currents.device
         word_line_currents = all_currents.word_line
         bit_line_currents = all_currents.bit_line
+        device_currents, word_line_currents, bit_line_currents =\
+            plotting.utils.average_if_list(
+                device_currents, word_line_currents, bit_line_currents)
 
-    device_currents, word_line_currents, bit_line_currents =\
-        plotting.utils.average_if_list(
+    device_currents, word_line_currents, bit_line_currents = \
+        check.current_plotting_requirements(
             device_currents, word_line_currents, bit_line_currents)
+
     crossbar_shape = plotting.utils.arrays_shape(
         device_currents, word_line_currents, bit_line_currents)
 
