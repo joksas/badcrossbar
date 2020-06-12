@@ -33,8 +33,9 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     return resistances, applied_voltages
 
 
-def current_plotting_requirements(device_currents, word_line_currents,
-                                  bit_line_currents):
+def plotting_requirements(device_currents=None, word_line_currents=None,
+                          bit_line_currents=None, word_line_voltages=None,
+                          bit_line_voltages=None, currents=True):
     """Checks if arrays containing current values satisfy all requirements.
 
     Parameters
@@ -45,15 +46,26 @@ def current_plotting_requirements(device_currents, word_line_currents,
         Currents flowing through word line segments.
     bit_line_currents : ndarray or None
         Currents flowing through bit line segments.
+    word_line_voltages : ndarray or None
+        Voltages at the nodes on the word lines.
+    bit_line_voltages : ndarray or None
+        Voltages at the nodes on the bit lines.
+    currents : bool
+        If True, it is assumed that currents are passed. Otherwise, voltages
+        are expected.
 
     Returns
     -------
     ndarray
-        Potentially modified (converted to ndarray) currents.
+        Potentially modified (converted to ndarray) currents or voltages.
     """
-    valid_arrays = not_none(device_currents=device_currents,
-                            word_line_currents=word_line_currents,
-                            bit_line_currents=bit_line_currents)
+    if currents:
+        valid_arrays = not_none(device_currents=device_currents,
+                                word_line_currents=word_line_currents,
+                                bit_line_currents=bit_line_currents)
+    else:
+        valid_arrays = not_none(word_line_voltages=word_line_voltages,
+                                bit_line_voltages=bit_line_voltages)
     for key, value in valid_arrays.items():
         valid_arrays[key] = matrix_type(**{key: value})
     empty(**valid_arrays)
@@ -63,9 +75,13 @@ def current_plotting_requirements(device_currents, word_line_currents,
                           for key, value in valid_arrays.items()}
             match_shape(**dim_arrays)
 
-    return valid_arrays.get('device_currents'), \
-        valid_arrays.get('word_line_currents'),\
-        valid_arrays.get('bit_line_currents')
+    if currents:
+        return valid_arrays.get('device_currents'), \
+            valid_arrays.get('word_line_currents'),\
+            valid_arrays.get('bit_line_currents')
+    else:
+        return valid_arrays.get('word_line_voltages'), \
+            valid_arrays.get('bit_line_voltages')
 
 
 def not_none(**kwargs):

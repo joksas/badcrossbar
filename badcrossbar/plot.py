@@ -23,7 +23,7 @@ def currents(device_currents=None, word_line_currents=None,
                 device_currents, word_line_currents, bit_line_currents)
 
     device_currents, word_line_currents, bit_line_currents = \
-        check.current_plotting_requirements(
+        check.plotting_requirements(
             device_currents, word_line_currents, bit_line_currents)
 
     crossbar_shape = plotting.utils.arrays_shape(
