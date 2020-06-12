@@ -16,8 +16,9 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
 
     Returns
     -------
-    resistances, applied_voltages : ndarray
-        Potentially modified resistances and applied voltages.
+    ndarray
+        Potentially modified (converted to ndarray) resistances and applied
+        voltages.
     """
     resistances, applied_voltages = matrix_type(
         resistances=resistances, applied_voltages=applied_voltages)
@@ -30,6 +31,41 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     short_circuit(resistances, r_i, **kwargs)
 
     return resistances, applied_voltages
+
+
+def current_plotting_requirements(device_currents, word_line_currents,
+                                  bit_line_currents):
+    """Checks if arrays containing current values satisfy all requirements.
+
+    Parameters
+    ----------
+    device_currents : ndarray or None
+        Currents flowing through crossbar devices.
+    word_line_currents : ndarray or None
+        Currents flowing through word line segments.
+    bit_line_currents : ndarray or None
+        Currents flowing through bit line segments.
+
+    Returns
+    -------
+    ndarray
+        Potentially modified (converted to ndarray) currents.
+    """
+    valid_arrays = not_none(device_currents=device_currents,
+                            word_line_currents=word_line_currents,
+                            bit_line_currents=bit_line_currents)
+    for key, value in valid_arrays.items():
+        valid_arrays[key] = matrix_type(**{key: value})
+    empty(**valid_arrays)
+    if len(valid_arrays) != 1:
+        for dim in [0, 1]:
+            dim_arrays = {key: (value, dim)
+                          for key, value in valid_arrays.items()}
+            match_shape(**dim_arrays)
+
+    return valid_arrays.get('device_currents'), \
+        valid_arrays.get('word_line_currents'),\
+        valid_arrays.get('bit_line_currents')
 
 
 def not_none(**kwargs):
