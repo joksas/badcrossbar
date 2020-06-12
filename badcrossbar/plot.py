@@ -33,7 +33,7 @@ def currents(device_currents=None, word_line_currents=None,
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
-    surface = cairo.PDFSurface('crossbar_currents.pdf', *surface_dims)
+    surface = cairo.PDFSurface('crossbar-currents.pdf', *surface_dims)
     context = cairo.Context(surface)
 
     low, high = plotting.utils.arrays_range(
@@ -87,7 +87,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
-    surface = cairo.PDFSurface('crossbar_voltages.pdf', *surface_dims)
+    surface = cairo.PDFSurface('crossbar-voltages.pdf', *surface_dims)
     context = cairo.Context(surface)
 
     low, high = plotting.utils.arrays_range(word_line_voltages,
