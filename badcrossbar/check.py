@@ -33,26 +33,34 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
 
 
 def not_none(**kwargs):
-    """Confirms that at least one of the variables is not None.
+    """Confirms that at least one of the items is not None.
 
     Parameters
     ----------
     kwargs : any
         Items of arbitrary type.
 
+    Returns
+    -------
+    dict of any
+        Items that are not None.
+
     Raises
     -------
     ValueError
         If all of the items are None.
     """
+    valid_items = {}
     all_none = True
-    for _, value in kwargs.items():
+    for key, value in kwargs.items():
         if value is not None:
             all_none = False
-            break
+            valid_items[key] = value
     if all_none:
         raise ValueError('At least one of {{{}}} should be not None!'.format(
             ', '.join(kwargs)))
+
+    return valid_items
 
 
 def number(**kwargs):
