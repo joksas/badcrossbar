@@ -24,7 +24,9 @@ def currents(device_currents=None, word_line_currents=None,
 
     device_currents, word_line_currents, bit_line_currents = \
         check.plotting_requirements(
-            device_currents, word_line_currents, bit_line_currents)
+            device_currents=device_currents,
+            word_line_currents=word_line_currents,
+            bit_line_currents=bit_line_currents, currents=True)
 
     crossbar_shape = plotting.utils.arrays_shape(
         device_currents, word_line_currents, bit_line_currents)
@@ -73,9 +75,13 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     if all_voltages is not None:
         word_line_voltages = all_voltages.word_line
         bit_line_voltages = all_voltages.bit_line
+        word_line_voltages, bit_line_voltages = plotting.utils.average_if_list(
+            word_line_voltages, bit_line_voltages)
 
-    word_line_voltages, bit_line_voltages =\
-        plotting.utils.average_if_list(word_line_voltages, bit_line_voltages)
+    word_line_voltages, bit_line_voltages = check.plotting_requirements(
+        word_line_voltages=word_line_voltages,
+        bit_line_voltages=bit_line_voltages, currents=False)
+
     crossbar_shape = plotting.utils.arrays_shape(word_line_voltages,
                                                  bit_line_voltages)
 
