@@ -130,7 +130,7 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
         If False, only two colors were used for the gradient.
     """
     ctx.rectangle(*color_bar_pos, *color_bar_dims)
-    x_start = color_bar_pos[0] + color_bar_dims[0]
+    x_start = color_bar_pos[0]
     y_start = color_bar_pos[1] + color_bar_dims[1]
     x_end = color_bar_pos[0]
     y_end = color_bar_pos[1]
