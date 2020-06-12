@@ -182,7 +182,10 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
     if high > 0 or middle:
         ctx.show_text(str(high))
     else:
-        ctx.show_text('0')
+        if low == high:
+            ctx.show_text(str(low))
+        else:
+            ctx.show_text('0')
 
     if middle:
         x = color_bar_pos[0] + color_bar_dims[0]*1.2
@@ -196,7 +199,10 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
     if low < 0 or middle:
         ctx.show_text(str(low))
     else:
-        ctx.show_text('0')
+        if low == high:
+            ctx.show_text(str(high))
+        else:
+            ctx.show_text('0')
 
 
 def axis_label(ctx, color_bar_pos, color_bar_dims, label='Current (A)'):
