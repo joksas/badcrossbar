@@ -39,6 +39,10 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
         while all the others are arrays of shape m x n if p = 1, or lists of
         length p with arrays of shape m x n as their elements if p > 1.
     """
+    kwargs.setdefault('node_voltages', True)
+    kwargs.setdefault('all_currents', True)
+    kwargs.setdefault('verbose', 1)
+
     display.message('Initialising simulation.', **kwargs)
     resistances, applied_voltages = check.crossbar_requirements(
         resistances, applied_voltages, r_i, **kwargs)
