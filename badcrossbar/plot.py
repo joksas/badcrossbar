@@ -14,6 +14,7 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
     kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
     kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
+    kwargs.setdefault('allow_overwrite', False)
 
     if all_currents is not None:
         device_currents = all_currents.device
@@ -34,7 +35,10 @@ def currents(device_currents=None, word_line_currents=None,
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
-    filename = utils.unique_path('crossbar-currents', 'pdf')
+    if kwargs.get('allow_overwrite'):
+        filename = 'crossbar-currents.pdf'
+    else:
+        filename = utils.unique_path('crossbar-currents', 'pdf')
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
@@ -73,6 +77,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
     kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
     kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
+    kwargs.setdefault('allow_overwrite', False)
 
     if all_voltages is not None:
         word_line_voltages = all_voltages.word_line
@@ -89,7 +94,10 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
-    filename = utils.unique_path('crossbar-voltages', 'pdf')
+    if kwargs.get('allow_overwrite'):
+        filename = 'crossbar-voltages.pdf'
+    else:
+        filename = utils.unique_path('crossbar-voltages', 'pdf')
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
