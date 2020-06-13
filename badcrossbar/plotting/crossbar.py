@@ -2,7 +2,8 @@ import numpy as np
 import badcrossbar.plotting as plotting
 
 
-def draw_word_line(ctx, colors, segment_length=120, first=False, scaling_factor=1):
+def draw_word_line(ctx, colors, segment_length=100, first=False,
+                   scaling_factor=1):
     """Draws a word line of a crossbar array.
 
     Parameters
@@ -18,7 +19,7 @@ def draw_word_line(ctx, colors, segment_length=120, first=False, scaling_factor=
     scaling_factor : float
         Scaling factor for the width.
     """
-    width = segment_length/120*3*scaling_factor
+    width = segment_length/100*3*scaling_factor
     for idx, color in enumerate(colors):
         if idx == 0 or first:
             plotting.shapes.line(ctx, segment_length)
@@ -31,7 +32,7 @@ def draw_word_line(ctx, colors, segment_length=120, first=False, scaling_factor=
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def draw_bit_line(ctx, colors, segment_length=120, scaling_factor=1):
+def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
     """Draws a bit line of a crossbar array.
 
     Parameters
@@ -45,13 +46,13 @@ def draw_bit_line(ctx, colors, segment_length=120, scaling_factor=1):
     scaling_factor : float
         Scaling factor for the width.
     """
-    width = segment_length/120*3*scaling_factor
+    width = segment_length/100*3*scaling_factor
     for color in colors:
         plotting.shapes.line(ctx, segment_length, angle=np.pi / 2)
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def draw_device_row(ctx, colors, segment_length=120, scaling_factor=1):
+def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1):
     """Draws a row of crossbar devices.
 
     Parameters
@@ -65,7 +66,7 @@ def draw_device_row(ctx, colors, segment_length=120, scaling_factor=1):
     scaling_factor : float
         Scaling factor for the width.
     """
-    width = segment_length/120*5*scaling_factor
+    width = segment_length/100*5*scaling_factor
     x, y = ctx.get_current_point()
     device_length = segment_length/2*np.sqrt(2)  # Pythagorean theorem
     for color in colors:
@@ -75,7 +76,7 @@ def draw_device_row(ctx, colors, segment_length=120, scaling_factor=1):
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def draw_node_row(ctx, colors, segment_length=120, bit_line_nodes=True,
+def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
                   scaling_factor=1):
     """Draws a row of nodes.
 
@@ -92,7 +93,7 @@ def draw_node_row(ctx, colors, segment_length=120, bit_line_nodes=True,
     scaling_factor : float
         Scaling factor for the diameter.
     """
-    diameter = segment_length/120*7*scaling_factor
+    diameter = segment_length/100*6*scaling_factor
     x, y = ctx.get_current_point()
     if bit_line_nodes:
         x += segment_length/2
