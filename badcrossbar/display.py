@@ -1,4 +1,4 @@
-from datetime import datetime
+import badcrossbar.utils as utils
 
 
 def message(message_str, **kwargs):
@@ -51,7 +51,5 @@ def time(**kwargs):
     -------
     None
     """
-    time_str = str(datetime.now())
-    if kwargs.get('keep_ms', False) is False:
-        time_str = time_str.split('.')[0]
+    time_str = utils.time(keep_ms=kwargs.get('keep_ms', False))
     print(time_str, end='')

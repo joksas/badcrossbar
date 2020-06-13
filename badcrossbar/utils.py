@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 
 def unique_path(path, extension='pdf'):
@@ -29,3 +30,21 @@ def unique_path(path, extension='pdf'):
                 break
 
     return full_path
+
+
+def time(keep_ms=False):
+    """Returns current time.
+
+    Parameters
+    ----------
+    keep_ms : bool
+        If True, includes milliseconds.
+    Returns
+    -------
+    str
+        Current time.
+    """
+    time_str = str(datetime.now())
+    if keep_ms is False:
+        time_str = time_str.split('.')[0]
+    return time_str
