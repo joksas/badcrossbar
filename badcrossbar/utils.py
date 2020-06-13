@@ -51,8 +51,8 @@ def time(keep_ms=False):
     return time_str
 
 
-def squeeze_third_dim(array):
-    """Removes third dimension of ndarray if it has shape of 1.
+def squeeze_third_axis(array):
+    """Removes third axis of ndarray if it has shape of 1.
 
     Parameters
     ----------
@@ -67,5 +67,24 @@ def squeeze_third_dim(array):
     if array.ndim == 3:
         if array.shape[2] == 1:
             array = np.squeeze(array, axis=2)
+
+    return array
+
+
+def average_if_3D(array):
+    """If array is 3D, it is averaged along the third axis.
+
+    Parameters
+    ----------
+    array : ndarray
+        2D or 3D array.
+
+    Returns
+    -------
+    ndarray
+        2D array.
+    """
+    if array.ndim == 3:
+        array = np.mean(array, axis=2)
 
     return array
