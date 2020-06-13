@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import numpy as np
 
 
 def unique_path(path, extension='pdf'):
@@ -48,3 +49,23 @@ def time(keep_ms=False):
     if keep_ms is False:
         time_str = time_str.split('.')[0]
     return time_str
+
+
+def squeeze_third_dim(array):
+    """Removes third dimension of ndarray if it has shape of 1.
+
+    Parameters
+    ----------
+    array : ndarray
+        3D array.
+
+    Returns
+    -------
+    ndarray
+        2D or 3D array.
+    """
+    if array.ndim == 3:
+        if array.shape[2] == 1:
+            array = np.squeeze(array, axis=2)
+
+    return array
