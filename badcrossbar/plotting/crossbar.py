@@ -10,8 +10,8 @@ def draw_word_line(ctx, colors, segment_length=100, first=False,
     ----------
     ctx : cairo.Context
         Context.
-    colors : list of tuple of int
-        Colors of the word line segments in RGB (max value of 255).
+    colors : list of tuple of float
+        Colors of the word line segments in RGB.
     segment_length : float
         The length of each segment.
     first : bool
@@ -39,8 +39,8 @@ def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
     ----------
     ctx : cairo.Context
         Context.
-    colors : list of tuple of int
-        Colors of the bit line segments in RGB (max value of 255).
+    colors : list of tuple of float
+        Colors of the bit line segments in RGB.
     segment_length : float
         The length of each segment.
     scaling_factor : float
@@ -59,8 +59,8 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1):
     ----------
     ctx : cairo.Context
         Context.
-    colors : list of tuple of int
-        Colors of the crossbar devices in RGB (max value of 255).
+    colors : list of tuple of float
+        Colors of the crossbar devices in RGB.
     segment_length : float
         The length of each segment.
     scaling_factor : float
@@ -84,8 +84,8 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
     ----------
     ctx : cairo.Context
         Context.
-    colors : list of tuple of int
-        Colors of the nodes in RGB (max value of 255).
+    colors : list of tuple of float
+        Colors of the nodes in RGB.
     segment_length : float
         The length of each segment.
     bit_line_nodes : bool
