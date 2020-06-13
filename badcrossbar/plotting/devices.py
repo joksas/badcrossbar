@@ -2,7 +2,7 @@ import badcrossbar.plotting.shapes as shapes
 import numpy as np
 
 
-def memristor(ctx, length=140, angle=0):
+def memristor(ctx, length=100, angle=0):
     """Draws a memristor.
 
     Parameters
