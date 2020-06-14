@@ -43,4 +43,6 @@ modified_label = 'Change in current (%)'
 badcrossbar.plot.currents(device_currents=device_change,
                           word_line_currents=word_line_change,
                           bit_line_currents=bit_line_change,
-                          axis_label=modified_label)
+                          axis_label=modified_label,
+                          filename='Ex-3',
+                          allow_overwrite=True)

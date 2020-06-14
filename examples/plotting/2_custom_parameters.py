@@ -53,7 +53,9 @@ badcrossbar.plot.voltages(all_voltages=solution.voltages,
                           default_color=my_default_color,
                           node_scaling_factor=my_node_scaling_factor,
                           zero_rgb=my_zero_rgb,
-                          high_rgb=my_high_rgb)
+                          high_rgb=my_high_rgb,
+                          filename='Ex-2',
+                          allow_overwrite=True)
 
 # The produced diagram hopefully helps to visualize the voltage decreases
 # across the crossbar array more clearly. In this specific example, the
