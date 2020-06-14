@@ -20,6 +20,8 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
         Potentially modified (converted to ndarray) resistances and applied
         voltages.
     """
+    resistances, applied_voltages = (np.array(i) for i in
+                                     (resistances, applied_voltages))
     resistances, applied_voltages = matrix_type(
         resistances=resistances, applied_voltages=applied_voltages)
     empty(resistances=resistances, applied_voltages=applied_voltages)
@@ -133,6 +135,29 @@ def number(**kwargs):
             raise TypeError(
                 'Type {} of variable \'{}\' is not supported. Use int or '
                 'float instead.'.format(type(value).__name__, key))
+
+
+def n_dimensional(array, n=2, name='array'):
+    """Check if array is n-dimensional.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    n : int
+        Required number of dimensions.
+    name : str
+        Name of the variable.
+
+    Raises
+    -------
+    TypeError
+        If array is not n-dimensional.
+    """
+    dim = array.ndim
+    if dim != n:
+        raise TypeError('\'{}\' should be {}-dimensional array! Instead '
+                        'received {}-dimensional array.'.format(name, n, dim))
 
 
 def matrix_type(**kwargs):
