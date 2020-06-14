@@ -1,4 +1,5 @@
 import badcrossbar
+from badcrossbar import utils
 import numpy as np
 import pickle
 from collections import namedtuple
@@ -103,9 +104,8 @@ def qucs_data(filename):
         Branch currents and node voltages of the crossbar.
     """
     path = 'qucs/' + filename + '.pickle'
-    with open(path, 'rb') as handle:
-        resistances, applied_voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = \
-            pickle.load(handle)
+    resistances, applied_voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = \
+        utils.load_pickle(path)
 
     extracted_currents = Currents(i_o, i_d, i_w, i_b)
     extracted_voltages = Voltages(v_w, v_b)
@@ -148,10 +148,10 @@ def qucs_data_multiple(filenames):
 
     for filename in filenames:
         path = 'qucs/' + filename + '.pickle'
-        with open(path, 'rb') as handle:
-            resistances, voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = \
-                pickle.load(handle)
-        voltages_list.append(voltages)
+        resistances, applied_voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = \
+            utils.load_pickle(path)
+
+        voltages_list.append(applied_voltages)
         i_o_list.append(i_o)
         i_d_list.append(i_d[:, :, np.newaxis])
         i_w_list.append(i_w[:, :, np.newaxis])
@@ -159,7 +159,7 @@ def qucs_data_multiple(filenames):
         v_w_list.append(v_w[:, :, np.newaxis])
         v_b_list.append(v_b[:, :, np.newaxis])
 
-    voltages = np.concatenate(voltages_list, axis=1)
+    applied_voltages = np.concatenate(voltages_list, axis=1)
     i_o = np.concatenate(i_o_list, axis=0)
     i_d = np.concatenate(i_d_list, axis=2)
     i_w = np.concatenate(i_w_list, axis=2)
@@ -172,7 +172,7 @@ def qucs_data_multiple(filenames):
 
     solution = Solution(extracted_currents, extracted_voltages)
 
-    return resistances, voltages, r_i, solution
+    return resistances, applied_voltages, r_i, solution
 
 
 def compare_currents(computed_currents, expected_currents):
