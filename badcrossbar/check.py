@@ -17,7 +17,7 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     Returns
     -------
     ndarray
-        Potentially modified (converted to ndarray) resistances and applied
+        Potentially modified (converted to `ndarray`) resistances and applied
         voltages.
     """
     resistances, applied_voltages = (np.array(i) for i in
@@ -43,28 +43,29 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
 def plotting_requirements(device_currents=None, word_line_currents=None,
                           bit_line_currents=None, word_line_voltages=None,
                           bit_line_voltages=None, currents=True):
-    """Checks if arrays containing current values satisfy all requirements.
+    """Checks if arrays containing current or voltage values satisfy all
+    requirements.
 
     Parameters
     ----------
-    device_currents : ndarray or None
+    device_currents : ndarray or None, optional
         Currents flowing through crossbar devices.
-    word_line_currents : ndarray or None
+    word_line_currents : ndarray or None, optional
         Currents flowing through word line segments.
-    bit_line_currents : ndarray or None
+    bit_line_currents : ndarray or None, optional
         Currents flowing through bit line segments.
-    word_line_voltages : ndarray or None
+    word_line_voltages : ndarray or None, optional
         Voltages at the nodes on the word lines.
-    bit_line_voltages : ndarray or None
+    bit_line_voltages : ndarray or None, optional
         Voltages at the nodes on the bit lines.
-    currents : bool
+    currents : bool, optional
         If True, it is assumed that currents are passed. Otherwise, voltages
         are expected.
 
     Returns
     -------
     ndarray
-        Potentially modified (converted to ndarray) currents or voltages.
+        Potentially modified (converted to `ndarray`) currents or voltages.
     """
     if currents:
         valid_arrays = not_none(device_currents=device_currents,
@@ -103,7 +104,7 @@ def not_none(**kwargs):
 
     Parameters
     ----------
-    **kwargs : dict of any
+    **kwargs : dict of any, optional
         Items of arbitrary type.
 
     Returns
@@ -130,21 +131,21 @@ def not_none(**kwargs):
 
 
 def n_dimensional(array, n=2, name='array'):
-    """Checks that array is n-dimensional.
+    """Checks that array is `n`-dimensional.
 
     Parameters
     ----------
     array : ndarray
         Array.
-    n : int
+    n : int, optional
         Required number of dimensions.
-    name : str
+    name : str, optional
         Name of the variable.
 
     Raises
     -------
     TypeError
-        If array is not n-dimensional.
+        If array is not `n`-dimensional.
     """
     dim = array.ndim
     if dim != n:
@@ -159,7 +160,7 @@ def numeric_array(array, name='array'):
     ----------
     array : ndarray
         Array.
-    name : str
+    name : str, optional
         Name of the array.
 
     Raises
@@ -178,7 +179,7 @@ def non_empty(array, name='array'):
     ----------
     array : ndarray
         Array.
-    name : str
+    name : str, optional
         Name of the array.
 
     Raises
@@ -221,7 +222,7 @@ def non_negative_array(array, name='array'):
     ----------
     array : ndarray
         Array.
-    name : str
+    name : str, optional
         Name of the array.
 
     Raises
@@ -241,7 +242,7 @@ def non_infinite_array(array, name='array'):
     ----------
     array : ndarray
         Array.
-    name : str
+    name : str, optional
         Name of the array.
 
     Raises
@@ -262,7 +263,7 @@ def number(value, name='variable'):
     ----------
     value : any
         Variable of arbitrary type.
-    name : str
+    name : str, optional
         Name of the variable.
 
     Raises
@@ -283,7 +284,7 @@ def non_negative_number(value, name='number'):
     ----------
     value : int or float
         Number.
-    name : str
+    name : str, optional
         Name of the number.
 
     Raises
@@ -305,13 +306,13 @@ def short_circuit(resistances, r_i, **kwargs):
     r_i : int or float
         Interconnect resistance.
     **kwargs
-        verbose : int
+        verbose : int, optional
         If 2, makes sure that warning is displayed.
 
     Raises
     -------
     ValueError
-        If r_i = 0 and any of the devices have zero resistance.
+        If `r_i == 0` and any of the devices have zero resistance.
     """
 
     if 0 in resistances:

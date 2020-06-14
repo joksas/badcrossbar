@@ -28,7 +28,7 @@ current = solution.currents.output[1, 2]
 print('\nThe current at the third output is {} A.'.format(current))
 
 # printing the current through the crossbar device in the last row and the
-# last column when the last set of inputs is applied (in Python, '-1' refers
+# last column when the last set of inputs is applied (in Python, `-1` refers
 # to the last element in an array)
 current = solution.currents.device[-1, -1, -1]
 print('\nThe current through the crossbar device is {} A.'.format(current))

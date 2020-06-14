@@ -47,7 +47,7 @@ def voltages(applied_voltages, resistances):
     Returns
     -------
     named tuple
-        Crossbar node voltages. It has fields 'word_line' and 'bit_line' that
+        Crossbar node voltages. It has fields `word_line` and `bit_line` that
         contain the potentials at the nodes on the word and bit lines.
     """
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
@@ -121,8 +121,8 @@ def currents(resistances, applied_voltages, extracted_voltages, **kwargs):
     Returns
     -------
     named tuple
-        Crossbar branch currents. It has fields 'output', 'device', 'word_line'
-        and 'bit_line' that contain output currents, as well as currents flowing
+        Crossbar branch currents. It has fields `output`, `device`, `word_line`
+        and `bit_line` that contain output currents, as well as currents flowing
         through the devices and interconnect segments of the word and bit lines.
     """
     output_i = output_currents(resistances, applied_voltages)
@@ -168,7 +168,7 @@ def device_currents(extracted_word_line_voltages, resistances):
 
     Parameters
     ----------
-    extracted_word_line_voltages : ndarray or list of ndarray
+    extracted_word_line_voltages : ndarray
         Potentials at the nodes on the word lines.
     resistances : ndarray
         Resistances of crossbar devices.

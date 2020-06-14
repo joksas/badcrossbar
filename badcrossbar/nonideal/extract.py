@@ -61,7 +61,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
     applied_voltages :ndarray
         Applied voltages.
     removed_rows : list of int
-        Indices of rows removed from g and i.
+        Indices of rows removed from `g` and `i`.
     **kwargs
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
@@ -70,8 +70,8 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
     Returns
     -------
     named tuple
-        Crossbar branch currents. Named tuple has fields 'output', 'device',
-        'word_line' and 'bit_line' that contain output currents, as well as
+        Crossbar branch currents. Named tuple has fields `output`, `device`,
+        `word_line` and `bit_line` that contain output currents, as well as
         currents flowing through the devices and interconnect segments of the
         word and bit lines.
     """
@@ -111,7 +111,7 @@ def voltages(v, resistances, **kwargs):
     Returns
     -------
     named tuple
-        Crossbar node voltages. It has fields 'word_line' and 'bit_line' that
+        Crossbar node voltages. It has fields `word_line` and `bit_line` that
         contain the potentials at the nodes on the word and bit lines.
     """
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
@@ -194,7 +194,7 @@ def device_currents(v, resistances, removed_rows, word_line_i):
     resistances : ndarray
         Resistances of crossbar devices.
     removed_rows : list of int
-        Indices of rows removed from g and i.
+        Indices of rows removed from `g` and `i`.
     word_line_i : ndarray
         Currents flowing through interconnect segments along the word lines.
 
@@ -223,7 +223,7 @@ def superconductive_device_currents(
     device_i : ndarray
         Currents flowing through crossbar devices.
     removed_rows : list of int
-        Indices of rows removed from g and i.
+        Indices of rows removed from `g` and `i`.
     resistances : ndarray
         Resistances of crossbar devices.
     word_line_i : ndarray
@@ -303,7 +303,7 @@ def bit_line_currents(v, resistances, r_i):
 
 
 def distributed_array(flattened_array, model_array):
-    """Reshapes flattened array(s) into an array or a list of arrays.
+    """Reshapes flattened array.
     
     Parameters
     ----------
@@ -332,14 +332,14 @@ def full_v(v, removed_rows, resistances):
     v : ndarray
         Solution to gv = i in a flattened form.
     removed_rows : list of int
-        Indices of rows removed from g and i.
+        Indices of rows removed from `g` and `i`.
     resistances : ndarray
         Resistances of crossbar devices.
 
     Returns
     -------
     ndarray
-        Complete v array.
+        Complete `v` array.
     """
     for row in removed_rows:
         v = np.insert(v, row, 0, axis=0)

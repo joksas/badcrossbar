@@ -12,11 +12,11 @@ def draw_word_line(ctx, colors, segment_length=100, first=False,
         Context.
     colors : list of tuple of float
         Normalized RGB values of the word line segments.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    first : bool
+    first : bool, optional
         If True, draws the first (from the top) word line.
-    scaling_factor : float
+    scaling_factor : float, optional
         Scaling factor for the width.
     """
     width = segment_length/100*3*scaling_factor
@@ -41,9 +41,9 @@ def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
         Context.
     colors : list of tuple of float
         Normalized RGB values of the bit line segments.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    scaling_factor : float
+    scaling_factor : float, optional
         Scaling factor for the width.
     """
     width = segment_length/100*3*scaling_factor
@@ -61,9 +61,9 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1):
         Context.
     colors : list of tuple of float
         Normalized RGB values of the crossbar devices.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    scaling_factor : float
+    scaling_factor : float, optional
         Scaling factor for the width.
     """
     width = segment_length/100*5*scaling_factor
@@ -86,11 +86,11 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
         Context.
     colors : list of tuple of float
         Normalized RGB values of the nodes.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    bit_line_nodes : bool
+    bit_line_nodes : bool, optional
         If True, draws nodes on the bit lines.
-    scaling_factor : float
+    scaling_factor : float, optional
         Scaling factor for the diameter.
     """
     diameter = segment_length/100*6*scaling_factor
@@ -123,12 +123,12 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    crossbar_shape : tuple of int
-        Shape of the crossbar array. Used when bit_line_currents is None.
+    crossbar_shape : tuple of int, optional
+        Shape of the crossbar array. Used when `bit_line_currents` is None.
     **kwargs
-        default_color : tuple of float
+        default_color : tuple of float, optional
             Normalized RGB values of the bit lines if their currents are not
             provided.
     """
@@ -174,12 +174,12 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    crossbar_shape : tuple of int
-        Shape of the crossbar array. Used when word_line_currents is None.
+    crossbar_shape : tuple of int, optional
+        Shape of the crossbar array. Used when `word_line_currents` is None.
     **kwargs
-        default_color : tuple of float
+        default_color : tuple of float, optional
             Normalized RGB values of the word lines if their currents are not
             provided.
     """
@@ -234,12 +234,12 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    crossbar_shape : tuple of int
-        Shape of the crossbar array. Used when device_currents is None.
+    crossbar_shape : tuple of int, optional
+        Shape of the crossbar array. Used when `device_currents` is None.
     **kwargs
-        default_color : tuple of float
+        default_color : tuple of float, optional
             Normalized RGB values of the crossbar devices if their currents
             are not provided.
     """
@@ -284,21 +284,21 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    segment_length : float
+    segment_length : float, optional
         The length of each segment.
-    crossbar_shape : tuple of int
-        Shape of the crossbar array. Used when device_currents is None.
-    bit_line : bool
+    crossbar_shape : tuple of int, optional
+        Shape of the crossbar array. Used when `node_voltages` is None.
+    bit_line : bool, optional
         If True, draws nodes on the bit lines.
     kwargs
-        device_scaling_factor : float
-            Scaling factor for the width of the device. Also scales the nodes.
-        node_scaling_factor : float
+        device_scaling_factor : float, optional
+            Scaling factor for the width of the devices. Also scales the nodes.
+        node_scaling_factor : float, optional
             Scaling factor for the diameter of the nodes which is combined
-            with device_scaling_factor. For example, if one wanted to only
+            with `device_scaling_factor`. For example, if one wanted to only
             scale the device width by a factor of 2, but keep the node diameter
-            the same, arguments device_scaling_factor = 2 and
-            node_scaling_factor = 1/2 would have to be passed.
+            the same, arguments `device_scaling_factor = 2` and
+            `node_scaling_factor = 1/2` would have to be passed.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
@@ -337,14 +337,15 @@ def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
     Parameters
     ----------
     shape : tuple of int
-        Shape of the crossbar array (num_word_lines, num_bit_lines).
-    max_dim : float
+        Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
+    max_dim : float, optional
         The length of the longest side.
-    color_bar_fraction : tuple of float
+    color_bar_fraction : tuple of float, optional
         The fraction of the surface that the color bar region will take on
         the right (vertically and horizontally.
-    border_fraction : float
-        Fraction of the max_dim that will be blank on all sides of the surface.
+    border_fraction : float, optional
+        Fraction of the `max_dim` that will be blank on all sides of the
+        surface.
 
     Returns
     -------

@@ -5,7 +5,7 @@ from badcrossbar.nonideal import extract
 
 
 def g(resistances, r_i):
-    """Creates and fills matrix g used in equation gv = i.
+    """Creates and fills matrix `g` used in equation gv = i.
 
     Parameters
     ----------
@@ -17,7 +17,7 @@ def g(resistances, r_i):
     Returns
     -------
     lil_matrix
-        Filled matrix g.
+        Filled matrix `g`.
     """
     g_shape = tuple(2*resistances.size for _ in range(2))
     g_matrix = lil_matrix(g_shape)
@@ -26,7 +26,7 @@ def g(resistances, r_i):
 
 
 def i(applied_voltages, resistances, r_i):
-    """Creates and fills matrix i used in equation gv = i.
+    """Creates and fills matrix `i` used in equation gv = i.
 
     Values are filled by applying nodal analysis at the leftmost nodes on the
     word lines.
@@ -43,7 +43,7 @@ def i(applied_voltages, resistances, r_i):
     Returns
     -------
     ndarray
-        Filled matrix i.
+        Filled matrix `i`.
     """
     v_shape = (2*resistances.size, applied_voltages.shape[1])
     i_matrix = np.zeros(v_shape)
@@ -52,11 +52,11 @@ def i(applied_voltages, resistances, r_i):
 
 
 def superconductive(g_matrix, i_matrix, resistances, r_i):
-    """Transforms matrices g and i (used in equation gv = i) so that the
+    """Transforms matrices `g` and `i` (used in equation gv = i) so that the
     equation could be solved even if some of the crossbar devices have zero
     resistance.
 
-    When some crossbar devices have zero resistance, g() can yield a singular
+    When some crossbar devices have zero resistance, `g()` can yield a singular
     matrix. To avoid that, redundant nodes (those next to devices with zero
     resistance) have to removed before attempting to solve. In this function,
     nodes on the bit lines next to devices with zero resistance are removed.
@@ -67,9 +67,9 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
     Parameters
     ----------
     g_matrix : lil_matrix
-        matrix g used in equation gv = i
+        matrix `g` used in equation gv = i
     i_matrix : ndarray
-        matrix i used in equation gv = i
+        matrix `i` used in equation gv = i
     resistances : ndarray
         Resistances of crossbar devices.
     r_i : int or float
@@ -78,9 +78,9 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
     Returns
     -------
     g_matrix : lil_matrix
-        Transformed matrix g.
+        Transformed matrix `g`.
     i_matrix : ndarray
-        Transformed matrix i.
+        Transformed matrix `i`.
     removed_rows : list of int
         Indices of removed rows from the two matrices.
     """

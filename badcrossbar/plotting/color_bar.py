@@ -18,7 +18,7 @@ def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     high : float
         Upper limit of the linear range.
     **kwargs
-        axis_label : str
+        axis_label : str, optional
             Axis label of the color bar.
     """
     middle = rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs)
@@ -36,7 +36,7 @@ def dimensions(surface_dims, color_bar_fraction, border_fraction):
         Dimensions of the surface.
     color_bar_fraction : tuple of float
         The fraction of the surface that the color bar region will take on
-        the right (vertically and horizontally.
+        the right (vertically and horizontally).
     border_fraction : float
         Fraction of the max_dim that will be blank on all sides of the surface.
 
@@ -65,18 +65,18 @@ def rgb(low, high, low_rgb, zero_rgb, high_rgb):
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    low_rgb : tuple of int
+    low_rgb : tuple of float
         Normalized RGB value associated with the lower limit.
-    zero_rgb : tuple of int
-        Normalized RGB value associated with value of zero.
-    high_rgb : tuple of int
+    zero_rgb : tuple of float
+        Normalized RGB value associated with the value of zero.
+    high_rgb : tuple of float
         Normalized RGB value associated with the upper limit.
 
     Returns
     -------
     tuple of int
         RGB values for the bottom, middle and top parts of the color map
-        gradient. If only two colors are used, middle_rgb is returned as None.
+        gradient. If only two colors are used, `middle_rgb` is returned as None.
     """
     if low < 0 < high:
         top_rgb = high_rgb
@@ -117,11 +117,11 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     high : float
         Upper limit of the linear range.
     **kwargs
-        low_rgb : tuple of int
+        low_rgb : tuple of int, optional
             Normalized RGB value associated with the lower limit.
-        zero_rgb : tuple of int
+        zero_rgb : tuple of int, optional
             Normalized RGB value associated with value of zero.
-        high_rgb : tuple of int
+        high_rgb : tuple of int, optional
             Normalized RGB value associated with the upper limit.
 
     Returns
@@ -216,7 +216,7 @@ def axis_label(ctx, color_bar_pos, color_bar_dims, label='Current (A)'):
         Coordinates of the top left point of the color bar.
     color_bar_dims : tuple of float
         Width and height of the color bar.
-    label : str
+    label : str, optional
         Axis label of the color bar.
     """
     ctx.set_source_rgb(0, 0, 0)

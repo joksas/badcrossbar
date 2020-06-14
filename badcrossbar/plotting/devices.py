@@ -9,11 +9,11 @@ def memristor(ctx, length=100, angle=0):
     ----------
     ctx : cairo.Context
         Context.
-    length : float
+    length : float, optional
         Total length of the memristor.
-    angle : float
-        Angle in radians of the rotation of plane from the positive x axis
-        towards positive y axis.
+    angle : float, optional
+        Angle in radians of the rotation of plane from the positive `x` axis
+        towards positive `y` axis.
     """
     unit = length/14
     ctx.rotate(angle)
@@ -36,11 +36,11 @@ def resistor_europe(ctx, length=100, angle=0):
     ----------
     ctx : cairo.Context
         Context.
-    length : float
+    length : float, optional
         Total length of the resistor.
-    angle : float
-        Angle in radians of the rotation of plane from the positive x axis
-        towards positive y axis.
+    angle : float, optional
+        Angle in radians of the rotation of plane from the positive `x` axis
+        towards positive `y` axis.
     """
     unit = length/14
     ctx.rotate(angle)

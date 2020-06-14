@@ -12,8 +12,11 @@ def unique_path(path, extension='pdf', sanitize=True):
     ----------
     path : str
         Path of the filename without the extension.
-    extension : str
+    extension : str, optional
         File extension.
+    sanitize : bool, optional
+        If True, sanitizes the filename by removing illegal characters and
+        making the path compatible with the operating system.
 
     Returns
     -------
@@ -43,7 +46,7 @@ def time(keep_ms=False):
 
     Parameters
     ----------
-    keep_ms : bool
+    keep_ms : bool, optional
         If True, includes milliseconds.
     Returns
     -------
@@ -103,7 +106,7 @@ def message(message_str, **kwargs):
     message_str : str
         Message to be printed at the end of the line.
     **kwargs
-        verbose : int
+        verbose : int, optional
             The message is shown only is verbose is equal to 1.
     """
     if kwargs.get('verbose', 1) == 1:
@@ -119,7 +122,7 @@ def gap(gap_size=5):
 
     Parameters
     ----------
-    gap_size : int
+    gap_size : int, optional
         Number of whitespace characters to be printed.
 
     Returns
@@ -160,11 +163,14 @@ def save_pickle(variable, path, allow_overwrite=False, verbose=False,
         Variable to be saved.
     path : str
         Path to the pickle file, excluding extension.
-    allow_overwrite : bool
+    allow_overwrite : bool, optional
         If False, will not check for existing files with the same name and
         will overwrite if such files exist.
-    verbose : bool
+    verbose : bool, optional
         If True, notifies the user that the file has been saved.
+    sanitize : bool, optional
+        If True, sanitizes the filename by removing illegal characters and
+        making the path compatible with the operating system.
     """
     if sanitize:
         path = sanitize_filepath(path)
@@ -188,6 +194,9 @@ def load_pickle(path, sanitize=True):
     ----------
     path : str
         Path to the pickle file, including extension.
+    sanitize : bool, optional
+        If True, sanitizes the filename by removing illegal characters and
+        making the path compatible with the operating system.
 
     Returns
     -------

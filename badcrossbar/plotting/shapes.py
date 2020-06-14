@@ -10,9 +10,9 @@ def line(ctx, length, angle=0):
         Context.
     length : float
         Length of the line.
-    angle : float
-        Angle in radians of the rotation of plane from the positive x axis
-        towards positive y axis.
+    angle : float, optional
+        Angle in radians of the rotation of plane from the positive `x` axis
+        towards positive `y` axis.
     """
     ctx.rotate(angle)
     ctx.rel_line_to(length, 0)
@@ -28,9 +28,9 @@ def semicircle(ctx, diameter, angle=0):
         Context.
     diameter : float
         Diameter of the semicircle.
-    angle : float
-        Angle in radians of the rotation of plane from the positive x axis
-        towards positive y axis.
+    angle : float, optional
+        Angle in radians of the rotation of plane from the positive `x` axis
+        towards positive `y` axis.
     """
     ctx.rotate(angle)
     x, y = ctx.get_current_point()
@@ -50,9 +50,9 @@ def rectangle(ctx, width, height, angle=0):
         Width of the rectangle.
     height : float
         Height of the rectangle.
-    angle : float
-        Angle in radians of the rotation of plane from the positive x axis
-        towards positive y axis.
+    angle : float, optional
+        Angle in radians of the rotation of plane from the positive `x` axis
+        towards positive `y` axis.
     """
     ctx.rotate(angle)
     x, y = ctx.get_current_point()

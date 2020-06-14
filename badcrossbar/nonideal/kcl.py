@@ -2,7 +2,7 @@ import numpy as np
 
 
 def apply(g_matrix, resistances, r_i):
-    """Fills matrix g used in equation gv = i.
+    """Fills matrix `g` used in equation gv = i.
 
     Values are filled by applying Kirchhoff's current law at the nodes on the
     word and bit lines.
@@ -10,7 +10,7 @@ def apply(g_matrix, resistances, r_i):
     Parameters
     ----------
     g_matrix : lil_matrix
-        Matrix g used in equation gv = i.
+        Matrix `g` used in equation gv = i.
     resistances : ndarray
         Resistances of crossbar devices.
     r_i : int or float
@@ -19,7 +19,7 @@ def apply(g_matrix, resistances, r_i):
     Returns
     -------
     lil_matrix
-        Filled matrix g.
+        Filled matrix `g`.
     """
     with np.errstate(divide='ignore'):
         conductances = 1./resistances
@@ -29,12 +29,12 @@ def apply(g_matrix, resistances, r_i):
 
 
 def word_line_nodes(g_matrix, conductances, r_i):
-    """Fills matrix g with values corresponding to nodes on the word lines.
+    """Fills matrix `g` with values corresponding to nodes on the word lines.
 
     Parameters
     ----------
     g_matrix : lil_matrix
-        Matrix g used in equation gv = i.
+        Matrix `g` used in equation gv = i.
     conductances : ndarray
         Conductances of crossbar devices.
     r_i : int or float
@@ -43,7 +43,7 @@ def word_line_nodes(g_matrix, conductances, r_i):
     Returns
     -------
     lil_matrix
-        Partially filled matrix g.
+        Partially filled matrix `g`.
     """
     (num_word_lines, num_bit_lines) = conductances.shape
     g_i = 1/r_i
@@ -95,7 +95,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
     Parameters
     ----------
     g_matrix : lil_matrix
-        Matrix g used in equation gv = i.
+        Matrix `g` used in equation gv = i.
     conductances : ndarray
         Conductances of crossbar devices.
     r_i : int or float
@@ -104,7 +104,8 @@ def bit_line_nodes(g_matrix, conductances, r_i):
     Returns
     -------
     lil_matrix
-        Filled matrix g (if this function is executed after word_line_nodes()).
+        Filled matrix `g` (if this function is executed after
+        `word_line_nodes()`).
     """
     (num_word_lines, num_bit_lines) = conductances.shape
     g_i = 1/r_i

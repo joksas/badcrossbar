@@ -21,7 +21,7 @@ def qucs_dat_file(filename, shape):
     filename : str
         Name of the DAT file, excluding extension.
     shape : tuple of int
-        Shape of the crossbar array (num_word_lines, num_bit_lines).
+        Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
     """
     data = open_file(filename, 'dat')
     R = two_dim(data, shape, var1='R')
@@ -42,10 +42,10 @@ def two_dim(data, shape, var1, var2=None):
     data : str
         Contents of the DAT file.
     shape : tuple of int
-        Shape of the crossbar array (num_word_lines, num_bit_lines).
+        Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
     var1 :str
         Name of the first variable.
-    var2 : str
+    var2 : str, optional
         Name of the second variable.
 
     Returns
@@ -75,10 +75,10 @@ def one_dim(data, shape, var1, var2=None):
     data : str
         Contents of the DAT file.
     shape : tuple of int
-        Shape of the crossbar array (num_word_lines, num_bit_lines).
+        Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
     var1 :str
         Name of the first variable.
-    var2 : str
+    var2 : str, optional
         Name of the second variable.
 
     Returns
@@ -108,7 +108,7 @@ def zero_dim(data, var1, var2=None):
         Contents of the DAT file.
     var1 :str
         Name of the first variable.
-    var2 : str
+    var2 : str, optional
         Name of the second variable.
 
     Returns
@@ -133,7 +133,7 @@ def solution(data, shape):
     data : str
         Contents of the DAT file.
     shape : tuple of int
-        Shape of the crossbar array (num_word_lines, num_bit_lines).
+        Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
 
     Returns
     -------
