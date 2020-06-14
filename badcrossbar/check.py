@@ -179,22 +179,23 @@ def numeric_array(array, name='array'):
         raise TypeError('\'{}\' should only contain numbers!'.format(name))
 
 
-def empty(**kwargs):
-    """Checks if numpy arrays are empty.
+def non_empty(array, name='array'):
+    """Checks that array is not empty.
 
     Parameters
     ----------
-    **kwargs : dict of ndarray
-        Arrays.
+    array : ndarray
+        Array.
+    name : str
+        Name of the array.
 
     Raises
     -------
     ValueError
-        If any of the ndarrays are empty.
+        If the array is empty.
     """
-    for key, value in kwargs.items():
-        if value.size == 0:
-            raise ValueError('Array \'{}\' is empty!'. format(key))
+    if array.size == 0:
+        raise ValueError('\'{}\' array is empty!'. format(name))
 
 
 def match_shape(**kwargs):
