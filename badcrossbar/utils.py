@@ -101,10 +101,6 @@ def message(message_str, **kwargs):
     **kwargs
         verbose : int
             The message is shown only is verbose is equal to 1.
-
-    Returns
-    -------
-    None
     """
     if kwargs.get('verbose', 1) == 1:
         if kwargs.get('show_time', True):
@@ -151,6 +147,20 @@ def arrays_shape(*arrays):
 
 
 def save_pickle(variable, path, allow_overwrite=False, verbose=False):
+    """Saves variable to a pickle file.
+
+    Parameters
+    ----------
+    variable : any
+        Variable to be saved.
+    path : str
+        Path to the pickle file, excluding extension.
+    allow_overwrite : bool
+        If False, will not check for existing files with the same name and
+        will overwrite if such files exist.
+    verbose : bool
+        If True, notifies the user that the file has been saved.
+    """
     if allow_overwrite:
         path = '{}.pickle'.format(path)
     else:
