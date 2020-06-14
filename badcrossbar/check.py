@@ -73,9 +73,14 @@ def plotting_requirements(device_currents=None, word_line_currents=None,
     else:
         valid_arrays = not_none(word_line_voltages=word_line_voltages,
                                 bit_line_voltages=bit_line_voltages)
+    valid_arrays = {key: np.array(value) for key, value in
+                    valid_arrays.items()}
+
     for key, value in valid_arrays.items():
-        valid_arrays[key] = numeric_array(**{key: value})
-    empty(**valid_arrays)
+        numeric_array(value, key)
+        non_empty(value, key)
+        n_dimensional(value, 2, key)
+
     if len(valid_arrays) != 1:
         for dim in [0, 1]:
             dim_arrays = {key: (value, dim)
