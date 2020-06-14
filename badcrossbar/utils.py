@@ -161,3 +161,22 @@ def save_pickle(variable, path, allow_overwrite=False, verbose=False):
 
     if verbose:
         print('Saved {}.'.format(path))
+
+
+def load_pickle(path):
+    """Loads pickle file.
+
+    Parameters
+    ----------
+    path : str
+        Path to the pickle file, including extension.
+
+    Returns
+    -------
+    any
+        Extracted contents.
+    """
+    with open(path, 'rb') as handle:
+        variable = pickle.load(handle)
+
+    return variable
