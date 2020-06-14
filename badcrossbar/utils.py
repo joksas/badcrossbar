@@ -128,3 +128,22 @@ def gap(gap_size=5):
     """
     gap_str = gap_size*' '
     return gap_str
+
+
+def arrays_shape(*arrays):
+    """Returns the shape of the first array that is not None.
+
+    Parameters
+    ----------
+    arrays : ndarray
+        Arrays.
+
+    Returns
+    -------
+    tuple of int
+        Shape.
+    """
+    for array in arrays:
+        if array is not None:
+            shape = array.shape
+            return shape

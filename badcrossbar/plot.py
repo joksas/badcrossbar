@@ -30,7 +30,7 @@ def currents(device_currents=None, word_line_currents=None,
             word_line_currents=word_line_currents,
             bit_line_currents=bit_line_currents, currents=True)
 
-    crossbar_shape = plotting.utils.arrays_shape(
+    crossbar_shape = utils.arrays_shape(
         device_currents, word_line_currents, bit_line_currents)
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
@@ -90,8 +90,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
         word_line_voltages=word_line_voltages,
         bit_line_voltages=bit_line_voltages, currents=False)
 
-    crossbar_shape = plotting.utils.arrays_shape(word_line_voltages,
-                                                 bit_line_voltages)
+    crossbar_shape = utils.arrays_shape(word_line_voltages, bit_line_voltages)
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
