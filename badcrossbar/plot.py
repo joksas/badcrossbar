@@ -7,6 +7,54 @@ import badcrossbar.check as check
 
 def currents(device_currents=None, word_line_currents=None,
              bit_line_currents=None, all_currents=None, **kwargs):
+    """Produces a diagram of crossbar branch currents and saves it as a PDF
+    file.
+
+    If `all_currents` is passed, then it is used to plot the currents.
+    Otherwise, one of {`device_currents`, `word_line_currents`,
+    `bit_line_currents`} has to be passed.
+
+    Parameters
+    ----------
+    device_currents : ndarray, optional
+        Currents flowing through crossbar devices.
+    word_line_currents : ndarray, optional
+        Currents flowing through interconnect segments along the word lines.
+    bit_line_currents : ndarray, optional
+        Currents flowing through interconnect segments along the bit lines.
+    all_currents : named tuple, optional
+        Crossbar branch currents. Named tuple should have fields `device`,
+        `word_line` and `bit_line` that contain currents flowing through the
+        devices and interconnect segments of the word and bit lines (at least
+        one of them should be not None).
+
+    **kwargs
+        default_color : tuple of float, optional
+            Normalized RGB values of the bit lines if their currents are not
+            provided.
+        wire_scaling_factor : float, optional
+            Scaling factor for the width of the word and bit lines.
+        device_scaling_factor : float, optional
+            Scaling factor for the width of the devices. Also scales the nodes.
+        node_scaling_factor : float, optional
+            Scaling factor for the diameter of the nodes which is combined
+            with `device_scaling_factor`. For example, if one wanted to only
+            scale the device width by a factor of 2, but keep the node diameter
+            the same, arguments `device_scaling_factor = 2` and
+            `node_scaling_factor = 1/2` would have to be passed.
+        axis_label : str, optional, optional
+            Axis label of the color bar.
+        low_rgb : tuple of float, optional
+            Normalized RGB value associated with the lower limit.
+        zero_rgb : tuple of float, optional
+            Normalized RGB value associated with the value of zero.
+        high_rgb : tuple of float, optional
+            Normalized RGB value associated with the upper limit.
+        allow_overwrite : bool, optional
+            If True, can overwrite existing PDF files with the same name.
+        filename : str, optional
+            Filename, excluding PDF extension.
+    """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
     kwargs.setdefault('device_scaling_factor', 1)
@@ -69,6 +117,50 @@ def currents(device_currents=None, word_line_currents=None,
 
 def voltages(word_line_voltages=None, bit_line_voltages=None,
              all_voltages=None, **kwargs):
+    """Produces a diagram of crossbar node voltages and saves it as a PDF file.
+
+    If `all_voltages` is passed, then it is used to plot the voltages.
+    Otherwise, one of {`word_line_voltages`, `bit_line_voltages`} has to be
+    passed.
+
+    Parameters
+    ----------
+    word_line_voltages : ndarray, optional
+        Voltages at the nodes on the word lines.
+    bit_line_voltages : ndarray, optional
+        Voltages at the nodes on the bit lines.
+    all_voltages : named tuple, optional
+        Crossbar node voltages. It should have fields `word_line` and
+        `bit_line` that contain the potentials at the nodes on the word and
+        bit lines (at least one of them should be not None).
+
+    **kwargs
+        default_color : tuple of float, optional
+            Normalized RGB values of the bit lines if their currents are not
+            provided.
+        wire_scaling_factor : float, optional
+            Scaling factor for the width of the word and bit lines.
+        device_scaling_factor : float, optional
+            Scaling factor for the width of the devices. Also scales the nodes.
+        node_scaling_factor : float, optional
+            Scaling factor for the diameter of the nodes which is combined
+            with `device_scaling_factor`. For example, if one wanted to only
+            scale the device width by a factor of 2, but keep the node diameter
+            the same, arguments `device_scaling_factor = 2` and
+            `node_scaling_factor = 1/2` would have to be passed.
+        axis_label : str, optional, optional
+            Axis label of the color bar.
+        low_rgb : tuple of float, optional
+            Normalized RGB value associated with the lower limit.
+        zero_rgb : tuple of float, optional
+            Normalized RGB value associated with the value of zero.
+        high_rgb : tuple of float, optional
+            Normalized RGB value associated with the upper limit.
+        allow_overwrite : bool, optional
+            If True, can overwrite existing PDF files with the same name.
+        filename : str, optional
+            Filename, excluding PDF extension.
+    """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
     kwargs.setdefault('device_scaling_factor', 1)
