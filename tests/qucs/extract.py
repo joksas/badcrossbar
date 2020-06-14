@@ -1,6 +1,4 @@
 import numpy as np
-import os
-import pickle
 from collections import namedtuple
 from badcrossbar import utils
 
@@ -15,8 +13,8 @@ def extract(filename, shape):
     V = one_dim(data, shape, var1='V')
     r_i = zero_dim(data, var1='r_i')
     I_o, I_d, I_w, I_b, V_w, V_b = solution(data, shape)
-    save_pickle((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename,
-              allow_overwrite=True)
+    utils.save_pickle((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename,
+                      allow_overwrite=True)
 
 
 def two_dim(data, shape, var1, var2=None):
@@ -79,16 +77,3 @@ def open_file(filename, extension):
     with open(filename + '.' + extension, 'r') as opened_file:
         contents = opened_file.read()
     return contents
-
-
-def save_pickle(variable, path, allow_overwrite=False, verbose=False):
-    if allow_overwrite:
-        path = '{}.pickle'.format(path)
-    else:
-        path = utils.unique_path(path, 'pickle')
-
-    with open(path, 'wb') as handle:
-        pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-    if verbose:
-        print('Saving {}'.format(path))

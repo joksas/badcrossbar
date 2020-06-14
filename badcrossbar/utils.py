@@ -1,4 +1,5 @@
 import os
+import pickle
 from datetime import datetime
 import numpy as np
 
@@ -147,3 +148,16 @@ def arrays_shape(*arrays):
         if array is not None:
             shape = array.shape
             return shape
+
+
+def save_pickle(variable, path, allow_overwrite=False, verbose=False):
+    if allow_overwrite:
+        path = '{}.pickle'.format(path)
+    else:
+        path = unique_path(path, 'pickle')
+
+    with open(path, 'wb') as handle:
+        pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    if verbose:
+        print('Saved {}.'.format(path))
