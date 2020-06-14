@@ -77,10 +77,11 @@ def plotting_requirements(device_currents=None, word_line_currents=None,
                     valid_arrays.items()}
 
     for key, value in valid_arrays.items():
-        numeric_array(value, key)
-        non_empty(value, key)
-        n_dimensional(value, 2, key)
-        non_infinite_array(value, key)
+        numeric_array(valid_arrays[key], key)
+        non_empty(valid_arrays[key], key)
+        valid_arrays[key] = utils.average_if_3D(valid_arrays[key])
+        n_dimensional(valid_arrays[key], 2, key)
+        non_infinite_array(valid_arrays[key], key)
 
     if len(valid_arrays) != 1:
         for dim in [0, 1]:
