@@ -1,4 +1,5 @@
 import cairo
+from pathvalidate import sanitize_filepath
 import badcrossbar.plotting as plotting
 import badcrossbar.utils as utils
 import badcrossbar.check as check
@@ -15,6 +16,7 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
     kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
     kwargs.setdefault('allow_overwrite', False)
+    kwargs.setdefault('filename', 'crossbar-currents')
 
     if all_currents is not None:
         device_currents = all_currents.device
@@ -33,9 +35,10 @@ def currents(device_currents=None, word_line_currents=None,
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
     if kwargs.get('allow_overwrite'):
-        filename = 'crossbar-currents.pdf'
+        filename = '{}.pdf'.format(kwargs.get('filename'))
+        filename = sanitize_filepath(filename)
     else:
-        filename = utils.unique_path('crossbar-currents', 'pdf')
+        filename = utils.unique_path(kwargs.get('filename'), 'pdf')
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
@@ -75,6 +78,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
     kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
     kwargs.setdefault('allow_overwrite', False)
+    kwargs.setdefault('filename', 'crossbar-voltages')
 
     if all_voltages is not None:
         word_line_voltages = all_voltages.word_line
@@ -89,9 +93,10 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape, max_dim=1000)
     if kwargs.get('allow_overwrite'):
-        filename = 'crossbar-voltages.pdf'
+        filename = '{}.pdf'.format(kwargs.get('filename'))
+        filename = sanitize_filepath(filename)
     else:
-        filename = utils.unique_path('crossbar-voltages', 'pdf')
+        filename = utils.unique_path(kwargs.get('filename'), 'pdf')
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
