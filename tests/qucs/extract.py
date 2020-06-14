@@ -2,6 +2,7 @@ import numpy as np
 import os
 import pickle
 from collections import namedtuple
+from badcrossbar import utils
 
 Solution = namedtuple('Solution', ['currents', 'voltages'])
 Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
@@ -14,7 +15,7 @@ def extract(filename, shape):
     V = one_dim(data, shape, var1='V')
     r_i = zero_dim(data, var1='r_i')
     I_o, I_d, I_w, I_b, V_w, V_b = solution(data, shape)
-    save_file((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename,
+    save_pickle((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename,
               allow_overwrite=True)
 
 
@@ -80,28 +81,14 @@ def open_file(filename, extension):
     return contents
 
 
-def save_file(variable, path, allow_overwrite=False, verbose=False):
-    if allow_overwrite is True:
-        path += '.pickle'
-        with open(path, 'wb') as handle:
-            pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        if verbose is True:
-            print('Saving ' + str(path))
+def save_pickle(variable, path, allow_overwrite=False, verbose=False):
+    if allow_overwrite:
+        path = '{}.pickle'.format(path)
     else:
-        counter = 1
-        file_saved = False
-        new_path = path
+        path = utils.unique_path(path, 'pickle')
 
-        while file_saved is False:
-            full_path = new_path + '.pickle'
+    with open(path, 'wb') as handle:
+        pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-            if os.path.exists(full_path) is False:
-                with open(full_path, 'wb') as handle:
-                    pickle.dump(variable, handle,
-                                protocol=pickle.HIGHEST_PROTOCOL)
-                if verbose is True:
-                    print('Saving ' + str(full_path))
-                file_saved = True
-            else:
-                new_path = path + '_' + str(counter)
-                counter += 1
+    if verbose:
+        print('Saving {}'.format(path))
