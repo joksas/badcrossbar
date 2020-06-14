@@ -11,7 +11,7 @@ def draw_word_line(ctx, colors, segment_length=100, first=False,
     ctx : cairo.Context
         Context.
     colors : list of tuple of float
-        Colors of the word line segments in RGB.
+        Normalized RGB values of the word line segments.
     segment_length : float
         The length of each segment.
     first : bool
@@ -40,7 +40,7 @@ def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
     ctx : cairo.Context
         Context.
     colors : list of tuple of float
-        Colors of the bit line segments in RGB.
+        Normalized RGB values of the bit line segments.
     segment_length : float
         The length of each segment.
     scaling_factor : float
@@ -60,7 +60,7 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1):
     ctx : cairo.Context
         Context.
     colors : list of tuple of float
-        Colors of the crossbar devices in RGB.
+        Normalized RGB values of the crossbar devices.
     segment_length : float
         The length of each segment.
     scaling_factor : float
@@ -85,7 +85,7 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
     ctx : cairo.Context
         Context.
     colors : list of tuple of float
-        Colors of the nodes in RGB.
+        Normalized RGB values of the nodes.
     segment_length : float
         The length of each segment.
     bit_line_nodes : bool
@@ -129,7 +129,8 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
         Shape of the crossbar array. Used when bit_line_currents is None.
     **kwargs
         default_color : tuple of float
-            The colour (in RGB) of bit lines if their currents are not provided.
+            Normalized RGB values of the bit lines if their currents are not
+            provided.
     """
     x = diagram_pos[0] + 1.5*segment_length
     y = diagram_pos[1] + 0.5*segment_length
@@ -179,7 +180,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
         Shape of the crossbar array. Used when word_line_currents is None.
     **kwargs
         default_color : tuple of float
-            The colour (in RGB) of word lines if their currents are not
+            Normalized RGB values of the word lines if their currents are not
             provided.
     """
     x, y = diagram_pos
@@ -239,8 +240,8 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
         Shape of the crossbar array. Used when device_currents is None.
     **kwargs
         default_color : tuple of float
-            The colour (in RGB) of crossbar devices (if their currents are not
-            provided), as well as of nodes.
+            Normalized RGB values of the crossbar devices if their currents
+            are not provided.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)

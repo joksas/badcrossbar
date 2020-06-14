@@ -66,11 +66,11 @@ def rgb(low, high, low_rgb, zero_rgb, high_rgb):
     high : float
         Upper limit of the linear range.
     low_rgb : tuple of int
-        Colour (in RGB) associated with the lower limit.
+        Normalized RGB value associated with the lower limit.
     zero_rgb : tuple of int
-        Colour (in RGB) associated with value of zero.
+        Normalized RGB value associated with value of zero.
     high_rgb : tuple of int
-        Colour (in RGB) associated with the upper limit.
+        Normalized RGB value associated with the upper limit.
 
     Returns
     -------
@@ -118,11 +118,11 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
         Upper limit of the linear range.
     **kwargs
         low_rgb : tuple of int
-            Colour (in RGB) associated with the lower limit.
+            Normalized RGB value associated with the lower limit.
         zero_rgb : tuple of int
-            Colour (in RGB) associated with value of zero.
+            Normalized RGB value associated with value of zero.
         high_rgb : tuple of int
-            Colour (in RGB) associated with the upper limit.
+            Normalized RGB value associated with the upper limit.
 
     Returns
     -------

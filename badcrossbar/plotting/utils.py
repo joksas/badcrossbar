@@ -11,7 +11,7 @@ def complete_path(ctx, rgb=(0, 0, 0), width=1):
     ctx : cairo.Context
         Context.
     rgb : tuple of int
-        Color of the path in RGB (normalized to 1).
+        Normalized RGB value of the path.
     width : float
         Width of the path.
     """
@@ -33,7 +33,7 @@ def complete_fill(ctx, rgb=(0, 0, 0)):
     ctx : cairo.Context
         Context.
     rgb : tuple of int
-        Color of the fill in RGB (normalized to 1).
+        Normalized RGB value of the fill.
     """
     x, y = ctx.get_current_point()
 
