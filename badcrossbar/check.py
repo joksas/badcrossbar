@@ -7,9 +7,9 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
 
     Parameters
     ----------
-    resistances : any
+    resistances : array_like
         Resistances of crossbar devices.
-    applied_voltages : any
+    applied_voltages : array_like
         Applied voltages.
     r_i : any
         Interconnect resistance.
@@ -32,7 +32,7 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     match_shape(resistances=(resistances, 0),
                 applied_voltages=(applied_voltages, 0))
 
-    number(r_i=r_i)
+    number(r_i, 'r_i')
     non_negative_number(r_i, 'r_i')
 
     short_circuit(resistances, r_i, **kwargs)
@@ -120,26 +120,6 @@ def not_none(**kwargs):
             ', '.join(kwargs)))
 
     return valid_items
-
-
-def number(**kwargs):
-    """Confirms that items are int or float.
-
-    Parameters
-    ----------
-    **kwargs : dict of any
-        Items of arbitrary type.
-
-    Raises
-    -------
-    TypeError
-        If any of the items are not int or float.
-    """
-    for key, value in kwargs.items():
-        if not isinstance(value, (int, float)):
-            raise TypeError(
-                'Type {} of variable \'{}\' is not supported. Use int or '
-                'float instead.'.format(type(value).__name__, key))
 
 
 def n_dimensional(array, n=2, name='array'):
@@ -247,7 +227,28 @@ def non_negative_array(array, name='array'):
             '\'{}\' array contains at least one negative value!'.format(name))
 
 
-def non_negative_number(value, name='array'):
+def number(value, name='variable'):
+    """Checks if the variable is a number.
+
+    Parameters
+    ----------
+    value : any
+        Variable of arbitrary type.
+    name : str
+        Name of the variable.
+
+    Raises
+    -------
+    TypeError
+        If the variable is not int or float.
+    """
+    if not isinstance(value, (int, float)):
+        raise TypeError(
+            'Type {} of \'{}\' is not supported. Use int or '
+            'float instead.'.format(type(value).__name__, name))
+
+
+def non_negative_number(value, name='number'):
     """Checks if any of the numbers are negative.
 
     Parameters
