@@ -37,3 +37,24 @@ def semicircle(ctx, diameter, angle=0):
     radius = diameter/2
     ctx.arc(x + radius, y, radius, np.pi, 2 * np.pi)
     ctx.rotate(-angle)
+
+
+def rectangle(ctx, width, height, angle=0):
+    """Draws a rectangle at a specified angle.
+
+    Parameters
+    ----------
+    ctx : cairo.Context
+        Context.
+    width : float
+        Width of the rectangle.
+    height : float
+        Height of the rectangle.
+    angle : float
+        Angle in radians of the rotation of plane from the positive x axis
+        towards positive y axis.
+    """
+    ctx.rotate(angle)
+    x, y = ctx.get_current_point()
+    ctx.rectangle(x, y, width, height)
+    ctx.rotate(-angle)
