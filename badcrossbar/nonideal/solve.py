@@ -1,5 +1,5 @@
 from scipy.sparse import linalg
-from badcrossbar import display
+from badcrossbar import utils
 
 
 def v(g, i, **kwargs):
@@ -17,9 +17,9 @@ def v(g, i, **kwargs):
     ndarray
         Matrix containing potentials at each of the nodes.
     """
-    display.message('Started solving for v.', **kwargs)
+    utils.message('Started solving for v.', **kwargs)
     v_matrix = linalg.spsolve(g.tocsc(), i)
-    display.message('Solved for v.', **kwargs)
+    utils.message('Solved for v.', **kwargs)
     if v_matrix.ndim == 1:
         v_matrix = v_matrix.reshape(v_matrix.shape[0], 1)
     return v_matrix

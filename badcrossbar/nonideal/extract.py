@@ -1,5 +1,5 @@
 import numpy as np
-from badcrossbar import display, utils
+from badcrossbar import utils
 from collections import namedtuple
 from badcrossbar.nonideal import fill, solve
 
@@ -79,7 +79,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
     device_i = word_line_i = bit_line_i = None
 
     if kwargs.get('all_currents', True) is False:
-        display.message('Extracted output currents.', **kwargs)
+        utils.message('Extracted output currents.', **kwargs)
     else:
         word_line_i = word_line_currents(v, resistances, r_i, applied_voltages)
         bit_line_i = bit_line_currents(v, resistances, r_i)
@@ -89,7 +89,7 @@ def currents(v, resistances, r_i, applied_voltages, removed_rows, **kwargs):
         bit_line_i = distributed_array(bit_line_i, resistances)
         device_i = distributed_array(device_i, resistances)
 
-        display.message(
+        utils.message(
             'Extracted currents from all branches in the crossbar.', **kwargs)
 
     Currents = namedtuple(
@@ -118,7 +118,7 @@ def voltages(v, resistances, **kwargs):
     word_line_v = word_line_voltages(v, resistances)
     bit_line_v = bit_line_voltages(v, resistances)
     extracted_voltages = Voltages(word_line_v, bit_line_v)
-    display.message('Extracted node voltages.', **kwargs)
+    utils.message('Extracted node voltages.', **kwargs)
     return extracted_voltages
 
 
@@ -370,7 +370,7 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     """
     if kwargs.get('verbose') == 2:
         kwargs['verbose'] = 1
-    display.message(
+    utils.message(
         'Warning: interconnects are perfectly insulating! Node voltages are '
         'undefined!', **kwargs)
 

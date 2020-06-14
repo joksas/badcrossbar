@@ -1,4 +1,4 @@
-from badcrossbar import check, nonideal, ideal, display
+from badcrossbar import check, nonideal, ideal, utils
 
 
 def compute(applied_voltages, resistances, r_i, **kwargs):
@@ -43,7 +43,7 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
     kwargs.setdefault('all_currents', True)
     kwargs.setdefault('verbose', 1)
 
-    display.message('Initialising simulation.', **kwargs)
+    utils.message('Initialising simulation.', **kwargs)
     resistances, applied_voltages = check.crossbar_requirements(
         resistances, applied_voltages, r_i, **kwargs)
     if r_i != 0:

@@ -1,5 +1,5 @@
 import numpy as np
-from badcrossbar import display
+from badcrossbar import utils
 
 
 def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
@@ -293,6 +293,6 @@ def short_circuit(resistances, r_i, **kwargs):
         else:
             if kwargs.get('verbose') == 2:
                 kwargs['verbose'] = 1
-            display.message(
+            utils.message(
                 'Warning: some crossbar devices have zero resistance!',
                 **kwargs)

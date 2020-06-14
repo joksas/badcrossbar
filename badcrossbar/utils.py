@@ -88,3 +88,43 @@ def average_if_3D(array):
         array = np.mean(array, axis=2)
 
     return array
+
+
+def message(message_str, **kwargs):
+    """Prints current time followed by a gap and a custom message.
+
+    Parameters
+    ----------
+    message_str : str
+        Message to be printed at the end of the line.
+    **kwargs
+        verbose : int
+            The message is shown only is verbose is equal to 1.
+
+    Returns
+    -------
+    None
+    """
+    if kwargs.get('verbose', 1) == 1:
+        if kwargs.get('show_time', True):
+            message_str = time(kwargs.get('keep_ms', False)) + \
+                          gap(kwargs.get('gap_size', 5)) + \
+                          message_str
+        print(message_str)
+
+
+def gap(gap_size=5):
+    """Returns a given number of whitespace characters.
+
+    Parameters
+    ----------
+    gap_size : int
+        Number of whitespace characters to be printed.
+
+    Returns
+    -------
+    str
+        Whitespace.
+    """
+    gap_str = gap_size*' '
+    return gap_str
