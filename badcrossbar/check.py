@@ -179,57 +179,6 @@ def numeric_array(array, name='array'):
         raise TypeError('\'{}\' should only contain numbers!'.format(name))
 
 
-def matrix_type(**kwargs):
-    """Checks if items can be used as numpy arrays.
-
-    If one of the arguments is already a numpy array, it is returned
-    unchanged. If it is a list of lists, it is converted to numpy array and
-    then returned. Else, an error is raised.
-
-    Parameters
-    ----------
-    **kwargs : dict of any
-        Items of arbitrary type.
-
-    Returns
-    -------
-    list of ndarray
-
-    Raises
-    -------
-    TypeError
-        If any of the items are not ndarray or list, or if they contain
-        non-number elements.
-    """
-    new_args = []
-    good_type = True
-    for key, value in kwargs.items():
-        if isinstance(value, np.ndarray):
-            new_args.append(value)
-        else:
-            if isinstance(value, list):
-                for item in value:
-                    if isinstance(item, list) is False:
-                        good_type = False
-                if good_type is True:
-                    new_args.append(np.array(value))
-            else:
-                good_type = False
-        if good_type is False:
-            raise TypeError(
-                'Type {} of variable \'{}\' is not supported. Use ndarray or '
-                'list of lists instead.'.format(type(value).__name__, key))
-        if np.issubdtype(new_args[-1].dtype, np.number) is False:
-            raise TypeError(
-                'Array \'{}\' should only contain numbers!'.format(key))
-
-    if len(new_args) == 1:
-        new_args = new_args[0]
-    else:
-        new_args = tuple(new_args)
-    return new_args
-
-
 def empty(**kwargs):
     """Checks if numpy arrays are empty.
 
