@@ -138,7 +138,7 @@ def number(**kwargs):
 
 
 def n_dimensional(array, n=2, name='array'):
-    """Check if array is n-dimensional.
+    """Checks that array is n-dimensional.
 
     Parameters
     ----------
@@ -158,6 +158,25 @@ def n_dimensional(array, n=2, name='array'):
     if dim != n:
         raise TypeError('\'{}\' should be {}-dimensional array! Instead '
                         'received {}-dimensional array.'.format(name, n, dim))
+
+
+def numeric_array(array, name='array'):
+    """Checks that array only contains numbers.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    name : str
+        Name of the array.
+
+    Raises
+    -------
+    TypeError
+        If array contains non-number elements.
+    """
+    if np.issubdtype(array.dtype, np.number) is False:
+        raise TypeError('\'{}\' should only contain numbers!'.format(name))
 
 
 def matrix_type(**kwargs):
