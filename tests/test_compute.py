@@ -41,14 +41,18 @@ def qucs_data(file_name, double_input=False):
         resistances, voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = pickle.load(
             handle)
 
-    if double_input is False:
-        extracted_currents = Currents(i_o, i_d, i_w, i_b)
-        extracted_voltages = Voltages(v_w, v_b)
-    else:
-        extracted_currents = Currents(np.concatenate((i_o, i_o)), [i_d] * 2,
-                                      [i_w] * 2, [i_b] * 2)
-        extracted_voltages = Voltages([v_w] * 2, [v_b] * 2)
-        voltages = np.concatenate((voltages, voltages), axis=1)
+    if double_input:
+        i_o = np.repeat(i_o, 2, axis=0)
+        i_d = np.repeat(i_d[:, :, np.newaxis], 2, axis=2)
+        i_w = np.repeat(i_w[:, :, np.newaxis], 2, axis=2)
+        i_b = np.repeat(i_b[:, :, np.newaxis], 2, axis=2)
+        v_w = np.repeat(v_w[:, :, np.newaxis], 2, axis=2)
+        v_b = np.repeat(v_b[:, :, np.newaxis], 2, axis=2)
+        voltages = np.repeat(voltages, 2, axis=1)
+
+    extracted_currents = Currents(i_o, i_d, i_w, i_b)
+    extracted_voltages = Voltages(v_w, v_b)
+
     solution = Solution(extracted_currents, extracted_voltages)
 
     return resistances, voltages, r_i, solution

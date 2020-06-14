@@ -36,8 +36,8 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
         bit lines. Field 'voltages' is a named tuple itself with fields
         'word_line' and 'bit_line' and contains the voltages at the nodes on
         the word and bit lines. 'currents.output' is an array of shape p x n,
-        while all the others are arrays of shape m x n if p = 1, or lists of
-        length p with arrays of shape m x n as their elements if p > 1.
+        while all the others are arrays of shape m x n if p = 1, or arrays of
+        shape m x n x p if p > 1.
     """
     kwargs.setdefault('node_voltages', True)
     kwargs.setdefault('all_currents', True)

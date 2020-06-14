@@ -1,6 +1,6 @@
 from collections import namedtuple
 import numpy as np
-from badcrossbar import display
+from badcrossbar import display, utils
 
 
 def solution(resistances, applied_voltages, **kwargs):
@@ -69,18 +69,13 @@ def word_line_voltages(applied_voltages, resistances):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Voltages at the nodes on the word lines.
     """
-    if applied_voltages.shape[1] > 1:
-        word_line_v = []
-        for i in range(applied_voltages.shape[1]):
-            word_line_v.append(
-                np.repeat(
-                    applied_voltages[:, i:i + 1], resistances.shape[1], axis=1))
-    else:
-        word_line_v = np.repeat(
-            applied_voltages[:, 0:1], resistances.shape[1], axis=1)
+    word_line_v = np.repeat(applied_voltages[:, :, np.newaxis],
+                            resistances.shape[1], axis=2)
+    word_line_v = np.swapaxes(word_line_v, 1, 2)
+    word_line_v = utils.squeeze_third_axis(word_line_v)
 
     return word_line_v
 
@@ -97,14 +92,12 @@ def bit_line_voltages(applied_voltages, resistances):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Voltages at the nodes on the bit lines.
     """
-    if applied_voltages.shape[1] > 1:
-        bit_line_v = [np.zeros(resistances.shape) for _ in
-                      range(applied_voltages.shape[1])]
-    else:
-        bit_line_v = np.zeros(resistances.shape)
+    bit_line_v = np.zeros((resistances.shape[0], resistances.shape[1],
+                           applied_voltages.shape[1]))
+    bit_line_v = utils.squeeze_third_axis(bit_line_v)
 
     return bit_line_v
 
@@ -182,15 +175,14 @@ def device_currents(extracted_word_line_voltages, resistances):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Currents flowing through crossbar devices.
     """
-    if isinstance(extracted_word_line_voltages, list):
-        device_i = []
-        for w_l in extracted_word_line_voltages:
-            device_i.append(np.divide(w_l, resistances))
-    else:
-        device_i = np.divide(extracted_word_line_voltages, resistances)
+    if extracted_word_line_voltages.ndim > 2:
+        resistances = np.repeat(resistances[:, :, np.newaxis],
+                                extracted_word_line_voltages.shape[2], axis=2)
+
+    device_i = np.divide(extracted_word_line_voltages, resistances)
 
     return device_i
 
@@ -208,26 +200,14 @@ def word_line_currents(resistances, device_i_all):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Currents flowing through interconnect segments along the word lines.
     """
-    if isinstance(device_i_all, list):
-        word_line_i = []
-        for device_i in device_i_all:
-            temp_word_line_i = np.zeros(resistances.shape)
-            temp_word_line_i[:, :] += np.repeat(
-                device_i[:, -1:], resistances.shape[1], axis=1)
-            for i in range(1, resistances.shape[1]):
-                temp_word_line_i[:, :-i] += np.repeat(
-                    device_i[:, -(1 + i):-i], resistances.shape[1] - i, axis=1)
-            word_line_i.append(temp_word_line_i)
-    else:
-        word_line_i = np.zeros(resistances.shape)
-        word_line_i[:, :] += np.repeat(
-            device_i_all[:, -1:], resistances.shape[1], axis=1)
-        for i in range(1, resistances.shape[1]):
-            word_line_i[:, :-i] += np.repeat(
-                device_i_all[:, -(1 + i):-i], resistances.shape[1] - i, axis=1)
+    word_line_i = np.repeat(device_i_all[:, -1:, ], resistances.shape[1],
+                            axis=1)
+    for i in range(1, resistances.shape[1]):
+        word_line_i[:, :-i, ] += np.repeat(device_i_all[:, -(1 + i):-i, ],
+                                          resistances.shape[1]-i, axis=1)
 
     return word_line_i
 
@@ -245,21 +225,12 @@ def bit_line_currents(resistances, device_i_all):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Currents flowing through interconnect segments along the bit lines.
     """
-    if isinstance(device_i_all, list):
-        bit_line_i = []
-        for device_i in device_i_all:
-            temp_bit_line_i = np.zeros(resistances.shape)
-            for i in range(resistances.shape[0]):
-                temp_bit_line_i[i:, :] += np.repeat(
-                    device_i[i:i + 1, :], resistances.shape[0] - i, axis=0)
-            bit_line_i.append(temp_bit_line_i)
-    else:
-        bit_line_i = np.zeros(resistances.shape)
-        for i in range(resistances.shape[0]):
-            bit_line_i[i:, :] += np.repeat(
-                device_i_all[i:i + 1, :], resistances.shape[0] - i, axis=0)
+    bit_line_i = np.zeros(device_i_all.shape)
+    for i in range(resistances.shape[0]):
+        bit_line_i[i:, :, ] += np.repeat(device_i_all[i:i + 1, :, ],
+                                         resistances.shape[0] - i, axis=0)
 
     return bit_line_i

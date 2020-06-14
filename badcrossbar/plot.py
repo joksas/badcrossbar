@@ -20,9 +20,9 @@ def currents(device_currents=None, word_line_currents=None,
         device_currents = all_currents.device
         word_line_currents = all_currents.word_line
         bit_line_currents = all_currents.bit_line
-        device_currents, word_line_currents, bit_line_currents =\
-            plotting.utils.average_if_list(
-                device_currents, word_line_currents, bit_line_currents)
+        device_currents, word_line_currents, bit_line_currents = (
+            utils.average_if_3D(i) for i in (
+                device_currents, word_line_currents, bit_line_currents))
 
     device_currents, word_line_currents, bit_line_currents = \
         check.plotting_requirements(
@@ -82,8 +82,9 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     if all_voltages is not None:
         word_line_voltages = all_voltages.word_line
         bit_line_voltages = all_voltages.bit_line
-        word_line_voltages, bit_line_voltages = plotting.utils.average_if_list(
-            word_line_voltages, bit_line_voltages)
+        word_line_voltages, bit_line_voltages = (
+            utils.average_if_3D(i) for i in (
+                word_line_voltages, bit_line_voltages))
 
     word_line_voltages, bit_line_voltages = check.plotting_requirements(
         word_line_voltages=word_line_voltages,

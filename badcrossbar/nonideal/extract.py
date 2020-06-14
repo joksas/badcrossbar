@@ -1,5 +1,5 @@
 import numpy as np
-from badcrossbar import display
+from badcrossbar import display, utils
 from collections import namedtuple
 from badcrossbar.nonideal import fill, solve
 
@@ -134,7 +134,7 @@ def word_line_voltages(v, resistances):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Voltages at the nodes on the word lines.
     """
     v_domain = v[:resistances.size, ]
@@ -153,7 +153,7 @@ def bit_line_voltages(v, resistances):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Voltages at the nodes on the bit lines.
     """
     v_domain = v[resistances.size:, ]
@@ -314,16 +314,12 @@ def distributed_array(flattened_array, model_array):
 
     Returns
     -------
-    ndarray or list of ndarray
+    ndarray
         Array or a list of arrays in specified shape.
     """
-    if flattened_array.shape[1] > 1:
-        reshaped_i = []
-        for example in range(flattened_array.shape[1]):
-            reshaped_i.append(
-                flattened_array[:, example].reshape(model_array.shape))
-    else:
-        reshaped_i = flattened_array.reshape(model_array.shape)
+    reshaped_i = flattened_array.reshape(
+        (model_array.shape[0], model_array.shape[1], flattened_array.shape[1]))
+    reshaped_i = utils.squeeze_third_axis(reshaped_i)
 
     return reshaped_i
 
@@ -389,12 +385,10 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     if kwargs.get('all_currents', True) is False:
         device_i = word_line_i = bit_line_i = None
     else:
-        if applied_voltages.shape[1] == 1:
-            device_i = word_line_i = bit_line_i = np.zeros(resistances.shape)
-        else:
-            device_i = word_line_i = bit_line_i = [np.zeros(resistances.shape)
-                                                   for _ in range(
-                    applied_voltages.shape[1])]
+        same_i = np.zeros((resistances.shape[0], resistances.shape[1],
+                           applied_voltages.shape[1]))
+        same_i = utils.squeeze_third_axis(same_i)
+        device_i = word_line_i = bit_line_i = same_i
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
 
