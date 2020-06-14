@@ -8,6 +8,21 @@ Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
 
 def extract(filename, shape):
+    """Extracts setup and solution associated with a Qucs data file.
+
+    For a particular circuit defined in Qucs, the user can select to
+    "Calculate DC bias"; this generates a DAT file, containing the simulation
+    setup, as well as currents flowing though ammeters and voltages at named
+    nodes. This function extracts this information, transforms it into
+    convenient form and saves it as a pickle file.
+
+    Parameters
+    ----------
+    filename : str
+        Name of the DAT file, excluding extension.
+    shape : tuple of int
+        Shape of the crossbar array (num_word_lines, num_bit_lines).
+    """
     data = open_file(filename, 'dat')
     R = two_dim(data, shape, var1='R')
     V = one_dim(data, shape, var1='V')
@@ -18,6 +33,26 @@ def extract(filename, shape):
 
 
 def two_dim(data, shape, var1, var2=None):
+    """Extracts 2D array from Qucs DAT file.
+
+    This only works if the user uses two indices for naming.
+
+    Parameters
+    ----------
+    data : str
+        Contents of the DAT file.
+    shape : tuple of int
+        Shape of the crossbar array (num_word_lines, num_bit_lines).
+    var1 :str
+        Name of the first variable.
+    var2 : str
+        Name of the second variable.
+
+    Returns
+    -------
+    ndarray
+        2D Array.
+    """
     X = np.zeros(shape)
     for i in range(shape[0]):
         for j in range(shape[1]):
@@ -33,6 +68,24 @@ def two_dim(data, shape, var1, var2=None):
 
 
 def one_dim(data, shape, var1, var2=None):
+    """Extracts 1D array from Qucs DAT file.
+
+    Parameters
+    ----------
+    data : str
+        Contents of the DAT file.
+    shape : tuple of int
+        Shape of the crossbar array (num_word_lines, num_bit_lines).
+    var1 :str
+        Name of the first variable.
+    var2 : str
+        Name of the second variable.
+
+    Returns
+    -------
+    ndarray
+        2D Array.
+    """
     X = np.zeros((shape[0], 1))
     for i in range(shape[0]):
         delim1 = '<indep ' + var1 + str(i)
@@ -47,6 +100,22 @@ def one_dim(data, shape, var1, var2=None):
 
 
 def zero_dim(data, var1, var2=None):
+    """Extracts a scalar from Qucs DAT file.
+
+    Parameters
+    ----------
+    data : str
+        Contents of the DAT file.
+    var1 :str
+        Name of the first variable.
+    var2 : str
+        Name of the second variable.
+
+    Returns
+    -------
+    int or float
+        A scalar.
+    """
     delim1 = '<indep ' + var1
     if var2 is not None:
         delim1 += var2
@@ -57,6 +126,20 @@ def zero_dim(data, var1, var2=None):
 
 
 def solution(data, shape):
+    """Extracts solution from Qucs DAT file.
+
+    Parameters
+    ----------
+    data : str
+        Contents of the DAT file.
+    shape : tuple of int
+        Shape of the crossbar array (num_word_lines, num_bit_lines).
+
+    Returns
+    -------
+    ndarray
+        Branch currents and node voltages of the crossbar array.
+    """
     device_currents = two_dim(data, shape, var1='d', var2='.I')
     word_line_currents = two_dim(data, shape, var1='w', var2='.I')
     bit_line_currents = two_dim(data, shape, var1='b', var2='.I')
@@ -70,10 +153,40 @@ def solution(data, shape):
 
 
 def between(data, delim1, delim2):
+    """Extracts text between two delimiters.
+
+    Parameters
+    ----------
+    data : str
+        Text to analyse
+    delim1 : str
+        First delimiter.
+    delim2 : str
+        Second delimiter.
+
+    Returns
+    -------
+    str
+        Text between delimiters.
+    """
     return data.split(delim1)[1].split(delim2)[0]
 
 
 def open_file(filename, extension):
+    """Loads arbitrary file.
+
+    Parameters
+    ----------
+    filename : str
+        Name of the file, excluding extension.
+    extension : str
+        File extension.
+
+    Returns
+    -------
+    any
+        Contents of the file.
+    """
     with open(filename + '.' + extension, 'r') as opened_file:
         contents = opened_file.read()
     return contents
