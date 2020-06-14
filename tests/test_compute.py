@@ -20,49 +20,124 @@ multiple_input_names = [['5x4_a_v_1', '5x4_a_v_2', '5x4_a_v_3'],
 
 @pytest.mark.parametrize('filename', single_input_names)
 def test_currents_qucs(filename):
-    resistances, voltages, r_i, expected_solution = qucs_data(filename)
-    computed_solution = badcrossbar.compute(voltages, resistances, r_i)
+    """Tests currents computed by badcrossbar with the ones computed in Qucs
+    circuit simulation software.
+
+    Parameters
+    ----------
+    filename : str
+        Name of the Qucs file used.
+    """
+    resistances, applied_voltages, r_i, expected_solution = qucs_data(filename)
+    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
 @pytest.mark.parametrize('filename', single_input_names)
 def test_voltages_qucs(filename):
-    resistances, voltages, r_i, expected_solution = qucs_data(filename)
-    computed_solution = badcrossbar.compute(voltages, resistances, r_i)
+    """Tests voltages computed by badcrossbar with the ones computed in Qucs
+    circuit simulation software.
+
+    Parameters
+    ----------
+    filename : str
+        Name of the Qucs file used.
+    """
+    resistances, applied_voltages, r_i, expected_solution = qucs_data(filename)
+    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
     compare_voltages(computed_solution.voltages, expected_solution.voltages)
 
 
 @pytest.mark.parametrize('filenames', multiple_input_names)
 def test_currents_qucs_multiple_inputs(filenames):
-    resistances, voltages, r_i, expected_solution = qucs_data_multiple(
+    """Tests currents computed by badcrossbar with the ones computed in Qucs
+    circuit simulation software when applying multiple inputs.
+
+    Parameters
+    ----------
+    filenames : str
+        Names of the Qucs files used.
+    """
+    resistances, applied_voltages, r_i, expected_solution = qucs_data_multiple(
         filenames)
-    computed_solution = badcrossbar.compute(voltages, resistances, r_i)
+    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
 @pytest.mark.parametrize('filenames', multiple_input_names)
 def test_voltages_qucs_multiple_inputs(filenames):
-    resistances, voltages, r_i, expected_solution = qucs_data_multiple(
+    """Tests voltages computed by badcrossbar with the ones computed in Qucs
+    circuit simulation software when applying multiple inputs.
+
+    Parameters
+    ----------
+    filenames : str
+        Names of the Qucs files used.
+    """
+    resistances, applied_voltages, r_i, expected_solution = qucs_data_multiple(
         filenames)
-    computed_solution = badcrossbar.compute(voltages, resistances, r_i)
+    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
     compare_voltages(computed_solution.voltages, expected_solution.voltages)
 
 
-def qucs_data(file_name):
-    path = 'qucs/' + file_name + '.pickle'
+def qucs_data(filename):
+    """Extracts setup and solution of a particular Qucs file.
+    
+    Extraction is done by using pre-processed pickle file which was created 
+    using qucs/extract.py.
+        
+    Parameters
+    ----------
+    filename : str
+        Name of the Qucs file.
+
+    Returns
+    -------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    applied_voltages : ndarray
+        Applied voltages.
+    r_i : int or float
+        Interconnect resistance.
+    solution : named tuple
+        Branch currents and node voltages of the crossbar.
+    """
+    path = 'qucs/' + filename + '.pickle'
     with open(path, 'rb') as handle:
-        resistances, voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = pickle.load(
-            handle)
+        resistances, applied_voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = \
+            pickle.load(handle)
 
     extracted_currents = Currents(i_o, i_d, i_w, i_b)
     extracted_voltages = Voltages(v_w, v_b)
 
     solution = Solution(extracted_currents, extracted_voltages)
 
-    return resistances, voltages, r_i, solution
+    return resistances, applied_voltages, r_i, solution
 
 
 def qucs_data_multiple(filenames):
+    """Extracts setups and solutions of particular Qucs files.
+
+    Extraction is done by using pre-processed pickle files which were created
+    using qucs/extract.py.
+
+    Parameters
+    ----------
+    filenames : str
+        Names of the Qucs file.
+
+    Returns
+    -------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    applied_voltages : ndarray
+        Applied voltages (combined from multiple files).
+    r_i : int or float
+        Interconnect resistance.
+    solution : named tuple
+        Branch currents and node voltages of the crossbar (combined from
+        multiple files).
+    """
     voltages_list = []
     i_o_list = []
     i_d_list = []
@@ -101,6 +176,15 @@ def qucs_data_multiple(filenames):
 
 
 def compare_currents(computed_currents, expected_currents):
+    """Compares currents.
+
+    Parameters
+    ----------
+    computed_currents : named tuple of ndarray
+        Computed crossbar branch currents.
+    expected_currents : named tuple of ndarray
+        Expected crossbar branch currents.
+    """
     np.testing.assert_array_almost_equal(computed_currents.output,
                                          expected_currents.output)
     np.testing.assert_array_almost_equal(computed_currents.device,
@@ -112,6 +196,15 @@ def compare_currents(computed_currents, expected_currents):
 
 
 def compare_voltages(computed_voltages, expected_voltages):
+    """Compares voltages.
+
+    Parameters
+    ----------
+    computed_voltages : named tuple of ndarray
+        Computed crossbar node voltages.
+    expected_voltages : named tuple of ndarray
+        Expected crossbar node voltages.
+    """
     np.testing.assert_array_almost_equal(computed_voltages.word_line,
                                          expected_voltages.word_line)
     np.testing.assert_array_almost_equal(computed_voltages.bit_line,
