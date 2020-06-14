@@ -7,7 +7,7 @@ Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
 Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
 
-def extract(filename, shape):
+def qucs_dat_file(filename, shape):
     """Extracts setup and solution associated with a Qucs data file.
 
     For a particular circuit defined in Qucs, the user can select to
