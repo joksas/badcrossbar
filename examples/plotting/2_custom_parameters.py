@@ -7,7 +7,7 @@ import badcrossbar
 # to change once the image is produced.
 
 # This example demonstrates how to use some of these options. In particular,
-# we consider how to visually represent node voltages in a large crossbar
+# we consider how one might visually represent node voltages in a large crossbar
 # array where using default parameters produces a diagram with nodes that are
 # hard to see without zooming in.
 
