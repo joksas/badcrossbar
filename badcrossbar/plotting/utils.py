@@ -112,7 +112,7 @@ def rgb_single_color(shape, color=(0, 0, 0)):
 
 
 def arrays_range(*arrays):
-    """Finds the minimum and maximum value in arbitrary number of arrays.
+    """Finds the color bar range from arbitrary number of arrays.
 
     Parameters
     ----------
@@ -121,8 +121,8 @@ def arrays_range(*arrays):
 
     Returns
     -------
-    tuple of float
-        Minimum and maximum values in the provided arrays.
+    float
+        Minimum and maximum values in the color bar.
     """
     low = np.inf
     high = -np.inf
