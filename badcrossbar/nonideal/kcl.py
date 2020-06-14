@@ -9,7 +9,7 @@ def apply(g_matrix, resistances, r_i):
 
     Parameters
     ----------
-    g_matrix : ndarray
+    g_matrix : lil_matrix
         Matrix g used in equation gv = i.
     resistances : ndarray
         Resistances of crossbar devices.
@@ -18,7 +18,7 @@ def apply(g_matrix, resistances, r_i):
 
     Returns
     -------
-    ndarray
+    lil_matrix
         Filled matrix g.
     """
     with np.errstate(divide='ignore'):
@@ -33,7 +33,7 @@ def word_line_nodes(g_matrix, conductances, r_i):
 
     Parameters
     ----------
-    g_matrix : ndarray
+    g_matrix : lil_matrix
         Matrix g used in equation gv = i.
     conductances : ndarray
         Conductances of crossbar devices.
@@ -42,7 +42,7 @@ def word_line_nodes(g_matrix, conductances, r_i):
 
     Returns
     -------
-    ndarray
+    lil_matrix
         Partially filled matrix g.
     """
     (num_word_lines, num_bit_lines) = conductances.shape
@@ -94,7 +94,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
 
     Parameters
     ----------
-    g_matrix : ndarray
+    g_matrix : lil_matrix
         Matrix g used in equation gv = i.
     conductances : ndarray
         Conductances of crossbar devices.
@@ -103,7 +103,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
 
     Returns
     -------
-    ndarray
+    lil_matrix
         Filled matrix g (if this function is executed after word_line_nodes()).
     """
     (num_word_lines, num_bit_lines) = conductances.shape

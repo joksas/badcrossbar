@@ -7,7 +7,7 @@ def v(g, i, **kwargs):
 
     Parameters
     ----------
-    g : ndarray
+    g : lil_matrix
         Matrix containing conductances next to each of the nodes.
     i : ndarray
         Matrix containing known currents flowing into each of the nodes.

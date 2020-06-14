@@ -16,7 +16,7 @@ def g(resistances, r_i):
 
     Returns
     -------
-    ndarray
+    lil_matrix
         Filled matrix g.
     """
     g_shape = tuple(2*resistances.size for _ in range(2))
@@ -66,7 +66,7 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
 
     Parameters
     ----------
-    g_matrix : ndarray
+    g_matrix : lil_matrix
         matrix g used in equation gv = i
     i_matrix : ndarray
         matrix i used in equation gv = i
@@ -77,8 +77,10 @@ def superconductive(g_matrix, i_matrix, resistances, r_i):
 
     Returns
     -------
-    g_matrix, i_matrix : ndarray
-        Transformed matrices g and i (used in equation gv = i).
+    g_matrix : lil_matrix
+        Transformed matrix g.
+    i_matrix : ndarray
+        Transformed matrix i.
     removed_rows : list of int
         Indices of removed rows from the two matrices.
     """
