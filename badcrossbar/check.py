@@ -80,6 +80,7 @@ def plotting_requirements(device_currents=None, word_line_currents=None,
         numeric_array(value, key)
         non_empty(value, key)
         n_dimensional(value, 2, key)
+        non_infinite_array(value, key)
 
     if len(valid_arrays) != 1:
         for dim in [0, 1]:
@@ -230,6 +231,27 @@ def non_negative_array(array, name='array'):
     if (array < 0).any():
         raise ValueError(
             '\'{}\' array contains at least one negative value!'.format(name))
+
+
+def non_infinite_array(array, name='array'):
+    """Checks if all the elements of the array are non-infinite.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    name : str
+        Name of the array.
+
+    Raises
+    -------
+    ValueError
+        If the array contains positive or negative infinities.
+    """
+    if (array == np.inf).any() or (array == -np.inf).any():
+        raise ValueError(
+            '\'{}\' array contains at least one value with infinite '
+            'magnitude!'.format(name))
 
 
 def number(value, name='variable'):
