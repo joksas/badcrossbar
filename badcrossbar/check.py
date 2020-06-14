@@ -28,11 +28,13 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
         numeric_array(i[0], i[2])
         non_empty(i[0], i[2])
 
+    non_negative_array(resistances, 'resistances')
     match_shape(resistances=(resistances, 0),
                 applied_voltages=(applied_voltages, 0))
+
     number(r_i=r_i)
-    non_negative_array(resistances, 'resistances')
-    negative_number(r_i=r_i)
+    non_negative_number(r_i, 'r_i')
+
     short_circuit(resistances, r_i, **kwargs)
 
     return resistances, applied_voltages
@@ -245,22 +247,23 @@ def non_negative_array(array, name='array'):
             '\'{}\' array contains at least one negative value!'.format(name))
 
 
-def negative_number(**kwargs):
+def non_negative_number(value, name='array'):
     """Checks if any of the numbers are negative.
 
     Parameters
     ----------
-    **kwargs : dict of (int or float)
-        Numbers.
+    value : int or float
+        Number.
+    name : str
+        Name of the number.
 
     Raises
     -------
     ValueError
-        If any of the numbers are negative.
+        If the number is negative.
     """
-    for key, value in kwargs.items():
-        if value < 0:
-            raise ValueError('Variable \'{}\' is negative!'. format(key))
+    if value < 0:
+        raise ValueError('\'{}\' is negative!'. format(name))
 
 
 def short_circuit(resistances, r_i, **kwargs):
