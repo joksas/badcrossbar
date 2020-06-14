@@ -22,13 +22,16 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     """
     resistances, applied_voltages = (np.array(i) for i in
                                      (resistances, applied_voltages))
-    resistances, applied_voltages = matrix_type(
-        resistances=resistances, applied_voltages=applied_voltages)
-    empty(resistances=resistances, applied_voltages=applied_voltages)
+    for i in ((resistances, 2, 'resistances'),
+              (applied_voltages, 2, 'applied_voltages')):
+        n_dimensional(i[0], i[1], i[2])
+        numeric_array(i[0], i[2])
+        non_empty(i[0], i[2])
+
     match_shape(resistances=(resistances, 0),
                 applied_voltages=(applied_voltages, 0))
     number(r_i=r_i)
-    negative_array(resistances=resistances)
+    non_negative_array(resistances, 'resistances')
     negative_number(r_i=r_i)
     short_circuit(resistances, r_i, **kwargs)
 
@@ -69,7 +72,7 @@ def plotting_requirements(device_currents=None, word_line_currents=None,
         valid_arrays = not_none(word_line_voltages=word_line_voltages,
                                 bit_line_voltages=bit_line_voltages)
     for key, value in valid_arrays.items():
-        valid_arrays[key] = matrix_type(**{key: value})
+        valid_arrays[key] = numeric_array(**{key: value})
     empty(**valid_arrays)
     if len(valid_arrays) != 1:
         for dim in [0, 1]:
@@ -199,7 +202,7 @@ def non_empty(array, name='array'):
 
 
 def match_shape(**kwargs):
-    """Checks if numpy arrays have matching dimensions.
+    """Checks if arrays have matching dimensions.
 
     Parameters
     ----------
@@ -209,7 +212,7 @@ def match_shape(**kwargs):
     Raises
     -------
     ValueError
-        If any of the ndarrays do not match specified dimensions.
+        If any of the arrays do not match specified dimensions.
     """
     first_key = list(kwargs.keys())[0]
     first_value = list(kwargs.values())[0]
@@ -222,24 +225,24 @@ def match_shape(**kwargs):
             )
 
 
-def negative_array(**kwargs):
-    """Checks if any entries in numpy arrays contain negative values.
+def non_negative_array(array, name='array'):
+    """Checks if all the elements of the array are non-negative.
 
     Parameters
     ----------
-    **kwargs : dict of ndarray
-        Arrays.
+    array : ndarray
+        Array.
+    name : str
+        Name of the array.
 
     Raises
     -------
     ValueError
-        If any of the ndarrays contain negative values.
+        If the array contains negative values.
     """
-    for key, value in kwargs.items():
-        if (value < 0).any():
-            raise ValueError(
-                'Array \'{}\' contains at least one negative value!'.format(key)
-            )
+    if (array < 0).any():
+        raise ValueError(
+            '\'{}\' array contains at least one negative value!'.format(name))
 
 
 def negative_number(**kwargs):
