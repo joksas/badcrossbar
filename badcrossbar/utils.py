@@ -2,9 +2,10 @@ import os
 import pickle
 from datetime import datetime
 import numpy as np
+from pathvalidate import sanitize_filepath
 
 
-def unique_path(path, extension='pdf'):
+def unique_path(path, extension='pdf', sanitize=True):
     """Append a number to the path, if it is not unique.
 
     Parameters
@@ -19,6 +20,9 @@ def unique_path(path, extension='pdf'):
     str
         Unique path.
     """
+    if sanitize:
+        path = sanitize_filepath(path)
+
     full_path = '{}.{}'.format(path, extension)
     if os.path.exists(full_path):
         number = 1
@@ -146,7 +150,8 @@ def arrays_shape(*arrays):
             return shape
 
 
-def save_pickle(variable, path, allow_overwrite=False, verbose=False):
+def save_pickle(variable, path, allow_overwrite=False, verbose=False,
+                sanitize=True):
     """Saves variable to a pickle file.
 
     Parameters
@@ -161,6 +166,9 @@ def save_pickle(variable, path, allow_overwrite=False, verbose=False):
     verbose : bool
         If True, notifies the user that the file has been saved.
     """
+    if sanitize:
+        path = sanitize_filepath(path)
+
     if allow_overwrite:
         path = '{}.pickle'.format(path)
     else:
@@ -173,7 +181,7 @@ def save_pickle(variable, path, allow_overwrite=False, verbose=False):
         print('Saved {}.'.format(path))
 
 
-def load_pickle(path):
+def load_pickle(path, sanitize=True):
     """Loads pickle file.
 
     Parameters
@@ -186,6 +194,9 @@ def load_pickle(path):
     any
         Extracted contents.
     """
+    if sanitize:
+        path = sanitize_filepath(path)
+
     with open(path, 'rb') as handle:
         variable = pickle.load(handle)
 
