@@ -1,6 +1,6 @@
 import badcrossbar
 
-# The main purpose of plotting submodule is for plotting currents and voltages
+# The main purpose of plotting module is for plotting currents and voltages
 # in the branches and on the nodes of the crossbar, respectively. However,
 # these functions can accept any numeric arrays and thus plot arbitrary
 # variables. This example shows how to plot the percentage change in current
