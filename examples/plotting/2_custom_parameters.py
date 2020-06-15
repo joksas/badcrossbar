@@ -1,7 +1,7 @@
 import numpy as np
 import badcrossbar
 
-# Plotting  submodule produces vector images (as a PDF file) that can then be
+# Plotting  module produces vector images (as a PDF file) that can then be
 # edited in any vector graphics manipulation program. However, it also provides
 # option to modify some of the features of the diagram that might be difficult
 # to change once the image is produced.
