@@ -1,3 +1,6 @@
-numpy>=1.18.1
-pytest>=5.3.1
-scipy>=1.4.1
+numpy~=1.18.5
+pytest~=5.4.3
+scipy~=1.4.1
+setuptools~=47.1.1
+pathvalidate~=2.3.0
+sigfig~=1.1.8
