@@ -93,7 +93,7 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
     scaling_factor : float, optional
         Scaling factor for the diameter.
     """
-    diameter = segment_length/100*6*scaling_factor
+    diameter = segment_length/100*7*scaling_factor
     x, y = ctx.get_current_point()
     if bit_line_nodes:
         x += segment_length/2

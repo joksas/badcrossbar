@@ -164,7 +164,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
     kwargs.setdefault('device_scaling_factor', 1)
-    kwargs.setdefault('node_scaling_factor', 1.5)
+    kwargs.setdefault('node_scaling_factor', 1.4)
     kwargs.setdefault('axis_label', 'Voltage (V)')
     kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
     kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
