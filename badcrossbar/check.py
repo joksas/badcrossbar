@@ -22,11 +22,11 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     """
     resistances, applied_voltages = (np.array(i) for i in
                                      (resistances, applied_voltages))
-    for i in ((resistances, 2, 'resistances'),
-              (applied_voltages, 2, 'applied_voltages')):
-        n_dimensional(i[0], i[1], i[2])
-        numeric_array(i[0], i[2])
-        non_empty(i[0], i[2])
+    for value, name in ((resistances, 'resistances'),
+                        (applied_voltages, 'applied_voltages')):
+        n_dimensional(value, [2], name)
+        numeric_array(value, name)
+        non_empty(value, name)
 
     non_negative_array(resistances, 'resistances')
     match_shape(resistances=(resistances, 0),
@@ -80,8 +80,8 @@ def plotting_requirements(device_currents=None, word_line_currents=None,
     for key, value in valid_arrays.items():
         numeric_array(valid_arrays[key], key)
         non_empty(valid_arrays[key], key)
+        n_dimensional(valid_arrays[key], [2, 3], key)
         valid_arrays[key] = utils.average_if_3D(valid_arrays[key])
-        n_dimensional(valid_arrays[key], 2, key)
         non_infinite_array(valid_arrays[key], key)
 
     if len(valid_arrays) != 1:
