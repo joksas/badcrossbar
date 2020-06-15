@@ -1,7 +1,6 @@
 import badcrossbar
 from badcrossbar import utils
 import numpy as np
-import pickle
 from collections import namedtuple
 import pytest
 
