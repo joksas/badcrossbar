@@ -78,6 +78,8 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
                         'resistor_europe': plotting.devices.resistor_europe}
     if device in device_functions:
         device_function = device_functions[device]
+        if device in ['resistor_usa', 'resistor_europe']:
+            width *= 3/5
     else:
         raise ValueError('Device \'{}\' is not currently supported!'.format(
             device))
