@@ -18,7 +18,7 @@ setup(
     name='badcrossbar',
     version='1.0.0',
     packages=['badcrossbar', 'badcrossbar.ideal', 'badcrossbar.nonideal',
-              'tests'],
+              'badcrossbar.plotting', 'tests'],
     url='https://github.com/joksas/badcrossbar',
     license='MIT license',
     author='Dovydas Joksas',
