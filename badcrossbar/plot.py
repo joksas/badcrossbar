@@ -54,6 +54,8 @@ def currents(device_currents=None, word_line_currents=None,
             If True, can overwrite existing PDF files with the same name.
         filename : str, optional
             Filename, excluding PDF extension.
+        device_type : {'memristor', 'resistor_europe'}, optional
+            Device type to be drawn.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -65,6 +67,7 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
     kwargs.setdefault('allow_overwrite', False)
     kwargs.setdefault('filename', 'crossbar-currents')
+    kwargs.setdefault('device_type', 'memristor')
 
     if all_currents is not None:
         device_currents = all_currents.device
@@ -160,6 +163,8 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
             If True, can overwrite existing PDF files with the same name.
         filename : str, optional
             Filename, excluding PDF extension.
+        device_type : {'memristor', 'resistor_europe'}, optional
+            Device type to be drawn.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -171,6 +176,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
     kwargs.setdefault('allow_overwrite', False)
     kwargs.setdefault('filename', 'crossbar-voltages')
+    kwargs.setdefault('device_type', 'memristor')
 
     if all_voltages is not None:
         word_line_voltages = all_voltages.word_line

@@ -52,7 +52,8 @@ def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1):
+def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
+                    device='memristor'):
     """Draws a row of crossbar devices.
 
     Parameters
@@ -65,6 +66,8 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1):
         The length of each segment.
     scaling_factor : float, optional
         Scaling factor for the width.
+    device : {'memristor', 'resistor_europe'}, optional
+        Device type to be drawn.
     """
     width = segment_length/100*5*scaling_factor
     x, y = ctx.get_current_point()
@@ -72,7 +75,14 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1):
     for color in colors:
         x += segment_length
         ctx.move_to(x, y)
-        plotting.devices.memristor(ctx, length=device_length, angle=np.pi / 4)
+        if device == 'memristor':
+            plotting.devices.memristor(ctx, length=device_length, angle=np.pi/4)
+        elif device == 'resistor_europe':
+            plotting.devices.resistor_europe(ctx, length=device_length,
+                                             angle=np.pi/4)
+        else:
+            raise ValueError('Device \'{}\' is not currently supported!'.format(
+                device))
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
@@ -253,7 +263,8 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
             draw_device_row(ctx, colors, segment_length=segment_length,
-                            scaling_factor=kwargs.get('device_scaling_factor'))
+                            scaling_factor=kwargs.get('device_scaling_factor'),
+                            device=kwargs.get('device_type'))
             y += segment_length
             ctx.move_to(x, y)
     else:
@@ -261,7 +272,8 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
             crossbar_shape, color=kwargs.get('default_color'))
         for colors in colors_list:
             draw_device_row(ctx, colors, segment_length=segment_length,
-                            scaling_factor=kwargs.get('device_scaling_factor'))
+                            scaling_factor=kwargs.get('device_scaling_factor'),
+                            device=kwargs.get('device_type'))
             y += segment_length
             ctx.move_to(x, y)
 
