@@ -54,7 +54,7 @@ def currents(device_currents=None, word_line_currents=None,
             If True, can overwrite existing PDF files with the same name.
         filename : str, optional
             Filename, excluding PDF extension.
-        device_type : {'memristor', 'resistor_europe'}, optional
+        device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
             Device type to be drawn.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
@@ -163,7 +163,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
             If True, can overwrite existing PDF files with the same name.
         filename : str, optional
             Filename, excluding PDF extension.
-        device_type : {'memristor', 'resistor_europe'}, optional
+        device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
             Device type to be drawn.
     """
     kwargs.setdefault('default_color', (0, 0, 0))

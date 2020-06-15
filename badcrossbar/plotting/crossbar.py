@@ -66,7 +66,7 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
         The length of each segment.
     scaling_factor : float, optional
         Scaling factor for the width.
-    device : {'memristor', 'resistor_europe'}, optional
+    device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
         Device type to be drawn.
     """
     width = segment_length/100*5*scaling_factor
@@ -77,6 +77,9 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
         ctx.move_to(x, y)
         if device == 'memristor':
             plotting.devices.memristor(ctx, length=device_length, angle=np.pi/4)
+        elif device == 'resistor_usa':
+            plotting.devices.resistor_usa(ctx, length=device_length,
+                                          angle=np.pi/4)
         elif device == 'resistor_europe':
             plotting.devices.resistor_europe(ctx, length=device_length,
                                              angle=np.pi/4)
