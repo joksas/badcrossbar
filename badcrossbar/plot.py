@@ -16,11 +16,11 @@ def currents(device_currents=None, word_line_currents=None,
 
     Parameters
     ----------
-    device_currents : ndarray, optional
+    device_currents : array_like, optional
         Currents flowing through crossbar devices.
-    word_line_currents : ndarray, optional
+    word_line_currents : array_like, optional
         Currents flowing through interconnect segments along the word lines.
-    bit_line_currents : ndarray, optional
+    bit_line_currents : array_like, optional
         Currents flowing through interconnect segments along the bit lines.
     all_currents : named tuple, optional
         Crossbar branch currents. Named tuple should have fields `device`,
@@ -125,9 +125,9 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
 
     Parameters
     ----------
-    word_line_voltages : ndarray, optional
+    word_line_voltages : array_like, optional
         Voltages at the nodes on the word lines.
-    bit_line_voltages : ndarray, optional
+    bit_line_voltages : array_like, optional
         Voltages at the nodes on the bit lines.
     all_voltages : named tuple, optional
         Crossbar node voltages. It should have fields `word_line` and
