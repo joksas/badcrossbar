@@ -192,7 +192,7 @@ Examples of how to plot currents or voltages of only certain parts of the crossb
 
 ### Modifying diagrams
 
-Plotting  module produces vector images (as a PDF file) that can then be edited in any vector graphics manipulation program. However, it also provides option to modify some of the features of the diagram that might be difficult to change once the image is produced. Example [2_custom_parameters.py] explores some of these options, while the complete list of modifiable parameters can be found in function docstrings of [`badcrossbar.plot`] module.
+Plotting  module produces vector images (as PDF files) that can then be edited in any vector graphics manipulation program. However, it also provides option to modify some of the features of the diagram that might be difficult to change once the image is produced. Example [2_custom_parameters.py] explores some of these options, while the complete list of modifiable parameters can be found in function docstrings of [`badcrossbar.plot`] module.
 
 [badcrossbar]:https://github.com/joksas/badcrossbar
 [numpy]:https://github.com/numpy/numpy
