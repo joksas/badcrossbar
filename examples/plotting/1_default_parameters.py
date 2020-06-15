@@ -16,10 +16,10 @@ r_i = 0.5
 # computing the solution
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
-# The function badcrossbar.plot.currents accepts either individual arrays for
-# word line branches, bit line branches and crossbar devices or a named tuple
+# The function `badcrossbar.plot.currents` accepts either individual arrays for
+# crossbar devices, word line branches and bit line branches, or a named tuple
 # containing all currents. If any of the arrays are 3D, they are averaged along
-# the third axis. Function badcrossbar.plot.voltages uses the same exact
+# the third axis. Function `badcrossbar.plot.voltages` uses the same exact
 # principle for plotting voltages at the nodes on the word and bit lines.
 
 # plotting average branch currents over all four sets of inputs.
