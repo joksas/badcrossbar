@@ -1,6 +1,6 @@
 # About
 
-[badcrossbar] is a nodal analysis solver for crossbar arrays that suffer from line resistance. It solves for currents in all the branches, as well as for voltages at all the nodes of the crossbar.
+[badcrossbar] is a nodal analysis solver for passive crossbar arrays that suffer from line resistance. It solves for currents in all the branches, as well as for voltages at all the nodes of the crossbar. Additionally, it can create diagrams of crossbar arrays colored according to the values of those currents and voltages (or any other variables).
 
 # Background
 
