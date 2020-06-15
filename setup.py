@@ -4,10 +4,13 @@ computing matrix products of applied voltages and the conductances of
 crossbar devices. However, when interconnect resistance is non-zero,
 crossbars deviate from this behaviour. This package computes branch currents
 and node voltages of the crossbar for arbitrary values of devices'
-resistances, applied voltages and interconnect resistance.
+resistances, applied voltages and interconnect resistance. Additionally,
+it allows to plot currents and voltages (or other variables) in the crossbar
+branches and nodes, respectively.
 
-For most users, function badcrossbar.compute should complete the main task at
-hand, i.e. computing crossbar currents and voltages.
+For most users, functions `badcrossbar.compute`, `badcrossbar.plot.currents`
+and `badcrossbar.plot.voltages` should complete the main  task at hand,
+i.e. computing and plotting crossbar currents and voltages.
 """
 from setuptools import setup
 
@@ -20,5 +23,6 @@ setup(
     license='MIT license',
     author='Dovydas Joksas',
     author_email='dovydas.joksas.15@ucl.ac.uk',
-    description='Nodal analysis solver for memristive crossbar arrays.'
+    description='A Python tool for computing and plotting currents and '
+                'voltages in passive crossbar arrays.'
 )
