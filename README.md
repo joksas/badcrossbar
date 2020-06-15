@@ -184,7 +184,7 @@ badcrossbar.plot.voltages(all_voltages=solution.voltages,
                           filename='average-voltages', allow_overwrite=True)
 ```
 
-The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between node voltages. Differences become more apparent with larger crossbar arrays, as explored in [2_custom_parameters.py], for example.
+The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between voltages of nodes of the same type. Differences become more apparent with larger crossbar arrays, as explored in [2_custom_parameters.py], for example.
 
 ![Crossbar voltages](images/crossbar-voltages.png)
 
