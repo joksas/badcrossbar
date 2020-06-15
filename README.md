@@ -109,7 +109,7 @@ print('\nCurrent through the device in question is {} A.'.format(current))
 Current through the device in question is 0.009856197822795886 A.
 ```
 
-More examples can be found in files [`1_single_set_of_inputs.py`] and [`2_multiple_sets_of_inputs.py`].
+More examples can be found in files [1_single_set_of_inputs.py] and [2_multiple_sets_of_inputs.py].
 
 ### Perfectly insulating devices
 
@@ -117,7 +117,7 @@ Devices with infinite resistance can be denoted using resistance value of `numpy
 
 ## Plotting currents and voltages (and more)
 
-[badcrossbar] provides [`badcrossbar.plot`] module which allows to color crossbar branches and currents. This is done by functions `badcrossbar.plot.currents` and `badcrossbar.plot.voltages`, respectively. Although their primary purpose is for plotting currents and voltages, these functions accept arbitrary arrays and color the branches and nodes, according to the values of these arrays. This functionality is explained in more detail in example [`3_different_variables.py`].
+[badcrossbar] provides [`badcrossbar.plot`] module which allows to color crossbar branches and currents. This is done by functions `badcrossbar.plot.currents` and `badcrossbar.plot.voltages`, respectively. Although their primary purpose is for plotting currents and voltages, these functions accept arbitrary arrays and color the branches and nodes, according to the values of these arrays. This functionality is explained in more detail in example [3_different_variables.py].
 
 ### Currents
 
@@ -184,21 +184,21 @@ badcrossbar.plot.voltages(all_voltages=solution.voltages,
                           filename='average-voltages', allow_overwrite=True)
 ```
 
-The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between node voltages. Differences become more apparent with larger crossbar arrays, as explored in [`2_custom_parameters.py`], for example.
+The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between node voltages. Differences become more apparent with larger crossbar arrays, as explored in [2_custom_parameters.py], for example.
 
 ![Crossbar voltages](images/crossbar-voltages.png)
 
-Examples of how to plot currents or voltages of only certain parts of the crossbar, or how to take into account only part of the sets of applied voltages can be found in [`1_default_parameters.py`].
+Examples of how to plot currents or voltages of only certain parts of the crossbar, or how to take into account only part of the sets of applied voltages can be found in [1_default_parameters.py].
 
 ### Modifying diagrams
 
-Plotting  module produces vector images (as a PDF file) that can then be edited in any vector graphics manipulation program. However, it also provides option to modify some of the features of the diagram that might be difficult to change once the image is produced. Example [`2_custom_parameters.py`] explores some of these options, while the complete list of modifiable parameters can be found in function docstrings of [`badcrossbar.plot`] module.
+Plotting  module produces vector images (as a PDF file) that can then be edited in any vector graphics manipulation program. However, it also provides option to modify some of the features of the diagram that might be difficult to change once the image is produced. Example [2_custom_parameters.py] explores some of these options, while the complete list of modifiable parameters can be found in function docstrings of [`badcrossbar.plot`] module.
 
 [badcrossbar]:https://github.com/joksas/badcrossbar
 [numpy]:https://github.com/numpy/numpy
 [`badcrossbar.plot`]:badcrossbar/plot.py
-[`1_single_set_of_inputs.py`]:examples/computing/1_single_set_of_inputs.py
-[`2_multiple_sets_of_inputs.py`]:examples/computing/2_multiple_sets_of_inputs.py
-[`1_default_parameters.py`]:examples/plotting/1_default_parameters.py
-[`2_custom_parameters.py`]:examples/plotting/2_custom_parameters.py
-[`3_different_variables.py`]:examples/plotting/3_different_variables.py
+[1_single_set_of_inputs.py]:examples/computing/1_single_set_of_inputs.py
+[2_multiple_sets_of_inputs.py]:examples/computing/2_multiple_sets_of_inputs.py
+[1_default_parameters.py]:examples/plotting/1_default_parameters.py
+[2_custom_parameters.py]:examples/plotting/2_custom_parameters.py
+[3_different_variables.py]:examples/plotting/3_different_variables.py
