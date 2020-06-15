@@ -130,15 +130,15 @@ def not_none(**kwargs):
     return valid_items
 
 
-def n_dimensional(array, n=2, name='array'):
+def n_dimensional(array, n_list=[2], name='array'):
     """Checks that array is `n`-dimensional.
 
     Parameters
     ----------
     array : ndarray
         Array.
-    n : int, optional
-        Required number of dimensions.
+    n_list : list of int, optional
+        Possible number of dimensions.
     name : str, optional
         Name of the variable.
 
@@ -148,9 +148,15 @@ def n_dimensional(array, n=2, name='array'):
         If array is not `n`-dimensional.
     """
     dim = array.ndim
-    if dim != n:
-        raise TypeError('\'{}\' should be {}-dimensional array! Instead '
-                        'received {}-dimensional array.'.format(name, n, dim))
+    if dim not in n_list:
+        err_msg = '\'{}\' should be {}-dimensional array! Instead received ' \
+                  '{}-dimensional array.'
+        if len(n_list) == 1:
+            n_list_str = str(n_list[0])
+        else:
+            n_list_str = '- or '.join([str(i) for i in n_list])
+
+        raise TypeError(err_msg.format(name, n_list_str, dim))
 
 
 def numeric_array(array, name='array'):
