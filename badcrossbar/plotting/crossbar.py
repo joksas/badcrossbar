@@ -72,20 +72,20 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
     width = segment_length/100*5*scaling_factor
     x, y = ctx.get_current_point()
     device_length = segment_length/2*np.sqrt(2)  # Pythagorean theorem
+
+    device_functions = {'memristor': plotting.devices.memristor,
+                        'resistor_usa': plotting.devices.resistor_usa,
+                        'resistor_europe': plotting.devices.resistor_europe}
+    if device in device_functions:
+        device_function = device_functions[device]
+    else:
+        raise ValueError('Device \'{}\' is not currently supported!'.format(
+            device))
+
     for color in colors:
         x += segment_length
         ctx.move_to(x, y)
-        if device == 'memristor':
-            plotting.devices.memristor(ctx, length=device_length, angle=np.pi/4)
-        elif device == 'resistor_usa':
-            plotting.devices.resistor_usa(ctx, length=device_length,
-                                          angle=np.pi/4)
-        elif device == 'resistor_europe':
-            plotting.devices.resistor_europe(ctx, length=device_length,
-                                             angle=np.pi/4)
-        else:
-            raise ValueError('Device \'{}\' is not currently supported!'.format(
-                device))
+        device_function(ctx, length=device_length, angle=np.pi/4)
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
