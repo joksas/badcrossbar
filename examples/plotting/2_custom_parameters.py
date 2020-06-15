@@ -38,8 +38,8 @@ my_default_color = (0.9, 0.9, 0.9)
 # `device_scaling_factor`. However, we want to make the nodes larger; for
 # that we can use a separate variable `node_scaling_factor` which controls
 # the size of the nodes without affecting the device width.
-# the following line will result in net scaling factor of 10 for the nodes
-my_node_scaling_factor = 1/my_device_scaling_factor * 10
+# the following line will result in net scaling factor of 8 for the nodes
+my_node_scaling_factor = 1/my_device_scaling_factor * 8
 
 # additionally, we are going to change the color bar colors, so that the
 # zero would associated with black and that the maximum positive value would be
