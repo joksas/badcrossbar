@@ -18,10 +18,10 @@ def complete_path(ctx, rgb=(0, 0, 0), width=1):
     x, y = ctx.get_current_point()
 
     ctx.set_line_width(width)
-
     ctx.set_source_rgb(*rgb)
 
     ctx.stroke()
+
     ctx.move_to(x, y)
 
 
@@ -40,6 +40,7 @@ def complete_fill(ctx, rgb=(0, 0, 0)):
     ctx.set_source_rgb(*rgb)
 
     ctx.fill()
+
     ctx.move_to(x, y)
 
 
@@ -75,6 +76,7 @@ def rgb_interpolation(array, low=0, high=1,
         high = 1
 
     for low_x, zero_x, high_x in zip(low_rgb, zero_rgb, high_rgb):
+        # linearly interpolate in two intervals (above and below zero)
         x = np.where(array > 0,
                      zero_x + (array - 0) * (high_x-zero_x)/(high-0),
                      low_x + (array - low) * (zero_x-low_x)/(0-low))
@@ -137,16 +139,20 @@ def arrays_range(*arrays):
             if maximum > high:
                 high = maximum
 
+    # if 0, make sure that `low` and `high` are int
     if low == 0:
         low = 0
     if high == 0:
         high = 0
 
+    # round to two significant figures
     if low != 0:
         low = round(float(low), sigfigs=2)
     if high != 0:
         high = round(float(high), sigfigs=2)
 
+    # if the range captures both positive and negative numbers, make it
+    # symmetrical around 0
     if np.sign(low) != np.sign(high) and low != 0 and high != 0:
         maximum_absolute = np.max([np.abs(low), np.abs(high)])
         low = -maximum_absolute
