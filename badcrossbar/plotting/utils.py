@@ -113,13 +113,15 @@ def rgb_single_color(shape, color=(0, 0, 0)):
     return rgb
 
 
-def arrays_range(*arrays):
+def arrays_range(*arrays, sf=2):
     """Finds the color bar range from arbitrary number of arrays.
 
     Parameters
     ----------
     arrays : ndarray
         Arrays.
+    sf : int, optional
+        Number of significant figures.
 
     Returns
     -------
@@ -147,9 +149,9 @@ def arrays_range(*arrays):
 
     # round to two significant figures
     if low != 0:
-        low = round(float(low), sigfigs=2)
+        low = round(float(low), sigfigs=sf)
     if high != 0:
-        high = round(float(high), sigfigs=2)
+        high = round(float(high), sigfigs=sf)
 
     # if the range captures both positive and negative numbers, make it
     # symmetrical around 0

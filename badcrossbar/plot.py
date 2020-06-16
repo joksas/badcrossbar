@@ -56,6 +56,9 @@ def currents(device_currents=None, word_line_currents=None,
             Filename, excluding PDF extension.
         device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
             Device type to be drawn.
+        significant_figures : int, optional
+            Number of significant figures to use for the limits of the color
+            bar.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -68,6 +71,7 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('allow_overwrite', False)
     kwargs.setdefault('filename', 'crossbar-currents')
     kwargs.setdefault('device_type', 'memristor')
+    kwargs.setdefault('significant_figures', 2)
 
     if all_currents is not None:
         device_currents = all_currents.device
@@ -94,7 +98,8 @@ def currents(device_currents=None, word_line_currents=None,
     context = cairo.Context(surface)
 
     low, high = plotting.utils.arrays_range(
-        device_currents, word_line_currents, bit_line_currents)
+        device_currents, word_line_currents, bit_line_currents,
+        sf=kwargs.get('significant_figures'))
 
     plotting.crossbar.bit_lines(
         context, bit_line_currents, diagram_pos, low, high,
@@ -165,6 +170,9 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
             Filename, excluding PDF extension.
         device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
             Device type to be drawn.
+        significant_figures : int, optional
+            Number of significant figures to use for the limits of the color
+            bar.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -177,6 +185,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     kwargs.setdefault('allow_overwrite', False)
     kwargs.setdefault('filename', 'crossbar-voltages')
     kwargs.setdefault('device_type', 'memristor')
+    kwargs.setdefault('significant_figures', 2)
 
     if all_voltages is not None:
         word_line_voltages = all_voltages.word_line
@@ -198,8 +207,9 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
-    low, high = plotting.utils.arrays_range(word_line_voltages,
-                                            bit_line_voltages)
+    low, high = plotting.utils.arrays_range(
+        word_line_voltages, bit_line_voltages,
+        sf=kwargs.get('significant_figures'))
 
     plotting.crossbar.bit_lines(
         context, None, diagram_pos, low, high,
