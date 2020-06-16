@@ -20,6 +20,19 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
+## Windows
+
+When installing [pycairo] package on Windows, one might encounter an error similar to the one below:
+```text
+error: Microsoft Visual C++ 14.0 is required. Get it with "Build Tools for Visual Studio": https://visualstudio.microsoft.com/downloads/
+```
+
+One suggested solution is to download unofficial [pycairo] binary from [University of California, Irvine website](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo) and install it by typing the following command into the terminal (with the correct filename):
+```text
+pip install C:\path\to\file\pycairo-1.19.1-cp38-cp38-win32.whl
+```
+As stated in the [website](https://www.lfd.uci.edu/~gohlke/pythonlibs/), "the files are provided "as is" without warranty or support of any kind. The entire risk as to the quality and performance is with you."
+
 # Usage
 
 ## Computing currents and voltages
@@ -196,6 +209,7 @@ Plotting  module produces vector images (as PDF files) that can then be edited i
 
 [badcrossbar]:https://github.com/joksas/badcrossbar
 [numpy]:https://github.com/numpy/numpy
+[pycairo]:https://github.com/pygobject/pycairo
 [`badcrossbar.plot`]:badcrossbar/plot.py
 [1_single_set_of_inputs.py]:examples/computing/1_single_set_of_inputs.py
 [2_multiple_sets_of_inputs.py]:examples/computing/2_multiple_sets_of_inputs.py
