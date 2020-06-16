@@ -92,7 +92,7 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
 
 
 def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
-                  scaling_factor=1):
+                  scaling_factor=1, device='memristor'):
     """Draws a row of nodes.
 
     Parameters
@@ -107,8 +107,12 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
         If True, draws nodes on the bit lines.
     scaling_factor : float, optional
         Scaling factor for the diameter.
+    device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
+        Device type to be drawn (affects node diameter).
     """
     diameter = segment_length/100*7*scaling_factor
+    if device in ['resistor_usa', 'resistor_europe']:
+        diameter *= 5/7
     x, y = ctx.get_current_point()
     if bit_line_nodes:
         x += segment_length/2
@@ -330,7 +334,8 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
                 high_rgb=kwargs.get('high_rgb'))
             draw_node_row(ctx, colors, segment_length=segment_length,
                           bit_line_nodes=bit_line,
-                          scaling_factor=node_scaling_factor)
+                          scaling_factor=node_scaling_factor,
+                          device=kwargs.get('device_type'))
             y += segment_length
             ctx.move_to(x, y)
     else:
@@ -340,7 +345,8 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
             ctx.move_to(x, y)
             draw_node_row(ctx, colors, bit_line_nodes=bit_line,
                           segment_length=segment_length,
-                          scaling_factor=node_scaling_factor)
+                          scaling_factor=node_scaling_factor,
+                          device=kwargs.get('device_type'))
             y += segment_length
             ctx.move_to(x, y)
 
