@@ -68,6 +68,22 @@ match_shape_error = [False,
                      False]
 match_shape_arguments = zip(match_shape_inputs, match_shape_error)
 
+# non_negative_array()
+non_negative_array_array = [np.zeros((5, 5)),
+                            np.ones((5, 5)),
+                            -np.ones((5, 5)),
+                            np.array([0, 1, 2]),
+                            np.array([0, -1, -2]),
+                            np.array([-8, -1, -2])]
+non_negative_array_error = [False,
+                            False,
+                            True,
+                            False,
+                            True,
+                            True]
+non_negative_array_arguments = zip(
+    non_negative_array_array, non_negative_array_error)
+
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
@@ -112,3 +128,12 @@ def test_match_shape(inputs, error):
             check.match_shape(**inputs)
     else:
         check.match_shape(**inputs)
+
+
+@pytest.mark.parametrize('array,error', non_negative_array_arguments)
+def test_non_negative_array(array, error):
+    if error:
+        with pytest.raises(ValueError):
+            check.non_negative_array(array)
+    else:
+        check.non_negative_array(array)
