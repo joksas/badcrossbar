@@ -305,6 +305,9 @@ def non_negative_number(value, name='number'):
 def short_circuit(resistances, r_i, **kwargs):
     """Checks if crossbar will be short-circuited.
 
+    This refers to a theoretical scenario when there exists a path of zero
+    resistance in a crossbar.
+
     Parameters
     ----------
     resistances : ndarray
