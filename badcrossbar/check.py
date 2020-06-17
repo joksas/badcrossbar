@@ -284,7 +284,7 @@ def number(value, name='variable'):
 
 
 def non_negative_number(value, name='number'):
-    """Checks if any of the numbers are negative.
+    """Checks if the number is negative.
 
     Parameters
     ----------
