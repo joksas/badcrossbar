@@ -56,6 +56,18 @@ non_empty_error = [True,
                    False]
 non_empty_arguments = zip(non_empty_array, non_empty_error)
 
+# match_shape()
+match_shape_inputs = [{'a': (np.array([1, 0]), 0),
+                       'b': (np.array([[1, 2, 3], [4, 5, 6]]), 0)},
+                      {'a': (np.array([1, 0]), 0),
+                       'b': (np.array([[1, 2, 3], [4, 5, 6]]), 1)},
+                      {'a': (np.array([[]]), 1),
+                       'b': (np.array([[[]]]), 2)}]
+match_shape_error = [False,
+                     True,
+                     False]
+match_shape_arguments = zip(match_shape_inputs, match_shape_error)
+
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
@@ -91,3 +103,12 @@ def test_non_empty(array, error):
             check.non_empty(array)
     else:
         check.non_empty(array)
+
+
+@pytest.mark.parametrize('inputs,error', match_shape_arguments)
+def test_match_shape(inputs, error):
+    if error:
+        with pytest.raises(ValueError):
+            check.match_shape(**inputs)
+    else:
+        check.match_shape(**inputs)
