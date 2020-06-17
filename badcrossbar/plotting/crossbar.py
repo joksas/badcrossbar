@@ -353,7 +353,7 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
     ctx.move_to(*diagram_pos)
 
 
-def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
+def dimensions(shape, max_dim_mm=210, color_bar_fraction=(0.5, 0.15),
                border_fraction=0.05):
     """Extracts dimensions of the surface.
 
@@ -361,8 +361,8 @@ def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
     ----------
     shape : tuple of int
         Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
-    max_dim : float, optional
-        The length of the longest side.
+    max_dim_mm : float, optional
+        The length of the longest side in millimeters.
     color_bar_fraction : tuple of float, optional
         The fraction of the surface that the color bar region will take on
         the right (vertically and horizontally.
@@ -383,6 +383,9 @@ def dimensions(shape, max_dim=1000, color_bar_fraction=(0.5, 0.15),
     color_bar_dims : tuple of float
         Width and height of the color bar.
     """
+    # convert millimeters to points
+    max_dim = max_dim_mm * 72/25.4
+
     adjusted_shape = (shape[0]+0.5, shape[1]+0.5)
     active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border_fraction
     if adjusted_shape[1]/adjusted_shape[0] > active_horizontal_fraction:
