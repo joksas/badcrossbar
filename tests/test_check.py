@@ -45,6 +45,17 @@ numeric_array_error = [True,
                        False]
 numeric_array_arguments = zip(numeric_array_array, numeric_array_error)
 
+# non_empty()
+non_empty_array = [np.array([]),
+                   np.array([[]]),
+                   np.array([1, 2]),
+                   np.array([[1, 'a'], [2, 'b']])]
+non_empty_error = [True,
+                   True,
+                   False,
+                   False]
+non_empty_arguments = zip(non_empty_array, non_empty_error)
+
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
@@ -71,3 +82,12 @@ def test_numeric_array(array, error):
             check.numeric_array(array)
     else:
         check.numeric_array(array)
+
+
+@pytest.mark.parametrize('array,error', non_empty_arguments)
+def test_non_empty(array, error):
+    if error:
+        with pytest.raises(ValueError):
+            check.non_empty(array)
+    else:
+        check.non_empty(array)
