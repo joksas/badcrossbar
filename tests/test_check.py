@@ -164,6 +164,17 @@ short_circuit_arguments = zip(
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
+    """Tests `badcrossbar.check.not_none()`.
+
+    Parameters
+    ----------
+    inputs : dict of any, optional
+        Items of arbitrary type.
+    error : bool
+        Whether an error should be raised.
+    results : dict of any
+        Items that are not None.
+    """
     if error:
         with pytest.raises(ValueError):
             check.not_none(**inputs)
@@ -173,6 +184,17 @@ def test_not_none(inputs, error, results):
 
 @pytest.mark.parametrize('array,n_list,error', n_dimensional_arguments)
 def test_n_dimensional(array, n_list, error):
+    """Tests `badcrossbar.check.n_dimensional()`.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    n_list : list of int, optional
+        Possible number of dimensions.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(TypeError):
             check.n_dimensional(array, n_list=n_list)
@@ -182,6 +204,15 @@ def test_n_dimensional(array, n_list, error):
 
 @pytest.mark.parametrize('array,error', numeric_array_arguments)
 def test_numeric_array(array, error):
+    """Tests `badcrossbar.check.numeric_array()`.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(TypeError):
             check.numeric_array(array)
@@ -191,6 +222,15 @@ def test_numeric_array(array, error):
 
 @pytest.mark.parametrize('array,error', non_empty_arguments)
 def test_non_empty(array, error):
+    """Tests `badcrossbar.check.non_empty()`.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(ValueError):
             check.non_empty(array)
@@ -200,6 +240,15 @@ def test_non_empty(array, error):
 
 @pytest.mark.parametrize('inputs,error', match_shape_arguments)
 def test_match_shape(inputs, error):
+    """Tests `badcrossbar.check.match_shape()`.
+
+    Parameters
+    ----------
+    inputs : dict of tuple of (ndarray and int)
+        Arrays and the dimension along which they should be matched.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(ValueError):
             check.match_shape(**inputs)
@@ -209,6 +258,15 @@ def test_match_shape(inputs, error):
 
 @pytest.mark.parametrize('array,error', non_negative_array_arguments)
 def test_non_negative_array(array, error):
+    """Tests `badcrossbar.check.non_negative_array()`.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(ValueError):
             check.non_negative_array(array)
@@ -218,6 +276,15 @@ def test_non_negative_array(array, error):
 
 @pytest.mark.parametrize('array,error', non_infinite_array_arguments)
 def test_non_infinite_array(array, error):
+    """Tests `badcrossbar.check.non_infinite_array()`.
+
+    Parameters
+    ----------
+    array : ndarray
+        Array.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(ValueError):
             check.non_infinite_array(array)
@@ -227,6 +294,15 @@ def test_non_infinite_array(array, error):
 
 @pytest.mark.parametrize('value,error', number_arguments)
 def test_number(value, error):
+    """Tests `badcrossbar.check.number()`.
+
+    Parameters
+    ----------
+    value : any
+        Variable of arbitrary type.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(TypeError):
             check.number(value)
@@ -236,6 +312,15 @@ def test_number(value, error):
 
 @pytest.mark.parametrize('value,error', non_negative_number_arguments)
 def test_non_negative_number(value, error):
+    """Tests `badcrossbar.check.non_negative_number()`.
+
+    Parameters
+    ----------
+    value : int or float
+        Number.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(ValueError):
             check.non_negative_number(value)
@@ -245,6 +330,17 @@ def test_non_negative_number(value, error):
 
 @pytest.mark.parametrize('resistances,r_i,error', short_circuit_arguments)
 def test_short_circuit(resistances, r_i, error):
+    """Tests `badcrossbar.check.short_circuit()`.
+
+    Parameters
+    ----------
+    resistances : ndarray
+        Resistances of crossbar devices.
+    r_i : int or float
+        Interconnect resistance.
+    error : bool
+        Whether an error should be raised.
+    """
     if error:
         with pytest.raises(ValueError):
             check.short_circuit(resistances, r_i)
