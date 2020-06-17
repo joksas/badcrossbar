@@ -119,6 +119,26 @@ number_error = [False,
                 True]
 number_arguments = zip(number_value, number_error)
 
+# non_negative_number()
+non_negative_number_value = [0,
+                             0.0,
+                             1,
+                             1.0,
+                             -1,
+                             -1.0,
+                             np.inf,
+                             -np.inf]
+non_negative_number_error = [False,
+                             False,
+                             False,
+                             False,
+                             True,
+                             True,
+                             False,
+                             True]
+non_negative_number_arguments = zip(
+    non_negative_number_value, non_negative_number_error)
+
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
@@ -190,3 +210,12 @@ def test_number(value, error):
             check.number(value)
     else:
         check.number(value)
+
+
+@pytest.mark.parametrize('value,error', non_negative_number_arguments)
+def test_non_negative_number(value, error):
+    if error:
+        with pytest.raises(ValueError):
+            check.non_negative_number(value)
+    else:
+        check.non_negative_number(value)
