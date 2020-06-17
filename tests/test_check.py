@@ -139,6 +139,28 @@ non_negative_number_error = [False,
 non_negative_number_arguments = zip(
     non_negative_number_value, non_negative_number_error)
 
+# short_circuit()
+short_circuit_resistances = [np.zeros((5, 5)),
+                             np.zeros((5, 5)),
+                             np.ones((5, 5)),
+                             np.ones((5, 5)),
+                             np.array([[1, np.inf], [0, 4]]),
+                             np.array([[1, np.inf], [0, 4]])]
+short_circuit_r_i = [0.5,
+                     0,
+                     0.5,
+                     0,
+                     1,
+                     0]
+short_circuit_error = [False,
+                       True,
+                       False,
+                       False,
+                       False,
+                       True]
+short_circuit_arguments = zip(
+    short_circuit_resistances, short_circuit_r_i, short_circuit_error)
+
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
@@ -219,3 +241,12 @@ def test_non_negative_number(value, error):
             check.non_negative_number(value)
     else:
         check.non_negative_number(value)
+
+
+@pytest.mark.parametrize('resistances,r_i,error', short_circuit_arguments)
+def test_short_circuit(resistances, r_i, error):
+    if error:
+        with pytest.raises(ValueError):
+            check.short_circuit(resistances, r_i)
+    else:
+        check.short_circuit(resistances, r_i)
