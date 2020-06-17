@@ -100,6 +100,25 @@ non_infinite_array_error = [False,
 non_infinite_array_arguments = zip(
     non_infinite_array_array, non_infinite_array_error)
 
+# number()
+number_value = [1,
+                0.5,
+                -3,
+                0,
+                np.inf,
+                None,
+                'a',
+                np.array([1, 2, 3])]
+number_error = [False,
+                False,
+                False,
+                False,
+                False,
+                True,
+                True,
+                True]
+number_arguments = zip(number_value, number_error)
+
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
@@ -162,3 +181,12 @@ def test_non_infinite_array(array, error):
             check.non_infinite_array(array)
     else:
         check.non_infinite_array(array)
+
+
+@pytest.mark.parametrize('value,error', number_arguments)
+def test_number(value, error):
+    if error:
+        with pytest.raises(TypeError):
+            check.number(value)
+    else:
+        check.number(value)
