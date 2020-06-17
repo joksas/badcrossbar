@@ -34,6 +34,17 @@ n_dimensional_error = [False,
 n_dimensional_arguments = zip(
     n_dimensional_array, n_dimensional_n_list, n_dimensional_error)
 
+# numeric_array()
+numeric_array_array = [np.array([['a', 'b'], ['c', 'd']]),
+                       np.array(['a', 'b', 0.5],),
+                       np.array([None, 1]),
+                       np.array([[0.1, 5], [0.2, 10]])]
+numeric_array_error = [True,
+                       True,
+                       True,
+                       False]
+numeric_array_arguments = zip(numeric_array_array, numeric_array_error)
+
 
 @pytest.mark.parametrize('inputs,error,results', not_none_arguments)
 def test_not_none(inputs, error, results):
@@ -51,3 +62,12 @@ def test_n_dimensional(array, n_list, error):
             check.n_dimensional(array, n_list=n_list)
     else:
         check.n_dimensional(array, n_list=n_list)
+
+
+@pytest.mark.parametrize('array,error', numeric_array_arguments)
+def test_numeric_array(array, error):
+    if error:
+        with pytest.raises(TypeError):
+            check.numeric_array(array)
+    else:
+        check.numeric_array(array)
