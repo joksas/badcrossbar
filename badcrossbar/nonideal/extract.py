@@ -31,7 +31,7 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
 
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
-    g, i, removed_rows = fill.superconductive(g, i, resistances, r_i)
+    g, i, removed_rows = fill.zero_resistance(g, i, resistances, r_i)
 
     v = solve.v(g, i, **kwargs)
     if removed_rows is not None:
@@ -208,12 +208,12 @@ def device_currents(v, resistances, removed_rows, word_line_i):
             v[:resistances.size, ] - v[resistances.size:, ],
             np.transpose(np.tile(resistances.flatten(), (v.shape[1], 1))))
     if removed_rows is not None:
-        i = superconductive_device_currents(
+        i = zero_resistance_device_currents(
             i, removed_rows, resistances, word_line_i)
     return i
 
 
-def superconductive_device_currents(
+def zero_resistance_device_currents(
         device_i, removed_rows, resistances, word_line_i):
     """Extracts currents flowing through crossbar devices that have zero
     resistance.

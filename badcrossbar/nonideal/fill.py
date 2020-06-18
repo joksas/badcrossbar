@@ -51,7 +51,7 @@ def i(applied_voltages, resistances, r_i):
     return i_matrix
 
 
-def superconductive(g_matrix, i_matrix, resistances, r_i):
+def zero_resistance(g_matrix, i_matrix, resistances, r_i):
     """Transforms matrices `g` and `i` (used in equation gv = i) so that the
     equation could be solved even if some of the crossbar devices have zero
     resistance.
