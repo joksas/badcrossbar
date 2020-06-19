@@ -289,29 +289,6 @@ def bit_line_currents(extracted_voltages, extracted_device_currents, r_i):
     return bit_line_i
 
 
-def full_v(v, removed_rows, resistances):
-    """Refills v with rows that were removed.
-
-    Parameters
-    ----------
-    v : ndarray
-        Solution to gv = i in a flattened form.
-    removed_rows : list of int
-        Indices of rows removed from `g` and `i`.
-    resistances : ndarray
-        Resistances of crossbar devices.
-
-    Returns
-    -------
-    ndarray
-        Complete `v` array.
-    """
-    for row in removed_rows:
-        v = np.insert(v, row, 0, axis=0)
-        v[row, :] = v[row - resistances.size, :]
-    return v
-
-
 def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     """Extracts solution when interconnects are perfectly insulating.
 
