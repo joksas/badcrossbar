@@ -1,7 +1,6 @@
 import numpy as np
-from badcrossbar.nonideal import kcl
+from badcrossbar.computing import kcl, extract
 from scipy.sparse import lil_matrix
-from badcrossbar.nonideal import extract
 
 
 def g(resistances, r_i):

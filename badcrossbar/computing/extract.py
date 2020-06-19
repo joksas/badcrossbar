@@ -1,7 +1,7 @@
 import numpy as np
 from badcrossbar import utils
 from collections import namedtuple
-from badcrossbar.nonideal import fill, solve
+from badcrossbar.computing import fill, solve
 
 
 def solution(resistances, r_i, applied_voltages, **kwargs):
