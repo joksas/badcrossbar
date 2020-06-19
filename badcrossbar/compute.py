@@ -1,4 +1,4 @@
-from badcrossbar import check, computing, ideal, utils
+from badcrossbar import check, computing, utils
 from collections import namedtuple
 
 
