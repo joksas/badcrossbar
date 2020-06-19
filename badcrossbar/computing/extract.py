@@ -303,28 +303,6 @@ def bit_line_currents(v, resistances, r_i):
     return i
 
 
-def distributed_array(flattened_array, model_array):
-    """Reshapes flattened array.
-    
-    Parameters
-    ----------
-    flattened_array : ndarray
-        An array whose each column contains a flattened array.
-    model_array : ndarray
-        An array whose shape is used for reshaping.
-
-    Returns
-    -------
-    ndarray
-        Array or a list of arrays in specified shape.
-    """
-    reshaped_i = flattened_array.reshape(
-        (model_array.shape[0], model_array.shape[1], flattened_array.shape[1]))
-    reshaped_i = utils.squeeze_third_axis(reshaped_i)
-
-    return reshaped_i
-
-
 def full_v(v, removed_rows, resistances):
     """Refills v with rows that were removed.
 
