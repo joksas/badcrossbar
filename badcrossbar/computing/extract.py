@@ -30,15 +30,14 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = voltages(v, resistances, **kwargs)
     extracted_currents = currents(
-        extracted_voltages, resistances, r_i, applied_voltages, [], **kwargs)
+        extracted_voltages, resistances, r_i, applied_voltages, **kwargs)
     if kwargs.get('node_voltages') is not True:
         extracted_voltages = None
     extracted_solution = Solution(extracted_currents, extracted_voltages)
     return extracted_solution
 
 
-def currents(extracted_voltages, resistances, r_i, applied_voltages,
-             removed_rows, **kwargs):
+def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
     """Extracts crossbar branch currents in a convenient format.
     
     Parameters
@@ -51,8 +50,6 @@ def currents(extracted_voltages, resistances, r_i, applied_voltages,
         Interconnect resistance.
     applied_voltages :ndarray
         Applied voltages.
-    removed_rows : list of int
-        Indices of rows removed from `g` and `i`.
     **kwargs
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
