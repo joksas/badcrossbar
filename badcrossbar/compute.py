@@ -1,7 +1,9 @@
 from badcrossbar import check, computing, ideal, utils
+from collections import namedtuple
 
 
-def compute(applied_voltages, resistances, r_i, **kwargs):
+def compute(
+        applied_voltages, resistances, r_i_word_line, r_i_bit_line, **kwargs):
     """Computes branch currents and node voltages of a crossbar.
 
     Parameters
@@ -13,9 +15,10 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
     resistances : array_like
         Resistances of crossbar devices. Resistances must be supplied in an
         array of shape `m x n`, where `n` is the number of bit lines.
-    r_i : int or float
-        Interconnect resistance. It is assumed that all interconnects have
-        the same resistance.
+    r_i_word_line : int or float
+        Interconnect resistance of the word line segments.
+    r_i_bit_line : int or float
+        Interconnect resistance of the bit line segments.
     **kwargs
         node_voltages : bool, optional
             If False, None is returned instead of node voltages.
@@ -44,12 +47,15 @@ def compute(applied_voltages, resistances, r_i, **kwargs):
     kwargs.setdefault('verbose', 1)
 
     utils.message('Initialising simulation.', **kwargs)
-    resistances, applied_voltages = check.crossbar_requirements(
-        resistances, applied_voltages, r_i, **kwargs)
-    if r_i != 0:
-        solution = computing.extract.solution(resistances, r_i,
-                                              applied_voltages,
-                                             **kwargs)
+
+    Interconnect_Resistance = namedtuple(
+        'Interconnect_Resistance', ['word_line', 'bit_line'])
+    r_i = Interconnect_Resistance(r_i_word_line, r_i_bit_line)
+    # resistances, applied_voltages = check.crossbar_requirements(
+    #     resistances, applied_voltages, r_i, **kwargs)
+    if r_i_word_line != 0:
+        solution = computing.extract.solution(
+            resistances, r_i, applied_voltages, **kwargs)
     else:
         solution = ideal.extract.solution(resistances, applied_voltages,
                                           **kwargs)

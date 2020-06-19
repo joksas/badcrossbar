@@ -26,10 +26,11 @@ def qucs_dat_file(filename, shape):
     data = open_file(filename, 'dat')
     R = two_dim(data, shape, var1='R')
     V = one_dim(data, shape, var1='V')
-    r_i = zero_dim(data, var1='r_i')
+    r_i_wl = zero_dim(data, var1='r_i_wl')
+    r_i_bl = zero_dim(data, var1='r_i_bl')
     I_o, I_d, I_w, I_b, V_w, V_b = solution(data, shape)
-    utils.save_pickle((R, V, r_i, I_o, I_d, I_w, I_b, V_w, V_b), filename,
-                      allow_overwrite=True)
+    utils.save_pickle((R, V, r_i_wl, r_i_bl, I_o, I_d, I_w, I_b, V_w, V_b),
+                      filename, allow_overwrite=True)
 
 
 def two_dim(data, shape, var1, var2=None):

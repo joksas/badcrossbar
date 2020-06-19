@@ -10,8 +10,8 @@ def g(resistances, r_i):
     ----------
     resistances : ndarray
         Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    r_i : named tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
 
     Returns
     -------
@@ -46,7 +46,8 @@ def i(applied_voltages, resistances, r_i):
     """
     v_shape = (2*resistances.size, applied_voltages.shape[1])
     i_matrix = np.zeros(v_shape)
-    i_matrix[:resistances.size:resistances.shape[1], :] = applied_voltages/r_i
+    i_matrix[:resistances.size:resistances.shape[1],
+    :] = applied_voltages/r_i.word_line
     return i_matrix
 
 

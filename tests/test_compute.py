@@ -10,12 +10,21 @@ Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
 # the outputs of the function crossbar.compute are tested using the results
 # from Qucs circuit simulation software.
-single_input_names = ['1x1_a', '1x1_b', '1x1_c', '1x1_d', '1x1_e', '1x4_a',
-                      '1x4_b', '1x4_c', '1x4_d', '1x4_e', '5x1_a', '5x1_b',
-                      '5x1_c', '5x4_a', '5x4_b', '5x4_c', '5x4_d', '5x4_e',
-                      '5x4_f', '5x4_g', '5x4_h']
-multiple_input_names = [['5x4_a_v_1', '5x4_a_v_2', '5x4_a_v_3'],
-                        ['5x4_b_v_1', '5x4_b_v_2', '5x4_b_v_3']]
+single_input_1x1 = ['1x1-{}-{}'.format(letter, number)
+                    for letter in ['a', 'b', 'c', 'd', 'e']
+                    for number in [1, 2, 3]]
+single_input_5x4 = ['5x4-{}-{}'.format(letter, number)
+                    for letter in ['a', 'b', 'c', 'd', 'e', 'f']
+                    for number in [1, 2, 3]]
+single_input_names = single_input_1x1 + single_input_5x4
+
+multiple_inputs_1x1 = [['1x1-{}-{}'.format(letter, number)
+                        for number in [1, 2, 3]]
+                       for letter in ['a', 'b', 'c', 'd', 'e']]
+multiple_inputs_5x4 = [['5x4-{}-{}'.format(letter, number)
+                        for number in [1, 2, 3]]
+                       for letter in ['a', 'b', 'c', 'd', 'e', 'f']]
+multiple_input_names = multiple_inputs_1x1 + multiple_inputs_5x4
 
 
 @pytest.mark.parametrize('filename', single_input_names)
@@ -28,8 +37,10 @@ def test_currents_qucs(filename):
     filename : str
         Name of the Qucs file used.
     """
-    resistances, applied_voltages, r_i, expected_solution = qucs_data(filename)
-    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
+    resistances, applied_voltages, r_i_word_line, r_i_bit_line, \
+        expected_solution = qucs_data(filename)
+    computed_solution = badcrossbar.compute(
+        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
@@ -43,8 +54,10 @@ def test_voltages_qucs(filename):
     filename : str
         Name of the Qucs file used.
     """
-    resistances, applied_voltages, r_i, expected_solution = qucs_data(filename)
-    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
+    resistances, applied_voltages, r_i_word_line, r_i_bit_line, \
+        expected_solution = qucs_data(filename)
+    computed_solution = badcrossbar.compute(
+        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
     compare_voltages(computed_solution.voltages, expected_solution.voltages)
 
 
@@ -58,9 +71,10 @@ def test_currents_qucs_multiple_inputs(filenames):
     filenames : str
         Names of the Qucs files used.
     """
-    resistances, applied_voltages, r_i, expected_solution = qucs_data_multiple(
-        filenames)
-    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
+    resistances, applied_voltages, r_i_word_line, r_i_bit_line, \
+        expected_solution = qucs_data_multiple(filenames)
+    computed_solution = badcrossbar.compute(
+        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
@@ -74,9 +88,10 @@ def test_voltages_qucs_multiple_inputs(filenames):
     filenames : str
         Names of the Qucs files used.
     """
-    resistances, applied_voltages, r_i, expected_solution = qucs_data_multiple(
-        filenames)
-    computed_solution = badcrossbar.compute(applied_voltages, resistances, r_i)
+    resistances, applied_voltages, r_i_word_line, r_i_bit_line,\
+        expected_solution = qucs_data_multiple(filenames)
+    computed_solution = badcrossbar.compute(
+        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
     compare_voltages(computed_solution.voltages, expected_solution.voltages)
 
 
@@ -97,21 +112,23 @@ def qucs_data(filename):
         Resistances of crossbar devices.
     applied_voltages : ndarray
         Applied voltages.
-    r_i : int or float
-        Interconnect resistance.
+    r_i_word_line : int or float
+        Interconnect resistance of the word line segments.
+    r_i_bit_line : int or float
+        Interconnect resistance of the bit line segments.
     solution : named tuple
         Branch currents and node voltages of the crossbar.
     """
     path = 'qucs/' + filename + '.pickle'
-    resistances, applied_voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = \
-        utils.load_pickle(path)
+    resistances, applied_voltages, r_i_word_line, r_i_bit_line, i_o, i_d,\
+        i_w, i_b, v_w, v_b = utils.load_pickle(path)
 
     extracted_currents = Currents(i_o, i_d, i_w, i_b)
     extracted_voltages = Voltages(v_w, v_b)
 
     solution = Solution(extracted_currents, extracted_voltages)
 
-    return resistances, applied_voltages, r_i, solution
+    return resistances, applied_voltages, r_i_word_line, r_i_bit_line, solution
 
 
 def qucs_data_multiple(filenames):
@@ -131,8 +148,10 @@ def qucs_data_multiple(filenames):
         Resistances of crossbar devices.
     applied_voltages : ndarray
         Applied voltages (combined from multiple files).
-    r_i : int or float
-        Interconnect resistance.
+    r_i_word_line : int or float
+        Interconnect resistance of the word line segments.
+    r_i_bit_line : int or float
+        Interconnect resistance of the bit line segments.
     solution : named tuple
         Branch currents and node voltages of the crossbar (combined from
         multiple files).
@@ -147,8 +166,8 @@ def qucs_data_multiple(filenames):
 
     for filename in filenames:
         path = 'qucs/' + filename + '.pickle'
-        resistances, applied_voltages, r_i, i_o, i_d, i_w, i_b, v_w, v_b = \
-            utils.load_pickle(path)
+        resistances, applied_voltages, r_i_word_line, r_i_bit_line, i_o, i_d,\
+            i_w, i_b, v_w, v_b = utils.load_pickle(path)
 
         voltages_list.append(applied_voltages)
         i_o_list.append(i_o)
@@ -171,7 +190,7 @@ def qucs_data_multiple(filenames):
 
     solution = Solution(extracted_currents, extracted_voltages)
 
-    return resistances, applied_voltages, r_i, solution
+    return resistances, applied_voltages, r_i_word_line, r_i_bit_line, solution
 
 
 def compare_currents(computed_currents, expected_currents):

@@ -12,8 +12,8 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     ----------
     resistances : ndarray
         Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    r_i : named tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
     applied_voltages :ndarray
         Applied voltages.
     **kwargs
@@ -25,24 +25,24 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     named tuple
         Branch currents and node voltages of the crossbar.
     """
-    if r_i == np.inf:
+    if np.inf in r_i:
         return insulating_interconnect_solution(resistances, applied_voltages,
                                                 **kwargs)
 
     g = fill.g(resistances, r_i)
     i = fill.i(applied_voltages, resistances, r_i)
-    g, i, removed_rows = fill.zero_resistance(g, i, resistances, r_i)
+    # g, i, removed_rows = fill.zero_resistance(g, i, resistances, r_i)
 
     v = solve.v(g, i, **kwargs)
-    if removed_rows is not None:
-        v = full_v(v, removed_rows, resistances)
+    # if removed_rows is not None:
+    #     v = full_v(v, removed_rows, resistances)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = None
     if kwargs.get('node_voltages', True) is True:
         extracted_voltages = voltages(v, resistances, **kwargs)
     extracted_currents = currents(
-        v, resistances, r_i, applied_voltages, removed_rows, **kwargs)
+        v, resistances, r_i, applied_voltages, [], **kwargs)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
     return extracted_solution
 
@@ -178,7 +178,7 @@ def output_currents(v, resistances, r_i):
         Output currents.
     """
     output_i = np.zeros((v.shape[1], resistances.shape[1]))
-    filled_output_i = v[-resistances.shape[1]:, ]/r_i
+    filled_output_i = v[-resistances.shape[1]:, ]/r_i.bit_line
     filled_output_i = np.transpose(filled_output_i)
     output_i[:, :filled_output_i.shape[1]] = filled_output_i
     return output_i
@@ -266,11 +266,11 @@ def word_line_currents(v, resistances, r_i, applied_voltages):
     """
     i = np.zeros((resistances.size, applied_voltages.shape[1]))
     v_diff = applied_voltages - v[:resistances.size:resistances.shape[1], ]
-    i[::resistances.shape[1], ] = v_diff/r_i
+    i[::resistances.shape[1], ] = v_diff/r_i.word_line
     for j in range(1, resistances.shape[1]):
         v_diff = v[j - 1:resistances.size:resistances.shape[1], ] - v[
                  j:resistances.size:resistances.shape[1], ]
-        i[j::resistances.shape[1], ] = v_diff/r_i
+        i[j::resistances.shape[1], ] = v_diff/r_i.word_line
     return i
 
 
@@ -297,8 +297,9 @@ def bit_line_currents(v, resistances, r_i):
         v_sub = v[resistances.size + resistances.shape[1]*j:, ]
         v_diff = v_sub[:resistances.shape[1], ] - v_sub[
                  resistances.shape[1]:, ][:resistances.shape[1], ]
-        i[resistances.shape[1]*j:, ][:resistances.shape[1], ] = v_diff/r_i
-    i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ]/r_i
+        i[resistances.shape[1]*j:, ][:resistances.shape[1], ] = \
+            v_diff/r_i.bit_line
+    i[-resistances.shape[1]:, ] = v[-resistances.shape[1]:, ]/r_i.bit_line
     return i
 
 
