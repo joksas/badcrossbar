@@ -312,8 +312,8 @@ def short_circuit(resistances, r_i, **kwargs):
     ----------
     resistances : ndarray
         Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    r_i : named tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
     **kwargs
         verbose : int, optional
         If 2, makes sure that warning is displayed.
@@ -321,17 +321,15 @@ def short_circuit(resistances, r_i, **kwargs):
     Raises
     -------
     ValueError
-        If `r_i == 0` and any of the devices have zero resistance.
+        If any of the devices have zero resistance.
     """
 
     if 0 in resistances:
-        if r_i == 0:
-            raise ValueError(
-                'At least some crossbar devices have zero resistance causing '
-                'short circuit!')
+        if r_i.word_line == 0 and r_i.bit_line == 0:
+            err_txt = 'At least some crossbar devices have zero resistance ' \
+                      'causing short circuit!'
         else:
-            if kwargs.get('verbose') == 2:
-                kwargs['verbose'] = 1
-            utils.message(
-                'Warning: some crossbar devices have zero resistance!',
-                **kwargs)
+            err_txt = 'At least some crossbar devices have zero resistance! ' \
+                      'This is not currently supported even if it does not ' \
+                      'cause short circuit.'
+        raise ValueError(err_txt)

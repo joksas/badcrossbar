@@ -1,6 +1,7 @@
 from badcrossbar import check
 import pytest
 import numpy as np
+from collections import namedtuple
 
 # not_none()
 not_none_inputs = [{'a': 1, 'b': True, 'c': 'c_str'},
@@ -140,23 +141,25 @@ non_negative_number_arguments = zip(
     non_negative_number_value, non_negative_number_error)
 
 # short_circuit()
+Interconnect_Resistance = namedtuple(
+        'Interconnect_Resistance', ['word_line', 'bit_line'])
 short_circuit_resistances = [np.zeros((5, 5)),
                              np.zeros((5, 5)),
                              np.ones((5, 5)),
                              np.ones((5, 5)),
                              np.array([[1, np.inf], [0, 4]]),
                              np.array([[1, np.inf], [0, 4]])]
-short_circuit_r_i = [0.5,
-                     0,
-                     0.5,
-                     0,
-                     1,
-                     0]
-short_circuit_error = [False,
+short_circuit_r_i = [Interconnect_Resistance(0, 1),
+                     Interconnect_Resistance(1.5, 1),
+                     Interconnect_Resistance(0, 0),
+                     Interconnect_Resistance(0.5, 1),
+                     Interconnect_Resistance(0, 0),
+                     Interconnect_Resistance(1, 1)]
+short_circuit_error = [True,
                        True,
                        False,
                        False,
-                       False,
+                       True,
                        True]
 short_circuit_arguments = zip(
     short_circuit_resistances, short_circuit_r_i, short_circuit_error)
