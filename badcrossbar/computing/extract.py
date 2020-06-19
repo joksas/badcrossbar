@@ -205,37 +205,6 @@ def device_currents(extracted_voltages, resistances):
     return device_i
 
 
-def zero_resistance_device_currents(
-        device_i, removed_rows, resistances, word_line_i):
-    """Extracts currents flowing through crossbar devices that have zero
-    resistance.
-
-    Parameters
-    ----------
-    device_i : ndarray
-        Currents flowing through crossbar devices.
-    removed_rows : list of int
-        Indices of rows removed from `g` and `i`.
-    resistances : ndarray
-        Resistances of crossbar devices.
-    word_line_i : ndarray
-        Currents flowing through interconnect segments along the word lines.
-
-    Returns
-    -------
-    ndarray
-        Currents flowing through crossbar devices.
-    """
-    rows = [x - resistances.size for x in removed_rows]
-
-    for row in rows:
-        if (row + 1) % resistances.shape[1] == 0:
-            device_i[row, ] = word_line_i[row]
-        else:
-            device_i[row, ] = word_line_i[row] - word_line_i[row + 1]
-    return device_i
-
-
 def word_line_currents(extracted_voltages, extracted_device_currents,
                        r_i, applied_voltages):
     """Extracts currents flowing through interconnect segments along the word
