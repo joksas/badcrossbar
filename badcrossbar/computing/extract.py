@@ -335,22 +335,3 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     extracted_solution = Solution(extracted_currents, extracted_voltages)
 
     return extracted_solution
-
-
-def except_columns(matrix, columns):
-    """Deletes certain columns of sparse lil matrix.
-
-        Parameters
-        ----------
-        matrix : lil_matrix
-            Sparse array.
-        columns : list of int
-            Columns to be removed.
-
-        Returns
-        -------
-        lil_matrix
-            Array with specified columns removed.
-        """
-    matrix = except_rows(np.transpose(matrix), columns)
-    return np.transpose(matrix)
