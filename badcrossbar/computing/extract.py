@@ -42,8 +42,9 @@ def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
     
     Parameters
     ----------
-    v : ndarray
-        Solution to gv = i in a flattened form.
+    extracted_voltages : named tuple
+        Crossbar node voltages. It has fields `word_line` and `bit_line` that
+        contain the potentials at the nodes on the word and bit lines.
     resistances : ndarray
         Resistances of crossbar devices.
     r_i : int or float
@@ -63,7 +64,6 @@ def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
         currents flowing through the devices and interconnect segments of the
         word and bit lines.
     """
-    #
     device_i = device_currents(extracted_voltages, resistances)
     output_i = output_currents(extracted_voltages, device_i, r_i)
     if kwargs.get('all_currents'):
@@ -155,10 +155,10 @@ def output_currents(extracted_voltages, extracted_device_currents, r_i):
     extracted_voltages : named tuple
         Crossbar node voltages. It has fields `word_line` and `bit_line` that
         contain the potentials at the nodes on the word and bit lines.
-    resistances : ndarray
-        Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    extracted_device_currents : ndarray
+        Currents flowing through crossbar devices.
+    r_i : named tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
 
     Returns
     -------
@@ -209,12 +209,13 @@ def word_line_currents(extracted_voltages, extracted_device_currents,
 
     Parameters
     ----------
-    v : ndarray
-        Solution to gv = i in a flattened form.
-    resistances : ndarray
-        Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    extracted_voltages : named tuple
+        Crossbar node voltages. It has fields `word_line` and `bit_line` that
+        contain the potentials at the nodes on the word and bit lines.
+    extracted_device_currents : ndarray
+        Currents flowing through crossbar devices.
+    r_i : named tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
     applied_voltages :ndarray
         Applied voltages.
 
@@ -253,12 +254,13 @@ def bit_line_currents(extracted_voltages, extracted_device_currents, r_i):
 
     Parameters
     ----------
-    v : ndarray
-        Solution to gv = i in a flattened form.
-    resistances : ndarray
-        Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    extracted_voltages : named tuple
+        Crossbar node voltages. It has fields `word_line` and `bit_line` that
+        contain the potentials at the nodes on the word and bit lines.
+    extracted_device_currents : ndarray
+        Currents flowing through crossbar devices.
+    r_i : named tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
 
     Returns
     -------
