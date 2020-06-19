@@ -296,7 +296,7 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     ----------
     resistances : ndarray
         Resistances of crossbar devices.
-    applied_voltages :ndarray
+    applied_voltages : ndarray
         Applied voltages.
     **kwargs
         all_currents : bool, optional
@@ -335,27 +335,6 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     extracted_solution = Solution(extracted_currents, extracted_voltages)
 
     return extracted_solution
-
-
-def except_rows(matrix, rows):
-    """Deletes certain rows of sparse lil matrix.
-
-    Parameters
-    ----------
-    matrix : lil_matrix
-        Sparse array.
-    rows : list of int
-        Rows to be removed.
-
-    Returns
-    -------
-    lil_matrix
-        Array with specified rows removed.
-    """
-    matrix.rows = np.delete(matrix.rows, rows)
-    matrix.data = np.delete(matrix.data, rows)
-    matrix._shape = (matrix._shape[0] - len(rows), matrix._shape[1])
-    return matrix
 
 
 def except_columns(matrix, columns):
