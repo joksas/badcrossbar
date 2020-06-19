@@ -11,8 +11,8 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
         Resistances of crossbar devices.
     applied_voltages : array_like
         Applied voltages.
-    r_i : any
-        Interconnect resistance.
+    r_i : named tuple of any
+        Interconnect resistances along the word and bit line segments.
 
     Returns
     -------
@@ -32,8 +32,10 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     match_shape(resistances=(resistances, 0),
                 applied_voltages=(applied_voltages, 0))
 
-    number(r_i, 'r_i')
-    non_negative_number(r_i, 'r_i')
+    for value, name in ((r_i.word_line, 'r_i_word_line'),
+                        (r_i.bit_line, 'r_i_bit_line')):
+        number(value, name)
+        non_negative_number(value, name)
 
     short_circuit(resistances, r_i, **kwargs)
 

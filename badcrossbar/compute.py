@@ -46,15 +46,14 @@ def compute(
     kwargs.setdefault('all_currents', True)
     kwargs.setdefault('verbose', 1)
 
-    utils.message('Initialising simulation.', **kwargs)
-
     Interconnect_Resistance = namedtuple(
         'Interconnect_Resistance', ['word_line', 'bit_line'])
     r_i = Interconnect_Resistance(r_i_word_line, r_i_bit_line)
-    # if r_i.word_line == 0 and r_i.bit_line == 0:
-    #     solution = ideal.extract.solution(resistances, applied_voltages,
-    #                                       **kwargs)
-    # else:
+    resistances, applied_voltages = check.crossbar_requirements(
+        resistances, applied_voltages, r_i)
+
+    utils.message('Initialising simulation.', **kwargs)
+
     solution = computing.extract.solution(
             resistances, r_i, applied_voltages, **kwargs)
 
