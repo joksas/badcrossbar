@@ -4,7 +4,7 @@ from scipy.sparse import lil_matrix
 
 
 def g(resistances, r_i):
-    """Creates and fills matrix `g` used in equation gv = i.
+    """Creates and fills matrix `g` used in equation `gv = i`.
 
     Parameters
     ----------
@@ -28,7 +28,7 @@ def g(resistances, r_i):
 
 
 def i(applied_voltages, resistances, r_i):
-    """Creates and fills matrix `i` used in equation gv = i.
+    """Creates and fills matrix `i` used in equation `gv = i`.
 
     Values are filled by applying nodal analysis at the leftmost nodes on the
     word lines.

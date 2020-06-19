@@ -2,7 +2,7 @@ import numpy as np
 
 
 def apply(g_matrix, resistances, r_i):
-    """Fills matrix `g` used in equation gv = i.
+    """Fills matrix `g` used in equation `gv = i`.
 
     Values are filled by applying Kirchhoff's current law at the nodes on the
     word and bit lines.
@@ -10,7 +10,7 @@ def apply(g_matrix, resistances, r_i):
     Parameters
     ----------
     g_matrix : lil_matrix
-        Matrix `g` used in equation gv = i.
+        Matrix `g` used in equation `gv = i`.
     resistances : ndarray
         Resistances of crossbar devices.
     r_i : named tuple of (int or float)
@@ -36,7 +36,7 @@ def word_line_nodes(g_matrix, conductances, r_i):
     Parameters
     ----------
     g_matrix : lil_matrix
-        Matrix `g` used in equation gv = i.
+        Matrix `g` used in equation `gv = i`.
     conductances : ndarray
         Conductances of crossbar devices.
     r_i : named tuple of (int or float)
@@ -49,6 +49,8 @@ def word_line_nodes(g_matrix, conductances, r_i):
     """
     (num_word_lines, num_bit_lines) = conductances.shape
     g_i = 1/r_i.word_line
+    # if `r_i.bit_line == 0`, we are solving only for a half of the matrix
+    # `v` and so `bit_line_nodes()` will not even be called.
 
     if num_bit_lines != 1:
         # first column
@@ -101,7 +103,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
     Parameters
     ----------
     g_matrix : lil_matrix
-        Matrix `g` used in equation gv = i.
+        Matrix `g` used in equation `gv = i`.
     conductances : ndarray
         Conductances of crossbar devices.
     r_i : named tuple of (int or float)
@@ -110,11 +112,12 @@ def bit_line_nodes(g_matrix, conductances, r_i):
     Returns
     -------
     lil_matrix
-        Filled matrix `g` (if this function is executed after
-        `word_line_nodes()`).
+        Filled matrix `g`.
     """
     (num_word_lines, num_bit_lines) = conductances.shape
     g_bl = 1/r_i.bit_line
+    # if `r_i.word_line == 0`, we are solving only for a half of the matrix
+    # `v` and so `word_line_nodes()` will not even be called.
     if r_i.word_line > 0:
         start_index = conductances.size
     else:
