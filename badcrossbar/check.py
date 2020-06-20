@@ -2,7 +2,8 @@ import numpy as np
 from badcrossbar import utils
 
 
-def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
+def crossbar_requirements(resistances, applied_voltages,
+                          r_i_word_line, r_i_bit_line, **kwargs):
     """Checks if crossbar variables satisfy all requirements.
 
     Parameters
@@ -11,8 +12,10 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
         Resistances of crossbar devices.
     applied_voltages : array_like
         Applied voltages.
-    r_i : named tuple of any
-        Interconnect resistances along the word and bit line segments.
+    r_i_word_line : any
+        Interconnect resistance of the word line segments.
+    r_i_bit_line : any
+        Interconnect resistance of the bit line segments.
 
     Returns
     -------
@@ -32,14 +35,14 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
     match_shape(resistances=(resistances, 0),
                 applied_voltages=(applied_voltages, 0))
 
-    for value, name in ((r_i.word_line, 'r_i_word_line'),
-                        (r_i.bit_line, 'r_i_bit_line')):
-        if r_i.word_line == r_i.bit_line:
+    for value, name in ((r_i_word_line, 'r_i_word_line'),
+                        (r_i_bit_line, 'r_i_bit_line')):
+        if r_i_word_line == r_i_bit_line:
             name = 'r_i'
         number(value, name)
         non_negative_number(value, name)
 
-    short_circuit(resistances, r_i, **kwargs)
+    short_circuit(resistances, r_i_word_line, r_i_bit_line)
 
     return resistances, applied_voltages
 
@@ -306,7 +309,7 @@ def non_negative_number(value, name='number'):
         raise ValueError('\'{}\' is negative!'. format(name))
 
 
-def short_circuit(resistances, r_i, **kwargs):
+def short_circuit(resistances, r_i_word_line, r_i_bit_line):
     """Checks if crossbar will be short-circuited.
 
     This refers to a theoretical scenario when there exists a path of zero
@@ -316,11 +319,10 @@ def short_circuit(resistances, r_i, **kwargs):
     ----------
     resistances : ndarray
         Resistances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
-    **kwargs
-        verbose : int, optional
-        If 2, makes sure that warning is displayed.
+    r_i_word_line : int or float
+        Interconnect resistance of the word line segments.
+    r_i_bit_line : int or float
+        Interconnect resistance of the bit line segments.
 
     Raises
     -------
@@ -329,7 +331,7 @@ def short_circuit(resistances, r_i, **kwargs):
     """
 
     if 0 in resistances:
-        if r_i.word_line == 0 and r_i.bit_line == 0:
+        if r_i_word_line == r_i_bit_line == 0:
             err_txt = 'At least some crossbar devices have zero resistance ' \
                       'causing short circuit!'
         else:

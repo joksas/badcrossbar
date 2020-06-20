@@ -1,5 +1,4 @@
 from badcrossbar import check, computing, utils
-from collections import namedtuple
 
 
 def compute(
@@ -50,18 +49,16 @@ def compute(
     kwargs.setdefault('all_currents', True)
     kwargs.setdefault('verbose', 1)
 
-    Interconnect_Resistance = namedtuple(
-        'Interconnect_Resistance', ['word_line', 'bit_line'])
     if r_i is not None:
-        r_i = Interconnect_Resistance(r_i, r_i)
-    else:
-        r_i = Interconnect_Resistance(r_i_word_line, r_i_bit_line)
+        r_i_word_line = r_i_bit_line = r_i
+
     resistances, applied_voltages = check.crossbar_requirements(
-        resistances, applied_voltages, r_i)
+        resistances, applied_voltages, r_i_word_line, r_i_bit_line)
 
     utils.message('Initialising simulation.', **kwargs)
 
     solution = computing.extract.solution(
-            resistances, r_i, applied_voltages, **kwargs)
+            resistances, r_i_word_line, r_i_bit_line,
+            applied_voltages, **kwargs)
 
     return solution

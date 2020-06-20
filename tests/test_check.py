@@ -149,12 +149,12 @@ short_circuit_resistances = [np.zeros((5, 5)),
                              np.ones((5, 5)),
                              np.array([[1, np.inf], [0, 4]]),
                              np.array([[1, np.inf], [0, 4]])]
-short_circuit_r_i = [Interconnect_Resistance(0, 1),
-                     Interconnect_Resistance(1.5, 1),
-                     Interconnect_Resistance(0, 0),
-                     Interconnect_Resistance(0.5, 1),
-                     Interconnect_Resistance(0, 0),
-                     Interconnect_Resistance(1, 1)]
+short_circuit_r_i = [(1, 1),
+                     (1.5, 1),
+                     (0, 0),
+                     (0.5, 1),
+                     (0, 0),
+                     (1, 1)]
 short_circuit_error = [True,
                        True,
                        False,
@@ -339,13 +339,13 @@ def test_short_circuit(resistances, r_i, error):
     ----------
     resistances : ndarray
         Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    r_i : tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
     error : bool
         Whether an error should be raised.
     """
     if error:
         with pytest.raises(ValueError):
-            check.short_circuit(resistances, r_i)
+            check.short_circuit(resistances, *r_i)
     else:
-        check.short_circuit(resistances, r_i)
+        check.short_circuit(resistances, *r_i)

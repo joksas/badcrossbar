@@ -3,12 +3,14 @@ from badcrossbar import utils
 from collections import namedtuple
 from badcrossbar.computing import solve
 
+Interconnect = namedtuple('Interconnect', ['word_line', 'bit_line'])
 Solution = namedtuple('Solution', ['currents', 'voltages'])
 Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
 Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
 
-def solution(resistances, r_i, applied_voltages, **kwargs):
+def solution(resistances, r_i_word_line, r_i_bit_line,
+             applied_voltages, **kwargs):
     """Extracts branch currents and node voltages of a crossbar in a
     convenient form.
 
@@ -16,8 +18,10 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     ----------
     resistances : ndarray
         Resistances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
+    r_i_word_line : int or float, optional
+        Interconnect resistance of the word line segments.
+    r_i_bit_line : int or float, optional
+        Interconnect resistance of the bit line segments.
     applied_voltages : ndarray
         Applied voltages.
     **kwargs
@@ -29,6 +33,8 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     named tuple
         Branch currents and node voltages of the crossbar.
     """
+    r_i = Interconnect(r_i_word_line, r_i_bit_line)
+
     if r_i.word_line == r_i.bit_line == np.inf:
         return insulating_interconnect_solution(
             resistances, applied_voltages, **kwargs)
@@ -54,8 +60,8 @@ def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
         contain the potentials at the nodes on the word and bit lines.
     resistances : ndarray
         Resistances of crossbar devices.
-    r_i : int or float
-        Interconnect resistance.
+    r_i : named tuple of (int or float)
+        Interconnect resistances along the word and bit line segments.
     applied_voltages : ndarray
         Applied voltages.
     **kwargs
