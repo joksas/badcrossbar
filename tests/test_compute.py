@@ -2,6 +2,7 @@ import badcrossbar
 from badcrossbar import utils
 import numpy as np
 from collections import namedtuple
+from pathlib import Path
 import pytest
 
 Solution = namedtuple('Solution', ['currents', 'voltages'])
@@ -119,7 +120,7 @@ def qucs_data(filename):
     solution : named tuple
         Branch currents and node voltages of the crossbar.
     """
-    path = 'qucs/' + filename + '.pickle'
+    path = Path(__file__).parent / Path('qucs/{}.pickle'.format(filename))
     resistances, applied_voltages, r_i_word_line, r_i_bit_line, i_o, i_d,\
         i_w, i_b, v_w, v_b = utils.load_pickle(path)
 
@@ -165,7 +166,7 @@ def qucs_data_multiple(filenames):
     v_b_list = []
 
     for filename in filenames:
-        path = 'qucs/' + filename + '.pickle'
+        path = Path(__file__).parent / Path('qucs/{}.pickle'.format(filename))
         resistances, applied_voltages, r_i_word_line, r_i_bit_line, i_o, i_d,\
             i_w, i_b, v_w, v_b = utils.load_pickle(path)
 
