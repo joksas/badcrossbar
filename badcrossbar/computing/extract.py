@@ -25,6 +25,10 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
     named tuple
         Branch currents and node voltages of the crossbar.
     """
+    if r_i.word_line == r_i.bit_line == np.inf:
+        return insulating_interconnect_solution(
+            resistances, applied_voltages, **kwargs)
+
     v = solve.v(resistances, r_i, applied_voltages, **kwargs)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
@@ -289,7 +293,7 @@ def bit_line_currents(extracted_voltages, extracted_device_currents, r_i):
 
 
 def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
-    """Extracts solution when interconnects are perfectly insulating.
+    """Extracts solution when all interconnects are perfectly insulating.
 
     Parameters
     ----------
@@ -311,9 +315,6 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     """
     if kwargs.get('verbose') == 2:
         kwargs['verbose'] = 1
-    utils.message(
-        'Warning: interconnects are perfectly insulating! Node voltages are '
-        'undefined!', **kwargs)
 
     Solution = namedtuple('Solution', ['currents', 'voltages'])
     Currents = namedtuple('Currents',
@@ -321,15 +322,24 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
     extracted_voltages = Voltages(None, None)
+    if kwargs.get('node_voltages'):
+        utils.message(
+            'Warning: all interconnects are perfectly insulating! Node '
+            'voltages are undefined!', **kwargs)
 
     output_i = np.zeros((applied_voltages.shape[1], resistances.shape[1]))
-    if kwargs.get('all_currents', True) is False:
-        device_i = word_line_i = bit_line_i = None
-    else:
+    if kwargs.get('all_currents', True):
         same_i = np.zeros((resistances.shape[0], resistances.shape[1],
                            applied_voltages.shape[1]))
         same_i = utils.squeeze_third_axis(same_i)
         device_i = word_line_i = bit_line_i = same_i
+        utils.message(
+            'Extracted currents from all branches in the crossbar.', **kwargs)
+    else:
+        device_i = word_line_i = bit_line_i = None
+        utils.message(
+            'Extracted output currents.', **kwargs)
+
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
 
