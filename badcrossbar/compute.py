@@ -3,7 +3,8 @@ from collections import namedtuple
 
 
 def compute(
-        applied_voltages, resistances, r_i_word_line, r_i_bit_line, **kwargs):
+        applied_voltages, resistances, r_i=None,
+        r_i_word_line=None, r_i_bit_line=None, **kwargs):
     """Computes branch currents and node voltages of a crossbar.
 
     Parameters
@@ -15,9 +16,12 @@ def compute(
     resistances : array_like
         Resistances of crossbar devices. Resistances must be supplied in an
         array of shape `m x n`, where `n` is the number of bit lines.
-    r_i_word_line : int or float
+    r_i : int or float, optional
+        Interconnect resistance of the word and bit line segments. If None,
+        `r_i_word_line` and `r_i_bit_line` are used instead.
+    r_i_word_line : int or float, optional
         Interconnect resistance of the word line segments.
-    r_i_bit_line : int or float
+    r_i_bit_line : int or float, optional
         Interconnect resistance of the bit line segments.
     **kwargs
         node_voltages : bool, optional
@@ -48,7 +52,10 @@ def compute(
 
     Interconnect_Resistance = namedtuple(
         'Interconnect_Resistance', ['word_line', 'bit_line'])
-    r_i = Interconnect_Resistance(r_i_word_line, r_i_bit_line)
+    if r_i is not None:
+        r_i = Interconnect_Resistance(r_i, r_i)
+    else:
+        r_i = Interconnect_Resistance(r_i_word_line, r_i_bit_line)
     resistances, applied_voltages = check.crossbar_requirements(
         resistances, applied_voltages, r_i)
 

@@ -34,6 +34,8 @@ def crossbar_requirements(resistances, applied_voltages, r_i, **kwargs):
 
     for value, name in ((r_i.word_line, 'r_i_word_line'),
                         (r_i.bit_line, 'r_i_bit_line')):
+        if r_i.word_line == r_i.bit_line:
+            name = 'r_i'
         number(value, name)
         non_negative_number(value, name)
 

@@ -40,7 +40,7 @@ def test_currents_qucs(filename):
     resistances, applied_voltages, r_i_word_line, r_i_bit_line, \
         expected_solution = qucs_data(filename)
     computed_solution = badcrossbar.compute(
-        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
+        applied_voltages, resistances, None, r_i_word_line, r_i_bit_line)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
@@ -57,7 +57,7 @@ def test_voltages_qucs(filename):
     resistances, applied_voltages, r_i_word_line, r_i_bit_line, \
         expected_solution = qucs_data(filename)
     computed_solution = badcrossbar.compute(
-        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
+        applied_voltages, resistances, None, r_i_word_line, r_i_bit_line)
     compare_voltages(computed_solution.voltages, expected_solution.voltages)
 
 
@@ -74,7 +74,7 @@ def test_currents_qucs_multiple_inputs(filenames):
     resistances, applied_voltages, r_i_word_line, r_i_bit_line, \
         expected_solution = qucs_data_multiple(filenames)
     computed_solution = badcrossbar.compute(
-        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
+        applied_voltages, resistances, None, r_i_word_line, r_i_bit_line)
     compare_currents(computed_solution.currents, expected_solution.currents)
 
 
@@ -91,7 +91,7 @@ def test_voltages_qucs_multiple_inputs(filenames):
     resistances, applied_voltages, r_i_word_line, r_i_bit_line,\
         expected_solution = qucs_data_multiple(filenames)
     computed_solution = badcrossbar.compute(
-        applied_voltages, resistances, r_i_word_line, r_i_bit_line)
+        applied_voltages, resistances, None, r_i_word_line, r_i_bit_line)
     compare_voltages(computed_solution.voltages, expected_solution.voltages)
 
 
