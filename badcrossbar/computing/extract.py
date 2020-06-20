@@ -3,6 +3,10 @@ from badcrossbar import utils
 from collections import namedtuple
 from badcrossbar.computing import solve
 
+Solution = namedtuple('Solution', ['currents', 'voltages'])
+Currents = namedtuple('Currents', ['output', 'device', 'word_line', 'bit_line'])
+Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
+
 
 def solution(resistances, r_i, applied_voltages, **kwargs):
     """Extracts branch currents and node voltages of a crossbar in a
@@ -14,7 +18,7 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
         Resistances of crossbar devices.
     r_i : named tuple of (int or float)
         Interconnect resistances along the word and bit line segments.
-    applied_voltages :ndarray
+    applied_voltages : ndarray
         Applied voltages.
     **kwargs
         node_voltages : bool, optional
@@ -31,7 +35,6 @@ def solution(resistances, r_i, applied_voltages, **kwargs):
 
     v = solve.v(resistances, r_i, applied_voltages, **kwargs)
 
-    Solution = namedtuple('Solution', ['currents', 'voltages'])
     extracted_voltages = voltages(v, resistances, **kwargs)
     extracted_currents = currents(
         extracted_voltages, resistances, r_i, applied_voltages, **kwargs)
@@ -53,7 +56,7 @@ def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
         Resistances of crossbar devices.
     r_i : int or float
         Interconnect resistance.
-    applied_voltages :ndarray
+    applied_voltages : ndarray
         Applied voltages.
     **kwargs
         all_currents : bool, optional
@@ -82,8 +85,6 @@ def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
         utils.message(
             'Extracted output currents.', **kwargs)
 
-    Currents = namedtuple(
-        'Currents', ['output', 'device', 'word_line', 'bit_line'])
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     return extracted_currents
 
@@ -104,7 +105,6 @@ def voltages(v, resistances, **kwargs):
         Crossbar node voltages. It has fields `word_line` and `bit_line` that
         contain the potentials at the nodes on the word and bit lines.
     """
-    Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
     word_line_v = word_line_voltages(v, resistances)
     bit_line_v = bit_line_voltages(v, resistances)
     extracted_voltages = Voltages(word_line_v, bit_line_v)
@@ -220,7 +220,7 @@ def word_line_currents(extracted_voltages, extracted_device_currents,
         Currents flowing through crossbar devices.
     r_i : named tuple of (int or float)
         Interconnect resistances along the word and bit line segments.
-    applied_voltages :ndarray
+    applied_voltages : ndarray
         Applied voltages.
 
     Returns
@@ -315,11 +315,6 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     """
     if kwargs.get('verbose') == 2:
         kwargs['verbose'] = 1
-
-    Solution = namedtuple('Solution', ['currents', 'voltages'])
-    Currents = namedtuple('Currents',
-                          ['output', 'device', 'word_line', 'bit_line'])
-    Voltages = namedtuple('Voltages', ['word_line', 'bit_line'])
 
     extracted_voltages = Voltages(None, None)
     if kwargs.get('node_voltages'):
