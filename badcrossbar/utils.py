@@ -24,7 +24,7 @@ def unique_path(path, extension='pdf', sanitize=True):
         Unique path.
     """
     if sanitize:
-        path = sanitize_filepath(path)
+        path = sanitize_filepath(path, platform='auto')
 
     full_path = '{}.{}'.format(path, extension)
     if os.path.exists(full_path):
@@ -173,7 +173,7 @@ def save_pickle(variable, path, allow_overwrite=False, verbose=False,
         making the path compatible with the operating system.
     """
     if sanitize:
-        path = sanitize_filepath(path)
+        path = sanitize_filepath(path, platform='auto')
 
     if allow_overwrite:
         path = '{}.pickle'.format(path)
@@ -204,7 +204,7 @@ def load_pickle(path, sanitize=True):
         Extracted contents.
     """
     if sanitize:
-        path = sanitize_filepath(path)
+        path = sanitize_filepath(path, platform='auto')
 
     with open(path, 'rb') as handle:
         variable = pickle.load(handle)
