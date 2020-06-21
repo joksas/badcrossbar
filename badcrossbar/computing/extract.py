@@ -319,14 +319,19 @@ def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
     named tuple
         Branch currents and node voltages of the crossbar.
     """
-    if kwargs.get('verbose') == 2:
-        kwargs['verbose'] = 1
-
     extracted_voltages = Voltages(None, None)
     if kwargs.get('node_voltages'):
+        initial_verbose = kwargs.get('verbose')
+
+        if initial_verbose == 2:
+            kwargs['verbose'] = 1
+
         utils.message(
             'Warning: all interconnects are perfectly insulating! Node '
             'voltages are undefined!', **kwargs)
+
+        if initial_verbose == 2:
+            kwargs['verbose'] = 2
 
     output_i = np.zeros((applied_voltages.shape[1], resistances.shape[1]))
     if kwargs.get('all_currents', True):
