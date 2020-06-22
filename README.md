@@ -19,14 +19,48 @@ cd badcrossbar
 python setup.py install
 ```
 
-## Windows
+## Pycairo
 
-When installing [pycairo] package on Windows, one might encounter an error similar to the one below:
+The plotting module uses [pycairo] package which requires [cairo](https://www.cairographics.org/) and [pkg-config](https://github.com/pkgconf/pkgconf). The instructions for how to install either these dependencies or [pycairo] directly can be found below. However, if one is not interested in plotting functions provided by [badcrossbar], computing module works even without [pycairo] installed.
+
+### Linux
+
+As described [here](https://pycairo.readthedocs.io/en/latest/getting_started.html), it is straightforward to install [pycairo] dependencies for most Linux distributions.
+
+##### Ubuntu/Debian
+
 ```text
-error: Microsoft Visual C++ 14.0 is required. Get it with "Build Tools for Visual Studio": https://visualstudio.microsoft.com/downloads/
+apt install libcairo2-dev pkg-config python3-dev
 ```
 
-One suggested solution is to download unofficial [pycairo] binary from [University of California, Irvine website](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo) and install it by typing the following command into the terminal (with the correct filename):
+##### Arch Linux
+
+```text
+pacman -S cairo pkgconf
+```
+
+##### Fedora
+
+```text
+dnf install cairo-devel pkg-config python3-devel
+```
+
+##### openSUSE
+
+```text
+zypper install cairo-devel pkg-config python3-devel
+```
+
+### macOS
+
+Similarly for macOS (using [Homebrew package manager](https://brew.sh)):
+```text
+brew install cairo pkg-config
+```
+
+## Windows
+
+Getting [pycairo] to work on Windows might prove to be a bit more challenging. One suggested solution is to download unofficial [pycairo] binary from [University of California, Irvine website](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo) and install it by typing the following command into the terminal (with the correct filename):
 ```text
 pip install C:\path\to\file\pycairo-1.19.1-cp38-cp38-win32.whl
 ```
