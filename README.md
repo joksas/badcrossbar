@@ -16,7 +16,6 @@ To install the package and its dependencies, type the following lines into the t
 ```text
 git clone https://github.com/joksas/badcrossbar
 cd badcrossbar
-pip install -r requirements.txt
 python setup.py install
 ```
 
