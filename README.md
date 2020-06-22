@@ -1,3 +1,13 @@
+# Table of Contents
+<!-- toc -->
+- [About](#about)
+- [Background](#background)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Computing](#computing)
+  - [Plotting](#plotting)
+<!-- tocstop -->
+
 # About
 
 [badcrossbar] is a nodal analysis solver for passive crossbar arrays that suffer from line resistance. It solves for currents in all the branches, as well as for voltages at all the nodes of the crossbar. Additionally, it can create diagrams of crossbar arrays colored according to the values of those currents and voltages (or any other variables).
@@ -58,7 +68,7 @@ Similarly for macOS (using [Homebrew package manager](https://brew.sh)):
 brew install cairo pkg-config
 ```
 
-## Windows
+### Windows
 
 Getting [pycairo] to work on Windows might prove to be a bit more challenging. One suggested solution is to download unofficial [pycairo] binary from [University of California, Irvine website](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo) and install it by typing the following command into the terminal (with the correct filename):
 ```text
@@ -68,7 +78,7 @@ As stated in the [website](https://www.lfd.uci.edu/~gohlke/pythonlibs/), "the fi
 
 # Usage
 
-## Computing currents and voltages
+## Computing
 
 [badcrossbar] allows to compute branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistances. It assumes that voltages are applied on the left side of the word lines and the outputs (in the bottom of the bit lines) are grounded. One can define either a single resistance value for all interconnects, or two separate values for word and bit line segments using optional parameters `r_i_word_line` and `r_i_bit_line`, respectively.
 
@@ -161,9 +171,9 @@ More examples can be found in files [1_single_set_of_inputs.py] and [2_multiple_
 
 Devices with infinite resistance can be denoted using resistance value of `numpy.inf` (or equivalently `math.inf`).
 
-## Plotting currents and voltages (and more)
+## Plotting
 
-[badcrossbar] provides [`badcrossbar.plot`] module which allows to color crossbar branches and currents. This is done by functions `badcrossbar.plot.currents` and `badcrossbar.plot.voltages`, respectively. Although their primary purpose is for plotting currents and voltages, these functions accept arbitrary arrays and color the branches and nodes, according to the values of these arrays. This functionality is explained in more detail in example [3_different_variables.py].
+[badcrossbar] provides [`badcrossbar.plot`] module which allows to color crossbar branches and nodes. This is done by functions `badcrossbar.plot.currents` and `badcrossbar.plot.voltages`, respectively. Although their primary purpose is for plotting currents and voltages, these functions accept arbitrary arrays and color the branches and nodes, according to the values of these arrays. This functionality is explained in more detail in example [3_different_variables.py].
 
 ### Currents
 
