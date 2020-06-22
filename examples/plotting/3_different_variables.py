@@ -16,15 +16,18 @@ resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
 
-# interconnect resistance in ohms
-r_i_ideal = 0
-r_i_nonideal = 0.5
+# interconnect resistance in ohms (different for word and bit line segments)
+r_i_ideal = {'word_line': 0, 'bit_line': 0}
+r_i_nonideal = {'word_line': 0.75, 'bit_line': 0.5}
 
 # computing the solution
 solution_ideal = badcrossbar.compute(
-    applied_voltages, resistances, r_i_ideal, verbose=0)
+    applied_voltages, resistances, verbose=0,
+    r_i_word_line=r_i_ideal['word_line'], r_i_bit_line=r_i_ideal['bit_line'])
 solution_nonideal = badcrossbar.compute(
-    applied_voltages, resistances, r_i_nonideal, verbose=0)
+    applied_voltages, resistances, verbose=0,
+    r_i_word_line=r_i_nonideal['word_line'],
+    r_i_bit_line=r_i_nonideal['bit_line'])
 
 # extracting the currents
 ideal_currents = solution_ideal.currents
