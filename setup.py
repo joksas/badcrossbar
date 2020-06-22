@@ -13,12 +13,11 @@ and `badcrossbar.plot.voltages` should complete the main  task at hand,
 i.e. computing and plotting crossbar currents and voltages.
 """
 from setuptools import setup
-from pip._internal.req import parse_requirements
 
 
-def load_requirements(filename):
-    requirements = parse_requirements(filename, session='test')
-    return [str(requirement.req) for requirement in requirements]
+def load_requirements():
+    with open('requirements.txt') as f:
+        return f.read().splitlines()
 
 
 setup(
