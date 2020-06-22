@@ -70,7 +70,7 @@ As stated in the [website](https://www.lfd.uci.edu/~gohlke/pythonlibs/), "the fi
 
 ## Computing currents and voltages
 
-[badcrossbar] allows to compute branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistance. It assumes that all interconnects have the same specified resistance and that outputs (in the bottom of bit lines) are grounded.
+[badcrossbar] allows to compute branch currents and node voltages for arbitrary values of applied voltages, devices' resistances and interconnect resistances. It assumes that voltages are applied on the left side of the word lines and the outputs (in the bottom of the bit lines) are grounded. One can define either a single resistance value for all interconnects, or two separate values for word and bit line segments using optional parameters `r_i_word_line` and `r_i_bit_line`, respectively.
 
 One can compute branch currents and node voltages with the function `badcrossbar.compute`, as shown in the code below:
 
@@ -98,7 +98,7 @@ The returned variable (named `solution`, in this case) is a named tuple with fie
 
 ### Currents
 
-`solution.currents` is itself a named tuple with fields `output`, `device`, `word_line` and `bit_line`. The first field represents the output currents, while the rest represent the currents flowing through devices, interconnects along the word lines, and interconnects along the bit lines. All of these branches are depicted in the diagram below.
+`solution.currents` is itself a named tuple with fields `output`, `device`, `word_line` and `bit_line`. The first field represents the output currents, while the rest represent the currents flowing through devices, interconnects along the word lines, and interconnects along the bit lines. All of these branches are depicted in the diagram below:
 
 ![Crossbar branches](images/crossbar-branches.png)
 
@@ -108,7 +108,7 @@ If `applied_voltages` is an array of shape `(m, p)` (each column representing a 
 
 ### Voltages
 
-`solution.voltages` is itself a named tuple with fields `word_line` and `bit_line`. They represent the voltages at the nodes on the word and bit lines, respectively. These two types of nodes are depicted in the diagram below.
+`solution.voltages` is itself a named tuple with fields `word_line` and `bit_line`. They represent the voltages at the nodes on the word and bit lines, respectively. These two types of nodes are depicted in the diagram below:
 
 ![Crossbar nodes](images/crossbar-nodes.png)
 
