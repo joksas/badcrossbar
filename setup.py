@@ -25,7 +25,7 @@ setup(
     version='1.0.0',
     packages=['badcrossbar', 'badcrossbar.computing',
               'badcrossbar.plotting', 'tests'],
-    install_requires=load_requirements('requirements.txt'),
+    install_requires=load_requirements(),
     url='https://github.com/joksas/badcrossbar',
     license='MIT license',
     author='Dovydas Joksas',
