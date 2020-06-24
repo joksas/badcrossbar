@@ -22,16 +22,9 @@ In most practical scenarios, we want the resistance of the interconnects to be z
 
 # Installation
 
-To install the package and its dependencies, type the following lines into the terminal:
-```text
-git clone https://github.com/joksas/badcrossbar
-cd badcrossbar
-python setup.py install
-```
-
 ## Pycairo
 
-The plotting module uses [pycairo] package which requires [cairo](https://www.cairographics.org/) and [pkg-config](https://github.com/pkgconf/pkgconf). The instructions for how to install either these dependencies or [pycairo] directly can be found below. However, if one is not interested in plotting functions provided by [badcrossbar], computing module works even without [pycairo] installed.
+The plotting module of [badcrossbar] uses [pycairo] package which requires [cairo](https://www.cairographics.org/) and [pkg-config](https://github.com/pkgconf/pkgconf). The instructions for how to install either these dependencies or [pycairo] directly can be found in this subsection. However, if you are not interested in the plotting functions provided by [badcrossbar], computing module works even without [pycairo] installed, thus you can skip to [badcrossbar installation](#badcrossbar).
 
 ### Linux
 
@@ -75,6 +68,17 @@ Getting [pycairo] to work on Windows might prove to be a bit more challenging. O
 pip install C:\path\to\file\pycairo-1.19.1-cp38-cp38-win32.whl
 ```
 As stated in the [website](https://www.lfd.uci.edu/~gohlke/pythonlibs/), "the files are provided "as is" without warranty or support of any kind. The entire risk as to the quality and performance is with you."
+
+## badcrossbar
+
+To install the [badcrossbar] package and its dependencies, type the following commands into the terminal:
+```text
+git clone https://github.com/joksas/badcrossbar
+cd badcrossbar
+python setup.py install
+```
+
+If [pycairo] system requirements are not satisfied, command `python setup.py install` will fail to install *all* the dependencies. If you are not planning to install [pycairo], please remove the line containing it from [requirements.txt](requirements.txt) before running `python setup.py install`.
 
 # Usage
 
