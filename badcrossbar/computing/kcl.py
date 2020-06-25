@@ -123,15 +123,15 @@ def bit_line_nodes(g_matrix, conductances, r_i):
     # if `r_i.word_line == 0`, we are solving only for a half of the matrix
     # `v` and so `word_line_nodes()` will not even be called.
     if r_i.word_line > 0:
-        start_index = conductances.size
+        offset = conductances.size
     else:
-        start_index = 0
+        offset = 0
 
     if num_word_lines != 1:
         # first row
         idx_word_lines = np.repeat(0, num_bit_lines)
         idx_bit_lines = np.arange(num_bit_lines)
-        idx = start_index + np.ravel_multi_index(
+        idx = offset + np.ravel_multi_index(
             (idx_word_lines, idx_bit_lines), conductances.shape)
         g_matrix[idx, idx] = np.ones((num_bit_lines,))*g_bl + conductances[0, :]
         g_matrix[idx, idx + num_bit_lines] = -np.ones((num_bit_lines,))*g_bl
@@ -142,7 +142,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
         for i in range(1, num_word_lines - 1):
             idx_word_lines = np.repeat(i, num_bit_lines)
             idx_bit_lines = np.arange(num_bit_lines)
-            idx = start_index + np.ravel_multi_index(
+            idx = offset + np.ravel_multi_index(
                 (idx_word_lines, idx_bit_lines), conductances.shape)
             g_matrix[idx, idx] = np.ones(
                 (num_bit_lines,))*2*g_bl + conductances[i, :]
@@ -154,7 +154,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
         # last row
         idx_word_lines = np.repeat(num_word_lines - 1, num_bit_lines)
         idx_bit_lines = np.arange(num_bit_lines)
-        idx = start_index + np.ravel_multi_index(
+        idx = offset + np.ravel_multi_index(
             (idx_word_lines, idx_bit_lines), conductances.shape)
         g_matrix[idx, idx] = np.ones(
             (num_bit_lines,))*2*g_bl + conductances[-1, :]
@@ -165,7 +165,7 @@ def bit_line_nodes(g_matrix, conductances, r_i):
         # the only row
         idx_word_lines = np.repeat(0, num_bit_lines)
         idx_bit_lines = np.arange(num_bit_lines)
-        idx = start_index + np.ravel_multi_index(
+        idx = offset + np.ravel_multi_index(
             (idx_word_lines, idx_bit_lines), conductances.shape)
         g_matrix[idx, idx] = np.ones((num_bit_lines,))*g_bl + conductances[0, :]
         if r_i.word_line > 0:
