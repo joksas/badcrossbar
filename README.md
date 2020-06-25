@@ -5,7 +5,11 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Computing](#computing)
+    - [Currents](#currents)
+    - [Voltages](#voltages)
   - [Plotting](#plotting)
+    - [Currents](#currents-1)
+    - [Voltages](#voltages-1)
 <!-- tocstop -->
 
 # About
