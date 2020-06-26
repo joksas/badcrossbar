@@ -1,5 +1,5 @@
 import numpy as np
-from badcrossbar.computing import kcl, extract
+from badcrossbar.computing import kcl
 from scipy.sparse import lil_matrix
 
 
