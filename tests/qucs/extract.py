@@ -150,7 +150,7 @@ def solution(data, shape):
     bit_line_voltages = two_dim(data, shape, var1='b', var2='.V')
 
     return output_currents, device_currents, word_line_currents, \
-           bit_line_currents, word_line_voltages, bit_line_voltages
+        bit_line_currents, word_line_voltages, bit_line_voltages
 
 
 def between(data, delim1, delim2):
