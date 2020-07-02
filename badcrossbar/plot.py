@@ -59,6 +59,11 @@ def currents(device_currents=None, word_line_currents=None,
         significant_figures : int, optional
             Number of significant figures to use for the limits of the color
             bar.
+        round_crossings : bool, optional
+            Because the circuit of a crossbar array is non-planar, the 2D
+            diagram of it will have some wire crossings. If `round_crossings`
+            is False, these crossings will be drawn as straight lines.
+            Otherwise, they will be drawn as semicircles.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -72,6 +77,7 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('filename', 'crossbar-currents')
     kwargs.setdefault('device_type', 'memristor')
     kwargs.setdefault('significant_figures', 2)
+    kwargs.setdefault('round_crossings', True)
 
     if all_currents is not None:
         device_currents = all_currents.device
@@ -173,6 +179,11 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
         significant_figures : int, optional
             Number of significant figures to use for the limits of the color
             bar.
+        round_crossings : bool, optional
+            Because the circuit of a crossbar array is non-planar, the 2D
+            diagram of it will have some wire crossings. If `round_crossings`
+            is False, these crossings will be drawn as straight lines.
+            Otherwise, they will be drawn as semicircles.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -186,6 +197,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     kwargs.setdefault('filename', 'crossbar-voltages')
     kwargs.setdefault('device_type', 'memristor')
     kwargs.setdefault('significant_figures', 2)
+    kwargs.setdefault('round_crossings', True)
 
     if all_voltages is not None:
         word_line_voltages = all_voltages.word_line

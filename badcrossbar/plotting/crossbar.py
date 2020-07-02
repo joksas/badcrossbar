@@ -2,7 +2,7 @@ import numpy as np
 import badcrossbar.plotting as plotting
 
 
-def draw_word_line(ctx, colors, segment_length=100, first=False,
+def draw_word_line(ctx, colors, segment_length=100, round_middle=False,
                    scaling_factor=1):
     """Draws a word line of a crossbar array.
 
@@ -14,14 +14,15 @@ def draw_word_line(ctx, colors, segment_length=100, first=False,
         Normalized RGB values of the word line segments.
     segment_length : float, optional
         The length of each segment.
-    first : bool, optional
-        If True, draws the first (from the top) word line.
+    round_middle : bool, optional
+        If True, draws a semicircle midway between each two neighbouring
+        nodes, instead of a straight line.
     scaling_factor : float, optional
         Scaling factor for the width.
     """
     width = segment_length/100*3*scaling_factor
     for idx, color in enumerate(colors):
-        if idx == 0 or first:
+        if idx == 0 or not round_middle:
             plotting.shapes.line(ctx, segment_length)
         else:
             unit = segment_length/5
@@ -212,10 +213,10 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
             if idx == 0:
-                first = True
+                round_middle = False
             else:
-                first = False
-            draw_word_line(ctx, colors, first=first,
+                round_middle = kwargs.get('round_crossings')
+            draw_word_line(ctx, colors, round_middle=round_middle,
                            segment_length=segment_length,
                            scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
@@ -225,10 +226,10 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
             crossbar_shape, color=kwargs.get('default_color'))
         for idx, colors in enumerate(colors_list):
             if idx == 0:
-                first = True
+                round_middle = False
             else:
-                first = False
-            draw_word_line(ctx, colors, first=first,
+                round_middle = kwargs.get('round_crossings')
+            draw_word_line(ctx, colors, round_middle=round_middle,
                            segment_length=segment_length,
                            scaling_factor=kwargs.get('wire_scaling_factor'))
             y += segment_length
