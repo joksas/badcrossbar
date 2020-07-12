@@ -11,7 +11,7 @@ def currents(device_currents=None, word_line_currents=None,
     file.
 
     If `all_currents` is passed, then it is used to plot the currents.
-    Otherwise, one of {`device_currents`, `word_line_currents`,
+    Otherwise, at least one of {`device_currents`, `word_line_currents`,
     `bit_line_currents`} has to be passed.
 
     Parameters
@@ -134,8 +134,8 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     """Produces a diagram of crossbar node voltages and saves it as a PDF file.
 
     If `all_voltages` is passed, then it is used to plot the voltages.
-    Otherwise, one of {`word_line_voltages`, `bit_line_voltages`} has to be
-    passed.
+    Otherwise, at least one of {`word_line_voltages`, `bit_line_voltages`} has
+    to be passed.
 
     Parameters
     ----------
