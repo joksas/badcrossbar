@@ -69,9 +69,11 @@ brew install cairo pkg-config
 
 Getting [pycairo] to work on Windows might prove to be a bit more challenging. One suggested solution is to download unofficial [pycairo] binary from [University of California, Irvine website](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo) and install it by typing the following command into the terminal (with the correct filename):
 ```text
-pip install C:\path\to\file\pycairo-1.19.1-cp38-cp38-win32.whl
+pip3 install C:\path\to\file\pycairo-1.19.1-cp38-cp38-win32.whl
 ```
 As stated in the [website](https://www.lfd.uci.edu/~gohlke/pythonlibs/), "the files are provided "as is" without warranty or support of any kind. The entire risk as to the quality and performance is with you."
+
+*Note*: you might be able to use `pip`, instead of `pip3`, in your terminal as long as it is an alias for the package management system pip of Python 3 (and not Python 2).
 
 ## badcrossbar
 
@@ -79,10 +81,12 @@ To install the [badcrossbar] package and its dependencies, type the following co
 ```text
 git clone https://github.com/joksas/badcrossbar
 cd badcrossbar
-python setup.py install
+python3 setup.py install
 ```
 
-If [pycairo] system requirements are not satisfied, command `python setup.py install` will fail to install *all* the dependencies. If you are not planning to install [pycairo], please remove the line containing it from [requirements.txt](requirements.txt) before running `python setup.py install`.
+If [pycairo] system requirements are not satisfied, command `python3 setup.py install` will fail to install *all* the dependencies. If you are not planning to install [pycairo], please remove the line containing it from [requirements.txt](requirements.txt) before running `python3 setup.py install`.
+
+*Note*: you might be able to use `python`, instead of `python3`, in your terminal as long as it is an alias for Python 3 (and not Python 2).
 
 # Usage
 
