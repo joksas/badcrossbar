@@ -53,6 +53,8 @@ def compute(
     kwargs.setdefault('node_voltages', True)
     kwargs.setdefault('all_currents', True)
     kwargs.setdefault('verbose', 1)
+    kwargs.setdefault('show_time', True)
+    kwargs.setdefault('gap_size', 5)
 
     if r_i is not None:
         r_i_word_line = r_i_bit_line = r_i
