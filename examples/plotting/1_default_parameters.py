@@ -24,22 +24,22 @@ solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
 # plotting average branch currents over all four sets of inputs.
 # we additionally set custom filename and allow to overwrite produced PDF files
-badcrossbar.plot.currents(all_currents=solution.currents,
+badcrossbar.plot.branches(currents=solution.currents,
                           filename='Ex-1-1', allow_overwrite=True)
 
 #  plotting average branch currents over all four sets of inputs, but only in
 #  the crossbar devices and the bit line segments (word line segments will
 #  be colored in black)
-badcrossbar.plot.currents(device_currents=solution.currents.device,
-                          bit_line_currents=solution.currents.bit_line,
+badcrossbar.plot.branches(device_vals=solution.currents.device,
+                          bit_line_vals=solution.currents.bit_line,
                           filename='Ex-1-2', allow_overwrite=True)
 
 # plotting average node voltages over all four sets of inputs
-badcrossbar.plot.voltages(all_voltages=solution.voltages,
-                          filename='Ex-1-3', allow_overwrite=True)
+badcrossbar.plot.nodes(voltages=solution.voltages,
+                       filename='Ex-1-3', allow_overwrite=True)
 
 # plotting only the word line node voltages (bit line nodes will be colored
 # in black) when the third set of inputs is applied
-badcrossbar.plot.voltages(
-    word_line_voltages=solution.voltages.word_line[:, :, 2],
+badcrossbar.plot.nodes(
+    word_line_vals=solution.voltages.word_line[:, :, 2],
     filename='Ex-1-4', allow_overwrite=True)

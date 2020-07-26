@@ -5,33 +5,33 @@ import badcrossbar.utils as utils
 import badcrossbar.check as check
 
 
-def currents(device_currents=None, word_line_currents=None,
-             bit_line_currents=None, all_currents=None, **kwargs):
-    """Produces a diagram of crossbar branch currents and saves it as a PDF
-    file.
+def branches(device_vals=None, word_line_vals=None,
+             bit_line_vals=None, currents=None, **kwargs):
+    """Plots a crossbar array and colors its branches according to the values
+    passed. The diagram is saved as a PDF file.
 
-    If `all_currents` is passed, then it is used to plot the currents.
-    Otherwise, at least one of {`device_currents`, `word_line_currents`,
-    `bit_line_currents`} has to be passed.
+    If `currents` is passed, then it is used to plot the currents in the
+    branches. Otherwise, at least one of {`device_vals`, `word_line_vals`,
+    `bit_line_vals`} has to be passed.
 
     Parameters
     ----------
-    device_currents : array_like, optional
-        Currents flowing through crossbar devices.
-    word_line_currents : array_like, optional
-        Currents flowing through interconnect segments along the word lines.
-    bit_line_currents : array_like, optional
-        Currents flowing through interconnect segments along the bit lines.
-    all_currents : named tuple, optional
-        Crossbar branch currents. Named tuple should have fields `device`,
-        `word_line` and `bit_line` that contain currents flowing through the
-        devices and interconnect segments of the word and bit lines (at least
-        one of them should be not None).
+    device_vals : array_like, optional
+        Values associated with crossbar devices.
+    word_line_vals : array_like, optional
+        Values associated with the interconnect segments along the word lines.
+    bit_line_vals : array_like, optional
+        Values associated with the interconnect segments along the bit lines.
+    currents : named tuple, optional
+        Crossbar branch currents. It should have fields `device`, `word_line`
+        and `bit_line` that contain currents flowing through the devices and
+        interconnect segments of the word and bit lines (at least one of them
+        should be not None).
 
     **kwargs
         default_color : tuple of float, optional
-            Normalized RGB values of the bit lines if their currents are not
-            provided.
+            Normalized RGB values of the nodes and certain types of branches
+            if their values are not provided.
         wire_scaling_factor : float, optional
             Scaling factor for the width of the word and bit lines.
         device_scaling_factor : float, optional
@@ -79,19 +79,19 @@ def currents(device_currents=None, word_line_currents=None,
     kwargs.setdefault('significant_figures', 2)
     kwargs.setdefault('round_crossings', True)
 
-    if all_currents is not None:
-        device_currents = all_currents.device
-        word_line_currents = all_currents.word_line
-        bit_line_currents = all_currents.bit_line
+    if currents is not None:
+        device_vals = currents.device
+        word_line_vals = currents.word_line
+        bit_line_vals = currents.bit_line
 
-    device_currents, word_line_currents, bit_line_currents = \
+    device_vals, word_line_vals, bit_line_vals = \
         check.plotting_requirements(
-            device_currents=device_currents,
-            word_line_currents=word_line_currents,
-            bit_line_currents=bit_line_currents, currents=True)
+            device_branch_vals=device_vals,
+            word_line_branch_vals=word_line_vals,
+            bit_line_branch_vals=bit_line_vals, branches=True)
 
     crossbar_shape = utils.arrays_shape(
-        device_currents, word_line_currents, bit_line_currents)
+        device_vals, word_line_vals, bit_line_vals)
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape)
@@ -104,19 +104,19 @@ def currents(device_currents=None, word_line_currents=None,
     context = cairo.Context(surface)
 
     low, high = plotting.utils.arrays_range(
-        device_currents, word_line_currents, bit_line_currents,
+        device_vals, word_line_vals, bit_line_vals,
         sf=kwargs.get('significant_figures'))
 
     plotting.crossbar.bit_lines(
-        context, bit_line_currents, diagram_pos, low, high,
+        context, bit_line_vals, diagram_pos, low, high,
         segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
 
     plotting.crossbar.word_lines(
-        context, word_line_currents, diagram_pos, low, high,
+        context, word_line_vals, diagram_pos, low, high,
         segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
 
     plotting.crossbar.devices(
-        context, device_currents, diagram_pos, low, high,
+        context, device_vals, diagram_pos, low, high,
         segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
 
     for bit_line in [False, True]:
@@ -129,29 +129,29 @@ def currents(device_currents=None, word_line_currents=None,
                             low, high, **kwargs)
 
 
-def voltages(word_line_voltages=None, bit_line_voltages=None,
-             all_voltages=None, **kwargs):
-    """Produces a diagram of crossbar node voltages and saves it as a PDF file.
+def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
+    """Plots a crossbar array and colors its nodes according to the values
+    passed. The diagram is saved as a PDF file.
 
-    If `all_voltages` is passed, then it is used to plot the voltages.
-    Otherwise, at least one of {`word_line_voltages`, `bit_line_voltages`} has
-    to be passed.
+    If `voltages` is passed, then it is used to plot the voltages on the
+    nodes. Otherwise, at least one of {`word_line_vals`, `bit_line_vals`}
+    has to be passed.
 
     Parameters
     ----------
-    word_line_voltages : array_like, optional
-        Voltages at the nodes on the word lines.
-    bit_line_voltages : array_like, optional
-        Voltages at the nodes on the bit lines.
-    all_voltages : named tuple, optional
+    word_line_vals : array_like, optional
+        Values associated with the nodes on the word lines.
+    bit_line_vals : array_like, optional
+        Values associated with the nodes on the bit lines.
+    voltages : named tuple, optional
         Crossbar node voltages. It should have fields `word_line` and
         `bit_line` that contain the potentials at the nodes on the word and
         bit lines (at least one of them should be not None).
 
     **kwargs
         default_color : tuple of float, optional
-            Normalized RGB values of the bit lines if their currents are not
-            provided.
+            Normalized RGB values of the branches and certain type of nodes
+            if its values are not provided.
         wire_scaling_factor : float, optional
             Scaling factor for the width of the word and bit lines.
         device_scaling_factor : float, optional
@@ -199,15 +199,15 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     kwargs.setdefault('significant_figures', 2)
     kwargs.setdefault('round_crossings', True)
 
-    if all_voltages is not None:
-        word_line_voltages = all_voltages.word_line
-        bit_line_voltages = all_voltages.bit_line
+    if voltages is not None:
+        word_line_vals = voltages.word_line
+        bit_line_vals = voltages.bit_line
 
-    word_line_voltages, bit_line_voltages = check.plotting_requirements(
-        word_line_voltages=word_line_voltages,
-        bit_line_voltages=bit_line_voltages, currents=False)
+    word_line_vals, bit_line_vals = check.plotting_requirements(
+        word_line_node_vals=word_line_vals,
+        bit_line_node_vals=bit_line_vals, branches=False)
 
-    crossbar_shape = utils.arrays_shape(word_line_voltages, bit_line_voltages)
+    crossbar_shape = utils.arrays_shape(word_line_vals, bit_line_vals)
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape)
@@ -220,7 +220,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
     context = cairo.Context(surface)
 
     low, high = plotting.utils.arrays_range(
-        word_line_voltages, bit_line_voltages,
+        word_line_vals, bit_line_vals,
         sf=kwargs.get('significant_figures'))
 
     plotting.crossbar.bit_lines(
@@ -235,7 +235,7 @@ def voltages(word_line_voltages=None, bit_line_voltages=None,
         context, None, diagram_pos, low, high,
         segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
 
-    for node_voltages, bit_line in zip([word_line_voltages, bit_line_voltages],
+    for node_voltages, bit_line in zip([word_line_vals, bit_line_vals],
                                        [False, True]):
         plotting.crossbar.nodes(
             context, node_voltages, diagram_pos, low, high, bit_line=bit_line,

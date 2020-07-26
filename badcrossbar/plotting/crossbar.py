@@ -127,7 +127,7 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
         plotting.utils.complete_fill(ctx, color)
 
 
-def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
+def bit_lines(ctx, bit_line_vals, diagram_pos, low, high,
               segment_length=120, crossbar_shape=(128, 64), **kwargs):
     """Draws bit lines.
 
@@ -135,8 +135,8 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
     ----------
     ctx : cairo.Context
         Context.
-    bit_line_currents : ndarray or None
-        Currents flowing through bit line segments.
+    bit_line_vals : ndarray or None
+        Values associated with the interconnect segments along the bit lines.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
     low : float
@@ -146,20 +146,20 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
     segment_length : float, optional
         The length of each segment.
     crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `bit_line_currents` is None.
+        Shape of the crossbar array. Used when `bit_line_vals` is None.
     **kwargs
         default_color : tuple of float, optional
-            Normalized RGB values of the bit lines if their currents are not
+            Normalized RGB values of the bit lines if their values are not
             provided.
     """
     x = diagram_pos[0] + 1.5*segment_length
     y = diagram_pos[1] + 0.5*segment_length
     ctx.move_to(x, y)
 
-    if bit_line_currents is not None:
-        for bit_line in np.transpose(bit_line_currents):
+    if bit_line_vals is not None:
+        for single_bit_line_vals in np.transpose(bit_line_vals):
             colors = plotting.utils.rgb_interpolation(
-                bit_line, low=low, high=high,
+                single_bit_line_vals, low=low, high=high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
             draw_bit_line(ctx, colors, segment_length=segment_length,
@@ -178,7 +178,7 @@ def bit_lines(ctx, bit_line_currents, diagram_pos, low, high,
     ctx.move_to(*diagram_pos)
 
 
-def word_lines(ctx, word_line_currents, diagram_pos, low, high,
+def word_lines(ctx, word_line_vals, diagram_pos, low, high,
                segment_length=120, crossbar_shape=(128, 64), **kwargs):
     """Draws word lines.
 
@@ -186,8 +186,8 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
     ----------
     ctx : cairo.Context
         Context.
-    word_line_currents : ndarray or None
-        Currents flowing through word line segments.
+    word_line_vals : ndarray or None
+        Values associated with the interconnect segments along the word lines.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
     low : float
@@ -197,19 +197,19 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
     segment_length : float, optional
         The length of each segment.
     crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `word_line_currents` is None.
+        Shape of the crossbar array. Used when `word_line_vals` is None.
     **kwargs
         default_color : tuple of float, optional
-            Normalized RGB values of the word lines if their currents are not
+            Normalized RGB values of the word lines if their values are not
             provided.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
 
-    if word_line_currents is not None:
-        for idx, word_line in enumerate(word_line_currents):
+    if word_line_vals is not None:
+        for idx, single_word_line_vals in enumerate(word_line_vals):
             colors = plotting.utils.rgb_interpolation(
-                word_line, low=low, high=high,
+                single_word_line_vals, low=low, high=high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
             if idx == 0:
@@ -238,7 +238,7 @@ def word_lines(ctx, word_line_currents, diagram_pos, low, high,
     ctx.move_to(*diagram_pos)
 
 
-def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
+def devices(ctx, device_vals, diagram_pos, low, high, segment_length=120,
             crossbar_shape=(128, 64), **kwargs):
     """Draws crossbar devices.
 
@@ -246,8 +246,8 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     ----------
     ctx : cairo.Context
         Context.
-    device_currents : ndarray or None
-        Currents flowing through crossbar devices.
+    device_vals : ndarray or None
+        Values associated with crossbar devices.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
     low : float
@@ -257,19 +257,19 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     segment_length : float, optional
         The length of each segment.
     crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `device_currents` is None.
+        Shape of the crossbar array. Used when `device_vals` is None.
     **kwargs
         default_color : tuple of float, optional
-            Normalized RGB values of the crossbar devices if their currents
+            Normalized RGB values of the crossbar devices if their values
             are not provided.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
 
-    if device_currents is not None:
-        for device_row in device_currents:
+    if device_vals is not None:
+        for device_row_vals in device_vals:
             colors = plotting.utils.rgb_interpolation(
-                device_row, low=low, high=high,
+                device_row_vals, low=low, high=high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
             draw_device_row(ctx, colors, segment_length=segment_length,
@@ -290,7 +290,7 @@ def devices(ctx, device_currents, diagram_pos, low, high, segment_length=120,
     ctx.move_to(*diagram_pos)
 
 
-def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
+def nodes(ctx, node_vals, diagram_pos, low, high, segment_length=120,
           crossbar_shape=(128, 64), bit_line=False, **kwargs):
     """Draws nodes.
 
@@ -298,8 +298,8 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
     ----------
     ctx : cairo.Context
         Context.
-    node_voltages : ndarray or None
-        Voltages at the nodes.
+    node_vals : ndarray or None
+        Values associated with the nodes.
     diagram_pos : tuple of float
         Coordinates of the top left point of the diagram.
     low : float
@@ -309,7 +309,7 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
     segment_length : float, optional
         The length of each segment.
     crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `node_voltages` is None.
+        Shape of the crossbar array. Used when `node_vals` is None.
     bit_line : bool, optional
         If True, draws nodes on the bit lines.
     kwargs
@@ -327,10 +327,10 @@ def nodes(ctx, node_voltages, diagram_pos, low, high, segment_length=120,
     node_scaling_factor = kwargs.get('device_scaling_factor') * \
         kwargs.get('node_scaling_factor')
 
-    if node_voltages is not None:
-        for node_row in node_voltages:
+    if node_vals is not None:
+        for node_row_vals in node_vals:
             colors = plotting.utils.rgb_interpolation(
-                node_row, low=low, high=high,
+                node_row_vals, low=low, high=high,
                 low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
                 high_rgb=kwargs.get('high_rgb'))
             draw_node_row(ctx, colors, segment_length=segment_length,

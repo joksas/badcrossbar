@@ -185,11 +185,11 @@ Devices with infinite resistance can be denoted using resistance value of `numpy
 
 ## Plotting
 
-[badcrossbar] provides [`badcrossbar.plot`] module which allows to color crossbar branches and nodes. This is done by functions `badcrossbar.plot.currents` and `badcrossbar.plot.voltages`, respectively. Although their primary purpose is for plotting currents and voltages, these functions accept arbitrary arrays and color the branches and nodes, according to the values of these arrays. This functionality is explained in more detail in example [3_different_variables.py].
+[badcrossbar] provides [`badcrossbar.plot`] module which allows to color crossbar branches and nodes. This is done by functions `badcrossbar.plot.branches` and `badcrossbar.plot.nodes`, respectively. Although their primary purpose is for plotting currents and voltages, these functions accept arbitrary arrays and color the branches and nodes, according to the values of these arrays. This functionality is explained in more detail in example [3_different_variables.py].
 
 ### Currents
 
-The function `badcrossbar.plot.currents` accepts either individual arrays for crossbar devices, word line branches and bit line branches, or a named tuple containing all currents. If any of the arrays are 3D, they are averaged along the third axis.
+The function `badcrossbar.plot.branches` accepts either individual arrays for crossbar devices, word line branches and bit line branches, or a named tuple containing all currents. If any of the arrays are 3D, they are averaged along the third axis.
 
 The following piece of code computes and plots average branch currents over four sets of applied inputs:
 
@@ -214,7 +214,7 @@ solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
 # plotting average branch currents over all four sets of inputs.
 # we additionally set custom filename and allow to overwrite produced PDF files
-badcrossbar.plot.currents(all_currents=solution.currents,
+badcrossbar.plot.branches(currents=solution.currents,
                           filename='average-currents', allow_overwrite=True)
 ```
 
@@ -224,7 +224,7 @@ The produced PDF file should contain a diagram similar to the one shown below:
 
 ### Voltages
 
-Similarly, `badcrossbar.plot.voltages` accepts either individual arrays for nodes on the word and bit lines, or a named tuple containing both sets of voltages. If any of the arrays are 3D, they are averaged along the third axis.
+Similarly, `badcrossbar.plot.nodes` accepts either individual arrays for nodes on the word and bit lines, or a named tuple containing both sets of voltages. If any of the arrays are 3D, they are averaged along the third axis.
 
 The following piece of code computes and plots average node voltages over four sets of applied inputs:
 
@@ -248,7 +248,7 @@ r_i = 0.5
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
 # plotting average node voltages over all four sets of inputs
-badcrossbar.plot.voltages(all_voltages=solution.voltages,
+badcrossbar.plot.nodes(voltages=solution.voltages,
                           filename='average-voltages', allow_overwrite=True)
 ```
 

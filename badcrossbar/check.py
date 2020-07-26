@@ -47,40 +47,40 @@ def crossbar_requirements(resistances, applied_voltages,
     return resistances, applied_voltages
 
 
-def plotting_requirements(device_currents=None, word_line_currents=None,
-                          bit_line_currents=None, word_line_voltages=None,
-                          bit_line_voltages=None, currents=True):
-    """Checks if arrays containing current or voltage values satisfy all
+def plotting_requirements(device_branch_vals=None, word_line_branch_vals=None,
+                          bit_line_branch_vals=None, word_line_node_vals=None,
+                          bit_line_node_vals=None, branches=True):
+    """Checks if arrays containing branch or node values satisfy all
     requirements.
 
     Parameters
     ----------
-    device_currents : ndarray or None, optional
-        Currents flowing through crossbar devices.
-    word_line_currents : ndarray or None, optional
-        Currents flowing through word line segments.
-    bit_line_currents : ndarray or None, optional
-        Currents flowing through bit line segments.
-    word_line_voltages : ndarray or None, optional
-        Voltages at the nodes on the word lines.
-    bit_line_voltages : ndarray or None, optional
-        Voltages at the nodes on the bit lines.
-    currents : bool, optional
-        If True, it is assumed that currents are passed. Otherwise, voltages
-        are expected.
+    device_branch_vals : ndarray or None, optional
+        Values associated with crossbar devices.
+    word_line_branch_vals : ndarray or None, optional
+        Values associated with the interconnect segments along the word lines.
+    bit_line_branch_vals : ndarray or None, optional
+        Values associated with the interconnect segments along the bit lines.
+    word_line_node_vals : ndarray or None, optional
+        Values associated with the nodes on the word lines.
+    bit_line_node_vals : ndarray or None, optional
+        Values associated with the nodes on the bit lines.
+    branches : bool, optional
+        If True, it is assumed that branch values are passed. Otherwise,
+        node values are expected.
 
     Returns
     -------
     ndarray
-        Potentially modified (converted to `ndarray`) currents or voltages.
+        Potentially modified (converted to `ndarray`) branch or nodes values.
     """
-    if currents:
-        valid_arrays = not_none(device_currents=device_currents,
-                                word_line_currents=word_line_currents,
-                                bit_line_currents=bit_line_currents)
+    if branches:
+        valid_arrays = not_none(device_branch_vals=device_branch_vals,
+                                word_line_branch_vals=word_line_branch_vals,
+                                bit_line_branch_vals=bit_line_branch_vals)
     else:
-        valid_arrays = not_none(word_line_voltages=word_line_voltages,
-                                bit_line_voltages=bit_line_voltages)
+        valid_arrays = not_none(word_line_node_vals=word_line_node_vals,
+                                bit_line_node_vals=bit_line_node_vals)
     valid_arrays = {key: np.array(value) for key, value in
                     valid_arrays.items()}
 
@@ -97,13 +97,13 @@ def plotting_requirements(device_currents=None, word_line_currents=None,
                           for key, value in valid_arrays.items()}
             match_shape(**dim_arrays)
 
-    if currents:
-        return valid_arrays.get('device_currents'), \
-            valid_arrays.get('word_line_currents'),\
-            valid_arrays.get('bit_line_currents')
+    if branches:
+        return valid_arrays.get('device_branch_vals'), \
+            valid_arrays.get('word_line_branch_vals'),\
+            valid_arrays.get('bit_line_branch_vals')
     else:
-        return valid_arrays.get('word_line_voltages'), \
-            valid_arrays.get('bit_line_voltages')
+        return valid_arrays.get('word_line_node_vals'), \
+            valid_arrays.get('bit_line_node_vals')
 
 
 def not_none(**kwargs):

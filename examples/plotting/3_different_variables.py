@@ -1,6 +1,6 @@
 import badcrossbar
 
-# The main purpose of plotting module is for plotting currents and voltages
+# The main purpose of the plotting module is for plotting currents and voltages
 # in the branches and on the nodes of the crossbar, respectively. However,
 # these functions can accept any numeric arrays and thus plot arbitrary
 # variables. This example shows how to plot the percentage change in current
@@ -43,9 +43,9 @@ bit_line_change = (nonideal_currents.bit_line -
 
 # plotting percentage changes
 modified_label = 'Change in current (%)'
-badcrossbar.plot.currents(device_currents=device_change,
-                          word_line_currents=word_line_change,
-                          bit_line_currents=bit_line_change,
+badcrossbar.plot.branches(device_vals=device_change,
+                          word_line_vals=word_line_change,
+                          bit_line_vals=bit_line_change,
                           axis_label=modified_label,
                           filename='Ex-3',
                           allow_overwrite=True)

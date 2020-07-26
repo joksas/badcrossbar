@@ -47,15 +47,15 @@ my_node_scaling_factor = 1/my_device_scaling_factor * 8
 my_zero_rgb = (0, 0, 0)
 my_high_rgb = (1, 0, 0)
 
-badcrossbar.plot.voltages(all_voltages=solution.voltages,
-                          wire_scaling_factor=my_wire_scaling_factor,
-                          device_scaling_factor=my_device_scaling_factor,
-                          default_color=my_default_color,
-                          node_scaling_factor=my_node_scaling_factor,
-                          zero_rgb=my_zero_rgb,
-                          high_rgb=my_high_rgb,
-                          filename='Ex-2',
-                          allow_overwrite=True)
+badcrossbar.plot.nodes(voltages=solution.voltages,
+                       wire_scaling_factor=my_wire_scaling_factor,
+                       device_scaling_factor=my_device_scaling_factor,
+                       default_color=my_default_color,
+                       node_scaling_factor=my_node_scaling_factor,
+                       zero_rgb=my_zero_rgb,
+                       high_rgb=my_high_rgb,
+                       filename='Ex-2',
+                       allow_overwrite=True)
 
 # The produced diagram hopefully helps to visualize the voltage decreases
 # across the crossbar array more clearly. In this specific example, the
