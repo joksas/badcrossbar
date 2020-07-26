@@ -31,6 +31,11 @@ def compute(
         verbose : {1, 2, 0}, optional
             If 1, all messages are shown. If 2, only warnings are shown. If
             0, no messages are shown.
+        show_time : bool, optional
+            If True, includes current time when the messages are printed.
+        gap_size : int, optional
+            Number of whitespace characters to be printed between current
+            time and the message.
 
     Returns
     -------

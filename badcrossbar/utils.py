@@ -108,6 +108,8 @@ def message(message_str, **kwargs):
     **kwargs
         verbose : int, optional
             The message is shown only is verbose is equal to 1.
+        show_time : bool, optional
+            If True, prints out current time.
     """
     if kwargs.get('verbose', 1) == 1:
         if kwargs.get('show_time', True):
