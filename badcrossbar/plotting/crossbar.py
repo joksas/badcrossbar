@@ -387,8 +387,14 @@ def dimensions(shape, max_dim_mm=210, color_bar_fraction=(0.5, 0.15),
     # convert millimeters to points
     max_dim = max_dim_mm * 72/25.4
 
+    # when plotted, crossbar will take up additional space horizontally
+    # and vertically equivalent to half a section dedicated to a single
+    # word/bit line
     adjusted_shape = (shape[0]+0.5, shape[1]+0.5)
+    # fraction of the horizontal space taken up by the crossbar
     active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border_fraction
+    # depending on the number of word and bit lines, the larger side of
+    # the drawing is determined
     if adjusted_shape[1]/adjusted_shape[0] > active_horizontal_fraction:
         width_fraction = active_horizontal_fraction
         segment_fraction = width_fraction/adjusted_shape[1]

@@ -82,7 +82,8 @@ def rgb_interpolation(array, low=0, high=1,
                      low_x + (array - low) * (zero_x-low_x)/(0-low))
 
         rgb.append(x)
-
+    
+    # return ndarray of RGB tuples
     rgb = np.array(rgb)
     rgb = np.moveaxis(rgb, 0, -1)
     rgb = nlr.unstructured_to_structured(rgb)
@@ -147,7 +148,7 @@ def arrays_range(*arrays, sf=2):
     if high == 0:
         high = 0
 
-    # round to two significant figures
+    # round to specified number of significant figures
     if low != 0:
         low = round(float(low), sigfigs=sf)
     if high != 0:
