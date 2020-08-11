@@ -143,23 +143,23 @@ Suppose we applied four sets of inputs to a crossbar array and wanted to find th
 ```python
 import badcrossbar
 
-# applied voltages in volts
+# Applied voltages in volts.
 applied_voltages = [[1.5, 4.1, 2.6, 2.1],
                     [2.3, 4.5, 1.1, 0.8],
                     [1.7, 4.0, 3.3, 1.1]]
 
-# device resistances in ohms
+# Device resistances in ohms.
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
 
-# interconnect resistance in ohms
+# Interconnect resistance in ohms.
 r_i = 0.5
 
-# computing the solution
+# Computing the solution.
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
-# current that we are interested in (note zero-based indexing)
+# Current that we are interested in (note zero-based indexing).
 current = solution.currents.device[0, 3, 2]
 
 print('\nCurrent through the device in question is {} A.'.format(current))
@@ -196,26 +196,27 @@ The following piece of code computes and plots average branch currents over four
 ```python
 import badcrossbar
 
-# applied voltages in volts
+# Applied voltages in volts.
 applied_voltages = [[1.5, 4.1, 2.6, 2.1],
                     [2.3, 4.5, 1.1, 0.8],
                     [1.7, 4.0, 3.3, 1.1]]
 
-# device resistances in ohms
+# Device resistances in ohms
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
 
-# interconnect resistance in ohms
+# Interconnect resistance in ohms.
 r_i = 0.5
 
-# computing the solution
+# Computing the solution
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
-# plotting average branch currents over all four sets of inputs.
-# we additionally set custom filename and allow to overwrite produced PDF files
+# Plotting average branch currents over all four sets of inputs.
+# We additionally set a custom filename and label of the color bar.
 badcrossbar.plot.branches(currents=solution.currents,
-                          filename='average-currents', allow_overwrite=True)
+                          filename='average-currents',
+			  axis_label='Average current (A)')
 ```
 
 The produced PDF file should contain a diagram similar to the one shown below:
@@ -231,25 +232,26 @@ The following piece of code computes and plots average node voltages over four s
 ```python
 import badcrossbar
 
-# applied voltages in volts
+# Applied voltages in volts.
 applied_voltages = [[1.5, 4.1, 2.6, 2.1],
                     [2.3, 4.5, 1.1, 0.8],
                     [1.7, 4.0, 3.3, 1.1]]
 
-# device resistances in ohms
+# Device resistances in ohms.
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
 
-# interconnect resistance in ohms
+# Interconnect resistance in ohms.
 r_i = 0.5
 
-# computing the solution
+# Computing the solution.
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
-# plotting average node voltages over all four sets of inputs
+# Plotting average node voltages over all four sets of inputs.
 badcrossbar.plot.nodes(voltages=solution.voltages,
-                       filename='average-voltages', allow_overwrite=True)
+		       axis_label='Average voltage (V)',
+		       filename='average-voltages')
 ```
 
 The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between voltages of nodes of the same type. Differences become more apparent with larger crossbar arrays, as explored in [2_custom_parameters.py], for example.
