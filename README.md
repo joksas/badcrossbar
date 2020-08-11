@@ -221,7 +221,7 @@ badcrossbar.plot.branches(currents=solution.currents,
 
 The produced PDF file should contain a diagram similar to the one shown below:
 
-![Crossbar currents](images/crossbar-currents.png)
+![Crossbar currents](images/average-currents.png)
 
 ### Voltages
 
@@ -256,7 +256,7 @@ badcrossbar.plot.nodes(voltages=solution.voltages,
 
 The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between voltages of nodes of the same type. Differences become more apparent with larger crossbar arrays, as explored in [2_custom_parameters.py], for example.
 
-![Crossbar voltages](images/crossbar-voltages.png)
+![Crossbar voltages](images/average-voltages.png)
 
 Examples of how to plot currents or voltages of only certain parts of the crossbar, or how to take into account only part of the sets of applied voltages can be found in [1_default_parameters.py].
 
