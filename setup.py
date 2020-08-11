@@ -8,9 +8,10 @@ resistances, applied voltages and interconnect resistance. Additionally,
 it allows to plot currents and voltages (or other variables) in the crossbar
 branches and nodes, respectively.
 
-For most users, functions `badcrossbar.compute`, `badcrossbar.plot.currents`
-and `badcrossbar.plot.voltages` should complete the main  task at hand,
-i.e. computing and plotting crossbar currents and voltages.
+For most users, functions `badcrossbar.compute()`,
+`badcrossbar.plot.branches()` and `badcrossbar.plot.nodes()` should complete
+the main  task at hand, i.e. computing and plotting crossbar currents and
+voltages.
 """
 from setuptools import setup
 
