@@ -11,39 +11,40 @@ import badcrossbar
 # array where using default parameters produces a diagram with nodes that are
 # hard to see without zooming in.
 
-# shape of the crossbar array
+# Shape of the crossbar array.
 num_word_lines = 128
 num_bit_lines = 64
 
-# number of different sets of inputs applied
+# Number of different sets of inputs applied.
 num_examples = 100
 
-# interconnect resistance in ohms
+# Interconnect resistance in ohms.
 r_i = 0.25
 
-# randomly generated resistances and voltages (in ohms and volts, respectively)
+# Randomly generated resistances and voltages
+# (in ohms and volts, respectively).
 resistances = 100*np.random.rand(num_word_lines, num_bit_lines)
 voltages = np.random.rand(num_word_lines, num_examples)
 
 solution = badcrossbar.compute(voltages, resistances, r_i, verbose=0)
 
-# we are going to make the interconnects and crossbar devices 4 times thinner
+# We are going to make the interconnects and crossbar devices 4 times thinner.
 my_wire_scaling_factor = 1/4
 my_device_scaling_factor = 1/4
-# we are also going to make them lighter
+# We are also going to make them lighter in color.
 my_default_color = (0.9, 0.9, 0.9)
 
-# when we reduced the width of the devices, we also made the diameter of the
+# When we reduced the width of the devices, we also made the diameter of the
 # nodes smaller (the two are controlled by the same variable
-# `device_scaling_factor`. However, we want to make the nodes larger; for
+# `device_scaling_factor`). However, we want to make the nodes larger; for
 # that we can use a separate variable `node_scaling_factor` which controls
 # the size of the nodes without affecting the device width.
-# the following line will result in net scaling factor of 8 for the nodes
+# The following line will result in net scaling factor of 8 for the nodes.
 my_node_scaling_factor = 1/my_device_scaling_factor * 8
 
-# additionally, we are going to change the color bar colors, so that the
+# Additionally, we are going to change the color bar colors, so that the
 # zero would associated with black and that the maximum positive value would be
-# associated with red
+# associated with red.
 my_zero_rgb = (0, 0, 0)
 my_high_rgb = (1, 0, 0)
 
@@ -54,6 +55,7 @@ badcrossbar.plot.nodes(voltages=solution.voltages,
                        node_scaling_factor=my_node_scaling_factor,
                        zero_rgb=my_zero_rgb,
                        high_rgb=my_high_rgb,
+                       axis_label='Average voltage (V)',
                        filename='Ex-2',
                        allow_overwrite=True)
 

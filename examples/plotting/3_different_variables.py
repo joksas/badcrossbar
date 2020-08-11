@@ -6,21 +6,21 @@ import badcrossbar
 # variables. This example shows how to plot the percentage change in current
 # in every branch, due to introduced line resistance.
 
-# applied voltages in volts
+# Applied voltages in volts.
 applied_voltages = [[1.5],
                     [2.3],
                     [1.7]]
 
-# device resistances in ohms
+# Device resistances in ohms.
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
 
-# interconnect resistance in ohms (different for word and bit line segments)
+# Interconnect resistance in ohms (different for word and bit line segments).
 r_i_ideal = {'word_line': 0, 'bit_line': 0}
 r_i_nonideal = {'word_line': 0.75, 'bit_line': 0.5}
 
-# computing the solution
+# Computing the solution.
 solution_ideal = badcrossbar.compute(
     applied_voltages, resistances, verbose=0,
     r_i_word_line=r_i_ideal['word_line'], r_i_bit_line=r_i_ideal['bit_line'])
@@ -29,11 +29,11 @@ solution_nonideal = badcrossbar.compute(
     r_i_word_line=r_i_nonideal['word_line'],
     r_i_bit_line=r_i_nonideal['bit_line'])
 
-# extracting the currents
+# Extracting the currents.
 ideal_currents = solution_ideal.currents
 nonideal_currents = solution_nonideal.currents
 
-# computing percentage changes
+# Computing percentage changes.
 device_change = (nonideal_currents.device -
                  ideal_currents.device)/ideal_currents.device * 100
 word_line_change = (nonideal_currents.word_line -
@@ -41,7 +41,7 @@ word_line_change = (nonideal_currents.word_line -
 bit_line_change = (nonideal_currents.bit_line -
                    ideal_currents.bit_line)/ideal_currents.bit_line * 100
 
-# plotting percentage changes
+# Plotting percentage changes.
 modified_label = 'Change in current (%)'
 badcrossbar.plot.branches(device_vals=device_change,
                           word_line_vals=word_line_change,
