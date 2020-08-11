@@ -354,7 +354,7 @@ def nodes(ctx, node_vals, diagram_pos, low, high, segment_length=120,
     ctx.move_to(*diagram_pos)
 
 
-def dimensions(shape, max_dim_mm=210, color_bar_fraction=(0.5, 0.15),
+def dimensions(shape, width_mm=210, color_bar_fraction=(0.5, 0.15),
                border_fraction=0.05):
     """Extracts dimensions of the surface.
 
@@ -363,7 +363,7 @@ def dimensions(shape, max_dim_mm=210, color_bar_fraction=(0.5, 0.15),
     shape : tuple of int
         Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
     max_dim_mm : float, optional
-        The length of the longest side in millimeters.
+        Width of the diagram in millimeters.
     color_bar_fraction : tuple of float, optional
         The fraction of the surface that the color bar region will take on
         the right (vertically and horizontally.
@@ -385,7 +385,7 @@ def dimensions(shape, max_dim_mm=210, color_bar_fraction=(0.5, 0.15),
         Width and height of the color bar.
     """
     # convert millimeters to points
-    max_dim = max_dim_mm * 72/25.4
+    width = width_mm * 72/25.4
 
     # when plotted, crossbar will take up additional space horizontally
     # and vertically equivalent to half a section dedicated to a single
@@ -399,16 +399,18 @@ def dimensions(shape, max_dim_mm=210, color_bar_fraction=(0.5, 0.15),
         width_fraction = active_horizontal_fraction
         segment_fraction = width_fraction/adjusted_shape[1]
         height_fraction = segment_fraction*adjusted_shape[0]
-        width = max_dim
-        height = (height_fraction + 2 * border_fraction) * max_dim
+        height = (height_fraction + 2*border_fraction) * width
+        max_dim = width 
     else:
-        height_fraction = 1 - 2 * border_fraction
+        height_fraction = 1 - 2*border_fraction
         segment_fraction = height_fraction/adjusted_shape[0]
         width_fraction = segment_fraction*adjusted_shape[1]
-        height = max_dim
-        width = (width_fraction +
-                 color_bar_fraction[1] + 2 * border_fraction) * max_dim
+        height = width / (width_fraction +
+                 color_bar_fraction[1] + 2 * border_fraction)
+        max_dim = height 
 
+    # if the height is very small compared to the width, additional space
+    # is added vertically on both sides
     if height/width < (color_bar_fraction[0] + 2 * border_fraction):
         height = max_dim * (color_bar_fraction[0] + 2 * border_fraction)
 

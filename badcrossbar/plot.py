@@ -64,6 +64,8 @@ def branches(device_vals=None, word_line_vals=None,
             diagram of it will have some wire crossings. If `round_crossings`
             is False, these crossings will be drawn as straight lines.
             Otherwise, they will be drawn as semicircles.
+        width : float, optional
+            Width of the diagram in millimeters.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -78,6 +80,7 @@ def branches(device_vals=None, word_line_vals=None,
     kwargs.setdefault('device_type', 'memristor')
     kwargs.setdefault('significant_figures', 2)
     kwargs.setdefault('round_crossings', True)
+    kwargs.setdefault('width', 210)
 
     if currents is not None:
         device_vals = currents.device
@@ -94,7 +97,8 @@ def branches(device_vals=None, word_line_vals=None,
         device_vals, word_line_vals, bit_line_vals)
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
-        plotting.crossbar.dimensions(crossbar_shape)
+        plotting.crossbar.dimensions(crossbar_shape,
+                                     width_mm=kwargs.get('width'))
     if kwargs.get('allow_overwrite'):
         filename = '{}.pdf'.format(kwargs.get('filename'))
         filename = sanitize_filepath(filename)
@@ -184,6 +188,8 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
             diagram of it will have some wire crossings. If `round_crossings`
             is False, these crossings will be drawn as straight lines.
             Otherwise, they will be drawn as semicircles.
+        width : float, optional
+            Width of the diagram in millimeters.
     """
     kwargs.setdefault('default_color', (0, 0, 0))
     kwargs.setdefault('wire_scaling_factor', 1)
@@ -198,6 +204,7 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
     kwargs.setdefault('device_type', 'memristor')
     kwargs.setdefault('significant_figures', 2)
     kwargs.setdefault('round_crossings', True)
+    kwargs.setdefault('width', 210)
 
     if voltages is not None:
         word_line_vals = voltages.word_line
@@ -210,7 +217,8 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
     crossbar_shape = utils.arrays_shape(word_line_vals, bit_line_vals)
 
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
-        plotting.crossbar.dimensions(crossbar_shape)
+        plotting.crossbar.dimensions(crossbar_shape,
+                                     width_mm=kwargs.get('width'))
     if kwargs.get('allow_overwrite'):
         filename = '{}.pdf'.format(kwargs.get('filename'))
         filename = sanitize_filepath(filename)
