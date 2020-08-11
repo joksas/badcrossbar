@@ -99,20 +99,20 @@ One can compute branch currents and node voltages with the function `badcrossbar
 ```python
 import badcrossbar
 
-# applied voltages in volts
+# Applied voltages in volts.
 applied_voltages = [[1.5],
                     [2.3],
                     [1.7]]
 
-# device resistances in ohms
+# Device resistances in ohms.
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
 
-# interconnect resistance in ohms
+# Interconnect resistance in ohms.
 r_i = 0.5
 
-# computing the solution
+# Computing the solution.
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 ```
 
@@ -201,7 +201,7 @@ applied_voltages = [[1.5, 4.1, 2.6, 2.1],
                     [2.3, 4.5, 1.1, 0.8],
                     [1.7, 4.0, 3.3, 1.1]]
 
-# Device resistances in ohms
+# Device resistances in ohms.
 resistances = [[345, 903, 755, 257, 646],
                [652, 401, 508, 166, 454],
                [442, 874, 190, 244, 635]]
@@ -209,7 +209,7 @@ resistances = [[345, 903, 755, 257, 646],
 # Interconnect resistance in ohms.
 r_i = 0.5
 
-# Computing the solution
+# Computing the solution.
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
 # Plotting average branch currents over all four sets of inputs.
