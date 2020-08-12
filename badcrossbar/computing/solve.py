@@ -13,7 +13,7 @@ def v(resistances, r_i, applied_voltages, **kwargs):
         Resistances of crossbar devices.
     r_i : named tuple of (int or float)
         Interconnect resistances along the word and bit line segments.
-    applied_voltages :ndarray
+    applied_voltages : ndarray
         Applied voltages.
 
     Returns

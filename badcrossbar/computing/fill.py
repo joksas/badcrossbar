@@ -35,7 +35,7 @@ def i(applied_voltages, resistances, r_i):
 
     Parameters
     ----------
-    applied_voltages :ndarray
+    applied_voltages : ndarray
         Applied voltages.
     resistances : ndarray
         Resistances of crossbar devices.
