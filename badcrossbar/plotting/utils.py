@@ -162,3 +162,4 @@ def arrays_range(*arrays, sf=2):
         low = -maximum_absolute
         high = maximum_absolute
     return low, high
+
