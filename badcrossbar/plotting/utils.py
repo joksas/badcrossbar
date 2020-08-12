@@ -64,6 +64,7 @@ def rgb_interpolation(array, low=0, high=1,
         Colour (in RGB) associated with value of zero.
     high_rgb : tuple of int
         Colour (in RGB) associated with the upper limit.
+
     Returns
     -------
     ndarray of tuple of int
