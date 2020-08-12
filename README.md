@@ -28,7 +28,7 @@ In most practical scenarios, we want the resistance of the interconnects to be z
 
 ## Pycairo
 
-The plotting module of [badcrossbar] uses [pycairo] package which requires [cairo](https://www.cairographics.org/) and [pkg-config](https://github.com/pkgconf/pkgconf). The instructions for how to install either these dependencies or [pycairo] directly can be found in this subsection. However, if you are not interested in the plotting functions provided by [badcrossbar], computing module works even without [pycairo] installed, thus you can skip to [badcrossbar installation](#badcrossbar).
+The plotting sub-package of [badcrossbar] uses [pycairo] package which requires [cairo](https://www.cairographics.org/) and [pkg-config](https://github.com/pkgconf/pkgconf). The instructions for how to install either these dependencies or [pycairo] directly can be found in this subsection. However, if you are not interested in the plotting functions provided by [badcrossbar], computing sub-package works even without [pycairo] installed, thus you can skip to [badcrossbar installation](#badcrossbar).
 
 ### Linux
 
@@ -262,7 +262,7 @@ Examples of how to plot currents or voltages of only certain parts of the crossb
 
 ### Modifying diagrams
 
-Plotting  module produces vector images (as PDF files) that can then be edited in any vector graphics manipulation program. However, it also provides option to modify some of the features of the diagram that might be difficult to change once the image is produced. Example [2_custom_parameters.py] explores some of these options, while the complete list of modifiable parameters can be found in function docstrings of [`badcrossbar.plot`] module.
+Plotting sub-package produces vector images (as PDF files) that can then be edited in any vector graphics manipulation program. However, it also provides option to modify some of the features of the diagram that might be difficult to change once the image is produced. Example [2_custom_parameters.py] explores some of these options, while the complete list of modifiable parameters can be found in function docstrings of [`badcrossbar.plot`] module.
 
 [badcrossbar]:https://github.com/joksas/badcrossbar
 [numpy]:https://github.com/numpy/numpy
