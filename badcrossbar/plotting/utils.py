@@ -163,3 +163,39 @@ def arrays_range(*arrays, sf=2):
         high = maximum_absolute
     return low, high
 
+
+def set_defaults(kwargs, branches=True):
+    """Sets default values for kwargs arguments in `badcrossbar.plot` functions.
+
+    Parameters
+    ----------
+    kwargs : dict of any
+        Optional keyword arguments.
+    branches : bool
+        Whether branches are being plotted. If `False`, it is assumed that
+        nodes are being plotted.
+
+    dict of any
+        Optional keyword arguments with the default values set.
+    """
+    kwargs.setdefault('default_color', (0, 0, 0))
+    kwargs.setdefault('wire_scaling_factor', 1)
+    kwargs.setdefault('device_scaling_factor', 1)
+    kwargs.setdefault('axis_label', 'Current (A)')
+    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
+    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
+    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
+    kwargs.setdefault('allow_overwrite', False)
+    kwargs.setdefault('device_type', 'memristor')
+    kwargs.setdefault('significant_figures', 2)
+    kwargs.setdefault('round_crossings', True)
+    kwargs.setdefault('width', 210)
+    if branches:
+        kwargs.setdefault('node_scaling_factor', 1)
+        kwargs.setdefault('filename', 'crossbar-currents')
+    else:
+        kwargs.setdefault('node_scaling_factor', 1.4)
+        kwargs.setdefault('filename', 'crossbar-voltages')
+
+    return kwargs
+
