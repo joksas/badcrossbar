@@ -2,6 +2,7 @@ import badcrossbar.computing as computing
 import numpy as np
 from scipy.sparse import lil_matrix
 from collections import namedtuple
+import copy
 import pytest
 
 Interconnect = namedtuple('Interconnect', ['word_line', 'bit_line'])
@@ -14,10 +15,22 @@ def test_word_line_nodes():
     """Tests `badcrossbar.computing.kcl.word_line_nodes()`.
     """
     filled_g_matrix = computing.kcl.word_line_nodes(
-            g_matrix, conductances, r_i).toarray()
+            copy.deepcopy(g_matrix), conductances, r_i).toarray()
     expected = np.array([[102, 0, -100, 0],
                          [0, 2, 0, 0],
                          [0, 0, 0, 0],
                          [0, 0, 0, 0]])
+    np.testing.assert_array_almost_equal(filled_g_matrix, expected)
+
+
+def test_bit_line_nodes():
+    """Tests `badcrossbar.computing.kcl.bit_line_nodes()`.
+    """
+    filled_g_matrix = computing.kcl.bit_line_nodes(
+            copy.deepcopy(g_matrix), conductances, r_i).toarray()
+    expected = np.array([[0, 0, 0, 0],
+                         [0, 0, 0, 0],
+                         [-100, 0, 104, -4],
+                         [0, 0, -4, 8]])
     np.testing.assert_array_almost_equal(filled_g_matrix, expected)
 
