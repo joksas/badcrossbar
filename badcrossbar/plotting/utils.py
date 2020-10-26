@@ -200,16 +200,13 @@ def set_defaults(kwargs, branches=True):
 
     return kwargs
 
-def get_filepath(filename, cairo, allow_overwrite):
+def get_filepath(filename, allow_overwrite):
     """Constructs filepath of the diagram.
 
     Parameters
     ----------
     filename : str
         Filename (without the extension).
-    cairo : bool
-        Whether it is cairo diagram. If False, it is assumed that it is
-        TikZ diagram.
     allow_overwrite :
         If True, can overwrite existing PDF files with the same name.
 
@@ -218,10 +215,7 @@ def get_filepath(filename, cairo, allow_overwrite):
     str
         Filepath of the diagram.
     """
-    if cairo:
-        extension = 'pdf'
-    else:
-        extension = 'tex'
+    extension = 'pdf'
 
     if allow_overwrite:
         filepath = '{}.{}'.format(filename, extension)

@@ -87,7 +87,7 @@ def branches(device_vals=None, word_line_vals=None,
         plotting.crossbar.dimensions(crossbar_shape,
                                      width_mm=kwargs.get('width'))
 
-    filename = plotting.utils.get_filepath(kwargs.get('filename'), True,
+    filename = plotting.utils.get_filepath(kwargs.get('filename'),
             kwargs.get('allow_overwrite'))
 
     surface = cairo.PDFSurface(filename, *surface_dims)
@@ -193,7 +193,7 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
         plotting.crossbar.dimensions(crossbar_shape,
                                      width_mm=kwargs.get('width'))
 
-    filename = plotting.utils.get_filepath(kwargs.get('filename'), True,
+    filename = plotting.utils.get_filepath(kwargs.get('filename'),
             kwargs.get('allow_overwrite'))
 
     surface = cairo.PDFSurface(filename, *surface_dims)
