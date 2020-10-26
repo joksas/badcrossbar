@@ -1,6 +1,7 @@
 import numpy as np
 import numpy.lib.recfunctions as nlr
 from sigfig import round
+from badcrossbar import utils
 
 
 def complete_path(ctx, rgb=(0, 0, 0), width=1):
@@ -198,4 +199,35 @@ def set_defaults(kwargs, branches=True):
         kwargs.setdefault('filename', 'crossbar-voltages')
 
     return kwargs
+
+def get_filepath(filename, cairo, allow_overwrite):
+    """Constructs filepath of the diagram.
+
+    Parameters
+    ----------
+    filename : str
+        Filename (without the extension).
+    cairo : bool
+        Whether it is cairo diagram. If False, it is assumed that it is
+        TikZ diagram.
+    allow_overwrite :
+        If True, can overwrite existing PDF files with the same name.
+
+    Returns
+    ----------
+    str
+        Filepath of the diagram.
+    """
+    if cairo:
+        extension = 'pdf'
+    else:
+        extension = 'tex'
+
+    if allow_overwrite:
+        filepath = '{}.{}'.format(filename, extension)
+        filepath = sanitize_filepath(filepath)
+    else:
+        filepath = utils.unique_path(filename, extension)
+
+    return filepath
 

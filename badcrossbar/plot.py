@@ -86,11 +86,10 @@ def branches(device_vals=None, word_line_vals=None,
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape,
                                      width_mm=kwargs.get('width'))
-    if kwargs.get('allow_overwrite'):
-        filename = '{}.pdf'.format(kwargs.get('filename'))
-        filename = sanitize_filepath(filename)
-    else:
-        filename = utils.unique_path(kwargs.get('filename'), 'pdf')
+
+    filename = plotting.utils.get_filepath(kwargs.get('filename'), True,
+            kwargs.get('allow_overwrite'))
+
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
@@ -193,11 +192,10 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape,
                                      width_mm=kwargs.get('width'))
-    if kwargs.get('allow_overwrite'):
-        filename = '{}.pdf'.format(kwargs.get('filename'))
-        filename = sanitize_filepath(filename)
-    else:
-        filename = utils.unique_path(kwargs.get('filename'), 'pdf')
+
+    filename = plotting.utils.get_filepath(kwargs.get('filename'), True,
+            kwargs.get('allow_overwrite'))
+
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
