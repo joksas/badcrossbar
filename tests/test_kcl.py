@@ -80,7 +80,6 @@ bit_line_nodes_inputs = [i for i in zip(
 def test_word_line_nodes(conductances, g_matrix, expected):
     """Tests `badcrossbar.computing.kcl.word_line_nodes()`.
     """
-    print(g_matrix)
     filled_g_matrix = computing.kcl.word_line_nodes(
             copy.deepcopy(g_matrix), conductances, r_i).toarray()
     np.testing.assert_array_almost_equal(filled_g_matrix, expected)
