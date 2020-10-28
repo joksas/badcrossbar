@@ -176,6 +176,8 @@ def set_defaults(kwargs, branches=True):
         Whether branches are being plotted. If `False`, it is assumed that
         nodes are being plotted.
 
+    Returns
+    ----------
     dict of any
         Optional keyword arguments with the default values set.
     """
