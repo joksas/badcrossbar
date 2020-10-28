@@ -1,6 +1,7 @@
 import numpy as np
 import numpy.lib.recfunctions as nlr
 from sigfig import round
+from badcrossbar import utils
 
 
 def complete_path(ctx, rgb=(0, 0, 0), width=1):
@@ -162,4 +163,67 @@ def arrays_range(*arrays, sf=2):
         low = -maximum_absolute
         high = maximum_absolute
     return low, high
+
+
+def set_defaults(kwargs, branches=True):
+    """Sets default values for kwargs arguments in `badcrossbar.plot` functions.
+
+    Parameters
+    ----------
+    kwargs : dict of any
+        Optional keyword arguments.
+    branches : bool
+        Whether branches are being plotted. If `False`, it is assumed that
+        nodes are being plotted.
+
+    Returns
+    ----------
+    dict of any
+        Optional keyword arguments with the default values set.
+    """
+    kwargs.setdefault('default_color', (0, 0, 0))
+    kwargs.setdefault('wire_scaling_factor', 1)
+    kwargs.setdefault('device_scaling_factor', 1)
+    kwargs.setdefault('axis_label', 'Current (A)')
+    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
+    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
+    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
+    kwargs.setdefault('allow_overwrite', False)
+    kwargs.setdefault('device_type', 'memristor')
+    kwargs.setdefault('significant_figures', 2)
+    kwargs.setdefault('round_crossings', True)
+    kwargs.setdefault('width', 210)
+    if branches:
+        kwargs.setdefault('node_scaling_factor', 1)
+        kwargs.setdefault('filename', 'crossbar-currents')
+    else:
+        kwargs.setdefault('node_scaling_factor', 1.4)
+        kwargs.setdefault('filename', 'crossbar-voltages')
+
+    return kwargs
+
+def get_filepath(filename, allow_overwrite):
+    """Constructs filepath of the diagram.
+
+    Parameters
+    ----------
+    filename : str
+        Filename (without the extension).
+    allow_overwrite :
+        If True, can overwrite existing PDF files with the same name.
+
+    Returns
+    ----------
+    str
+        Filepath of the diagram.
+    """
+    extension = 'pdf'
+
+    if allow_overwrite:
+        filepath = '{}.{}'.format(filename, extension)
+        filepath = sanitize_filepath(filepath)
+    else:
+        filepath = utils.unique_path(filename, extension)
+
+    return filepath
 

@@ -67,20 +67,7 @@ def branches(device_vals=None, word_line_vals=None,
         width : float, optional
             Width of the diagram in millimeters.
     """
-    kwargs.setdefault('default_color', (0, 0, 0))
-    kwargs.setdefault('wire_scaling_factor', 1)
-    kwargs.setdefault('device_scaling_factor', 1)
-    kwargs.setdefault('node_scaling_factor', 1)
-    kwargs.setdefault('axis_label', 'Current (A)')
-    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
-    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
-    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
-    kwargs.setdefault('allow_overwrite', False)
-    kwargs.setdefault('filename', 'crossbar-currents')
-    kwargs.setdefault('device_type', 'memristor')
-    kwargs.setdefault('significant_figures', 2)
-    kwargs.setdefault('round_crossings', True)
-    kwargs.setdefault('width', 210)
+    kwargs = plotting.utils.set_defaults(kwargs, True)
 
     if currents is not None:
         device_vals = currents.device
@@ -99,11 +86,10 @@ def branches(device_vals=None, word_line_vals=None,
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape,
                                      width_mm=kwargs.get('width'))
-    if kwargs.get('allow_overwrite'):
-        filename = '{}.pdf'.format(kwargs.get('filename'))
-        filename = sanitize_filepath(filename)
-    else:
-        filename = utils.unique_path(kwargs.get('filename'), 'pdf')
+
+    filename = plotting.utils.get_filepath(kwargs.get('filename'),
+            kwargs.get('allow_overwrite'))
+
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
@@ -191,20 +177,7 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
         width : float, optional
             Width of the diagram in millimeters.
     """
-    kwargs.setdefault('default_color', (0, 0, 0))
-    kwargs.setdefault('wire_scaling_factor', 1)
-    kwargs.setdefault('device_scaling_factor', 1)
-    kwargs.setdefault('node_scaling_factor', 1.4)
-    kwargs.setdefault('axis_label', 'Voltage (V)')
-    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
-    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
-    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
-    kwargs.setdefault('allow_overwrite', False)
-    kwargs.setdefault('filename', 'crossbar-voltages')
-    kwargs.setdefault('device_type', 'memristor')
-    kwargs.setdefault('significant_figures', 2)
-    kwargs.setdefault('round_crossings', True)
-    kwargs.setdefault('width', 210)
+    kwargs = plotting.utils.set_defaults(kwargs, False)
 
     if voltages is not None:
         word_line_vals = voltages.word_line
@@ -219,11 +192,10 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
     surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
         plotting.crossbar.dimensions(crossbar_shape,
                                      width_mm=kwargs.get('width'))
-    if kwargs.get('allow_overwrite'):
-        filename = '{}.pdf'.format(kwargs.get('filename'))
-        filename = sanitize_filepath(filename)
-    else:
-        filename = utils.unique_path(kwargs.get('filename'), 'pdf')
+
+    filename = plotting.utils.get_filepath(kwargs.get('filename'),
+            kwargs.get('allow_overwrite'))
+
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
