@@ -23,7 +23,7 @@ def load_requirements():
 
 setup(
     name='badcrossbar',
-    version='1.0.1',
+    version='1.0.2',
     packages=['badcrossbar', 'badcrossbar.computing',
               'badcrossbar.plotting', 'tests'],
     install_requires=load_requirements(),
