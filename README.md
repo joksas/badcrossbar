@@ -22,7 +22,7 @@ This package has been submitted to [SoftwareX journal](https://www.journals.else
 
 Conventional crossbars have a structure like the one shown in the image below. Resistive two-terminal **devices** (depicted here as memristors) are connected to **word lines** on one side and to **bit lines** on the other. In the diagram, the crossbar devices are depicted in black, the word lines are depicted as horizontal blue lines and the bit lines as vertical blue lines. Orange circles denote the **nodes**, i.e. the connections between the devices and the word/bit lines. The segments of word and bit lines between neighbouring nodes are often seen as **interconnects** between neighbouring devices and can themselves be modelled as resistive elements.
 
-![Crossbar structure](images/crossbar-structure.png)
+![Crossbar structure](https://user-images.githubusercontent.com/46974359/118156063-d15de480-b410-11eb-8242-2668049d74ce.png)
 
 In most practical scenarios, we want the resistance of the interconnects to be zero. That is because crossbar arrays containing resistive elements can be used as dot product engines, i.e. systems able to compute vector-matrix products in hardware. Specifically, crossbar arrays with interconnect resistance of zero are able to compute the vector-matrix products of applied voltages (vector) and conductances of the crossbar devices (matrix). In the diagram above, voltages are applied on the left side of the word lines and the vector-matrix product is computed in a form of currents at the bottom of the bit lines.
 
@@ -124,7 +124,7 @@ The returned variable (named `solution`, in this case) is a named tuple with fie
 
 `solution.currents` is itself a named tuple with fields `output`, `device`, `word_line` and `bit_line`. The first field represents the output currents, while the rest represent the currents flowing through devices, interconnects along the word lines, and interconnects along the bit lines. All of these branches are depicted in the diagram below:
 
-![Crossbar branches](images/crossbar-branches.png)
+![Crossbar branches](https://user-images.githubusercontent.com/46974359/118156060-d0c54e00-b410-11eb-8161-9869e624e519.png)
 
 If `applied_voltages` is an array of shape `(m, p)` (each column representing a different set of inputs) and `resistances` is an array of shape `(m, n)`, then:
 * `currents.output` will be a [numpy] array of shape `(p, n)`.
@@ -134,7 +134,7 @@ If `applied_voltages` is an array of shape `(m, p)` (each column representing a 
 
 `solution.voltages` is itself a named tuple with fields `word_line` and `bit_line`. They represent the voltages at the nodes on the word and bit lines, respectively. These two types of nodes are depicted in the diagram below:
 
-![Crossbar nodes](images/crossbar-nodes.png)
+![Crossbar nodes](https://user-images.githubusercontent.com/46974359/118156062-d0c54e00-b410-11eb-81c7-21205b3e0c83.png)
 
 If `applied_voltages` is an array of shape `(m, p)` (each column representing a different set of inputs) and `resistances` is an array of shape `(m, n)`, then `voltages.word_line` and `voltages.bit_line` will be [numpy] arrays of shape `(m, n)` if `p = 1`, or [numpy] arrays of shape `(m, n, p)` if `p > 1`.
 
@@ -223,7 +223,7 @@ badcrossbar.plot.branches(currents=solution.currents,
 
 The produced PDF file should contain a diagram similar to the one shown below:
 
-![Crossbar currents](images/average-currents.png)
+![Crossbar currents](https://user-images.githubusercontent.com/46974359/118156056-cf942100-b410-11eb-819f-163e8a66fe62.png)
 
 ### Voltages
 
@@ -258,7 +258,7 @@ badcrossbar.plot.nodes(voltages=solution.voltages,
 
 The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between voltages of nodes of the same type. Differences become more apparent with larger crossbar arrays, as explored in [2_custom_parameters.py], for example.
 
-![Crossbar voltages](images/average-voltages.png)
+![Crossbar voltages](https://user-images.githubusercontent.com/46974359/118156057-d02cb780-b410-11eb-8452-dd2cab7d5cf5.png)
 
 Examples of how to plot currents or voltages of only certain parts of the crossbar, or how to take into account only part of the sets of applied voltages can be found in [1_default_parameters.py].
 
