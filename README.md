@@ -2,7 +2,20 @@
 
 [badcrossbar] is a nodal analysis solver for passive crossbar arrays that suffer from line resistance. It solves for currents in all the branches, as well as for voltages at all the nodes of the crossbar. Additionally, it can create diagrams of crossbar arrays colored according to the values of those currents and voltages (or any other variables).
 
-This package has been submitted to [SoftwareX journal](https://www.journals.elsevier.com/softwarex) as Original Software Publication.
+This package was published in [SoftwareX](https://www.journals.elsevier.com/softwarex) as Original Software Publication under the title ["badcrossbar: A Python tool for computing and plotting currents and voltages in passive crossbar arrays"](https://doi.org/10.1016/j.softx.2020.100617). To cite, use the following BibTeX entry:
+
+```bibtex
+@article{JoksasMehonic2020,
+  title     = {{badcrossbar}: A {Python} tool for computing and plotting currents and voltages in passive crossbar arrays},
+  author    = {Joksas, Dovydas and Mehonic, Adnan},
+  journal   = {SoftwareX},
+  volume    = {12},
+  pages     = {100617},
+  year      = {2020},
+  publisher = {Elsevier},
+  doi       = {10.1016/j.softx.2020.100617}
+}
+```
 
 # Background
 
