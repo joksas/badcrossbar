@@ -197,7 +197,7 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
     y = color_bar_pos[1] + color_bar_dims[1] + 0.5*text_height
     ctx.move_to(x, y)
     if low < 0 or middle:
-        ctx.show_text(str(low))
+        ctx.show_text("−{}".format(abs(low)))
     else:
         if low == high:
             ctx.show_text(str(high))
