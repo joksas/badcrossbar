@@ -2,6 +2,7 @@ import numpy as np
 import numpy.lib.recfunctions as nlr
 from sigfig import round
 from badcrossbar import utils
+from pathvalidate import sanitize_filepath
 
 
 def complete_path(ctx, rgb=(0, 0, 0), width=1):
