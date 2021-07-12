@@ -67,7 +67,7 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
         The length of each segment.
     scaling_factor : float, optional
         Scaling factor for the width.
-    device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
+    device : {'memristor', 'memristor_2', 'resistor_usa', 'resistor_europe'}, optional
         Device type to be drawn.
     """
     width = segment_length/100*5*scaling_factor
@@ -75,12 +75,11 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
     device_length = segment_length/2*np.sqrt(2)  # Pythagorean theorem
 
     device_functions = {'memristor': plotting.devices.memristor,
-                        'resistor_usa': plotting.devices.resistor_usa,
-                        'resistor_europe': plotting.devices.resistor_europe}
+            'memristor_2': plotting.devices.memristor_2,
+            'resistor_usa': plotting.devices.resistor_usa,
+            'resistor_europe': plotting.devices.resistor_europe}
     if device in device_functions:
         device_function = device_functions[device]
-        if device in ['resistor_usa', 'resistor_europe']:
-            width *= 3/5
     else:
         raise ValueError('Device \'{}\' is not currently supported!'.format(
             device))
@@ -88,8 +87,7 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
     for color in colors:
         x += segment_length
         ctx.move_to(x, y)
-        device_function(ctx, length=device_length, angle=np.pi/4)
-        plotting.utils.complete_path(ctx, rgb=color, width=width)
+        device_function(ctx, length=device_length, angle=np.pi/4, width=width, rgb=color)
 
 
 def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
@@ -108,11 +106,11 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
         If True, draws nodes on the bit lines.
     scaling_factor : float, optional
         Scaling factor for the diameter.
-    device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
+    device : {'memristor', 'memristor_2', 'resistor_usa', 'resistor_europe'}, optional
         Device type to be drawn (affects node diameter).
     """
     diameter = segment_length/100*7*scaling_factor
-    if device in ['resistor_usa', 'resistor_europe']:
+    if device in ['resistor_usa', 'resistor_europe', 'memristor_2']:
         diameter *= 5/7
     x, y = ctx.get_current_point()
     if bit_line_nodes:

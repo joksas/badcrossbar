@@ -54,7 +54,8 @@ def branches(device_vals=None, word_line_vals=None,
             If True, can overwrite existing PDF files with the same name.
         filename : str, optional
             Filename, excluding PDF extension.
-        device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
+        device_type : {'memristor', 'memristor_2', 'resistor_usa',
+        'resistor_europe'}, optional
             Device type to be drawn.
         significant_figures : int, optional
             Number of significant figures to use for the limits of the color
@@ -164,7 +165,8 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
             If True, can overwrite existing PDF files with the same name.
         filename : str, optional
             Filename, excluding PDF extension.
-        device : {'memristor', 'resistor_usa', 'resistor_europe'}, optional
+        device_type : {'memristor', 'memristor_2', 'resistor_usa',
+        'resistor_europe'}, optional
             Device type to be drawn.
         significant_figures : int, optional
             Number of significant figures to use for the limits of the color

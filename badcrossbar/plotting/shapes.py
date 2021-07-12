@@ -58,3 +58,4 @@ def rectangle(ctx, width, height, angle=0):
     x, y = ctx.get_current_point()
     ctx.rectangle(x, y, width, height)
     ctx.rotate(-angle)
+

@@ -12,10 +12,10 @@ def complete_path(ctx, rgb=(0, 0, 0), width=1):
     ----------
     ctx : cairo.Context
         Context.
-    rgb : tuple of int
-        Normalized RGB value of the path.
-    width : float
+        width : float, optional
         Width of the path.
+    rgb : tuple of float, optional
+        Normalized RGB value of the path.
     """
     x, y = ctx.get_current_point()
 
@@ -34,8 +34,8 @@ def complete_fill(ctx, rgb=(0, 0, 0)):
     ----------
     ctx : cairo.Context
         Context.
-    rgb : tuple of int
-        Normalized RGB value of the fill.
+    rgb : tuple of float, optional
+        Normalized RGB value of the path.
     """
     x, y = ctx.get_current_point()
 
@@ -60,16 +60,16 @@ def rgb_interpolation(array, low=0, high=1,
         Lower limit of the linear range.
     high : float
         Upper limit of the linear range.
-    low_rgb : tuple of int
+    low_rgb : tuple of float, optional
         Colour (in RGB) associated with the lower limit.
-    zero_rgb : tuple of int
+    zero_rgb : tuple of float, optional
         Colour (in RGB) associated with value of zero.
-    high_rgb : tuple of int
+    high_rgb : tuple of float, optional
         Colour (in RGB) associated with the upper limit.
 
     Returns
     -------
-    ndarray of tuple of int
+    ndarray of tuple of float, optional
         RGB values associated with each of the entries in the array.
     """
     rgb = []
@@ -85,7 +85,7 @@ def rgb_interpolation(array, low=0, high=1,
                      low_x + (array - low) * (zero_x-low_x)/(0-low))
 
         rgb.append(x)
-    
+
     # return ndarray of RGB tuples
     rgb = np.array(rgb)
     rgb = np.moveaxis(rgb, 0, -1)
@@ -107,7 +107,7 @@ def rgb_single_color(shape, color=(0, 0, 0)):
 
     Returns
     -------
-    ndarray of tuple of int
+    ndarray of tuple of float, optional
         Array with RGB values.
     """
     rgb = np.ones((*shape, len(color))) * color
