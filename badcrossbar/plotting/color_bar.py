@@ -2,7 +2,14 @@ import cairo
 import numpy as np
 
 
-def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
+def draw(
+    ctx: cairo.Context,
+    color_bar_pos: tuple[float, float],
+    color_bar_dims: tuple[float, float],
+    low: float,
+    high: float,
+    **kwargs
+):
     """Draws the color bar together with its labels.
 
     Parameters
@@ -26,7 +33,11 @@ def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     axis_label(ctx, color_bar_pos, color_bar_dims, label=kwargs.get("axis_label"))
 
 
-def dimensions(surface_dims, color_bar_fraction, border_fraction):
+def dimensions(
+    surface_dims: tuple[float, float],
+    color_bar_fraction: tuple[float, float],
+    border_fraction: float,
+) -> tuple[tuple[float, float], tuple[float, float]]:
     """Extracts dimensions of the color bar.
 
     Parameters
@@ -55,7 +66,13 @@ def dimensions(surface_dims, color_bar_fraction, border_fraction):
     return color_bar_pos, color_bar_dims
 
 
-def rgb(low, high, low_rgb, zero_rgb, high_rgb):
+def rgb(
+    low: float,
+    high: float,
+    low_rgb: tuple[float, float, float],
+    zero_rgb: tuple[float, float, float],
+    high_rgb: tuple[float, float, float],
+) -> tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]:
     """Extracts RGB values for the color bar gradient.
 
     Parameters
@@ -100,7 +117,14 @@ def rgb(low, high, low_rgb, zero_rgb, high_rgb):
     return bottom_rgb, middle_rgb, top_rgb
 
 
-def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
+def rectangle(
+    ctx: cairo.Context,
+    color_bar_pos: tuple[float, float],
+    color_bar_dims: tuple[float, float],
+    low: float,
+    high: float,
+    **kwargs
+) -> bool:
     """Draws rectangle with color gradient.
 
     Parameters
@@ -156,7 +180,14 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     return middle
 
 
-def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
+def tick_labels(
+    ctx: cairo.Context,
+    middle: bool,
+    low: float,
+    high: float,
+    color_bar_pos: tuple[float, float],
+    color_bar_dims: tuple[float, float],
+):
     """Draws tick labels of the color bar.
 
     Parameters
@@ -208,7 +239,12 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
             ctx.show_text("0")
 
 
-def axis_label(ctx, color_bar_pos, color_bar_dims, label="Current (A)"):
+def axis_label(
+    ctx: cairo.Context,
+    color_bar_pos: tuple[float, float],
+    color_bar_dims: tuple[float, float],
+    label: str = "Current (A)",
+):
     """Draws axis label of a color bar.
 
     Parameters

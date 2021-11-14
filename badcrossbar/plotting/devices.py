@@ -1,9 +1,16 @@
 import badcrossbar.plotting.shapes as shapes
 import badcrossbar.plotting.utils as utils
+import cairo
 import numpy as np
 
 
-def memristor(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
+def memristor(
+    ctx: cairo.Context,
+    length: float = 100,
+    angle: float = 0,
+    width: float = 1,
+    rgb: tuple[float, float, float] = (0, 0, 0),
+):
     """Draws a memristor.
 
     Parameters
@@ -37,7 +44,13 @@ def memristor(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
     utils.complete_path(ctx, rgb=rgb, width=width)
 
 
-def memristor_2(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
+def memristor_2(
+    ctx: cairo.Context,
+    length: float = 100,
+    angle: float = 0,
+    width: float = 1,
+    rgb: tuple[float, float, float] = (0, 0, 0),
+):
     """Draws a memristor.
 
     Replicated from
@@ -108,7 +121,13 @@ def memristor_2(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
     ctx.rotate(-angle)
 
 
-def resistor_usa(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
+def resistor_usa(
+    ctx: cairo.Context,
+    length: float = 100,
+    angle: float = 0,
+    width: float = 1,
+    rgb: tuple[float, float, float] = (0, 0, 0),
+):
     """Draws a resistor (USA version).
 
     Parameters
@@ -145,7 +164,13 @@ def resistor_usa(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
     utils.complete_path(ctx, rgb=rgb, width=real_width)
 
 
-def resistor_europe(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
+def resistor_europe(
+    ctx: cairo.Context,
+    length: float = 100,
+    angle: float = 0,
+    width: float = 1,
+    rgb: tuple[float, float, float] = (0, 0, 0),
+):
     """Draws a resistor (European version).
 
     Parameters

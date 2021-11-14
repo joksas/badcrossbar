@@ -1,6 +1,7 @@
 from collections import namedtuple
 
 import numpy as np
+import numpy.typing as npt
 from badcrossbar import utils
 from badcrossbar.computing import solve
 
@@ -10,7 +11,13 @@ Currents = namedtuple("Currents", ["output", "device", "word_line", "bit_line"])
 Voltages = namedtuple("Voltages", ["word_line", "bit_line"])
 
 
-def solution(resistances, r_i_word_line, r_i_bit_line, applied_voltages, **kwargs):
+def solution(
+    resistances: npt.NDArray,
+    r_i_word_line: float,
+    r_i_bit_line: float,
+    applied_voltages: npt.NDArray,
+    **kwargs
+) -> Solution:
     """Extracts branch currents and node voltages of a crossbar in a
     convenient form.
 
@@ -48,7 +55,13 @@ def solution(resistances, r_i_word_line, r_i_bit_line, applied_voltages, **kwarg
     return extracted_solution
 
 
-def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
+def currents(
+    extracted_voltages: Voltages,
+    resistances: npt.NDArray,
+    r_i: Interconnect,
+    applied_voltages: npt.NDArray,
+    **kwargs
+) -> Currents:
     """Extracts crossbar branch currents in a convenient format.
 
     Parameters
@@ -89,7 +102,7 @@ def currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs):
     return extracted_currents
 
 
-def voltages(v, resistances, **kwargs):
+def voltages(v: npt.NDArray, resistances: npt.NDArray, **kwargs) -> Voltages:
     """Extracts crossbar node voltages in a convenient format.
 
     Parameters
@@ -113,7 +126,7 @@ def voltages(v, resistances, **kwargs):
     return extracted_voltages
 
 
-def word_line_voltages(v, resistances):
+def word_line_voltages(v: npt.NDArray, resistances: npt.NDArray) -> npt.NDArray:
     """Extracts voltages at the nodes on the word lines.
 
     Parameters
@@ -134,7 +147,7 @@ def word_line_voltages(v, resistances):
     return utils.distributed_array(v_domain, resistances)
 
 
-def bit_line_voltages(v, resistances):
+def bit_line_voltages(v: npt.NDArray, resistances: npt.NDArray) -> npt.NDArray:
     """Extracts voltages at the nodes on the bit lines.
 
     Parameters
@@ -155,7 +168,9 @@ def bit_line_voltages(v, resistances):
     return utils.distributed_array(v_domain, resistances)
 
 
-def output_currents(extracted_voltages, extracted_device_currents, r_i):
+def output_currents(
+    extracted_voltages: Voltages, extracted_device_currents: npt.NDArray, r_i: Interconnect
+) -> npt.NDArray:
     """Extracts output currents.
 
     Parameters
@@ -189,7 +204,7 @@ def output_currents(extracted_voltages, extracted_device_currents, r_i):
     return output_i
 
 
-def device_currents(extracted_voltages, resistances):
+def device_currents(extracted_voltages: Voltages, resistances: npt.NDArray):
     """Extracts currents flowing through crossbar devices.
 
     Parameters
@@ -216,7 +231,12 @@ def device_currents(extracted_voltages, resistances):
     return device_i
 
 
-def word_line_currents(extracted_voltages, extracted_device_currents, r_i, applied_voltages):
+def word_line_currents(
+    extracted_voltages: Voltages,
+    extracted_device_currents: npt.NDArray,
+    r_i: Interconnect,
+    applied_voltages: npt.NDArray,
+) -> npt.NDArray:
     """Extracts currents flowing through interconnect segments along the word
     lines.
 
@@ -289,7 +309,9 @@ def word_line_currents(extracted_voltages, extracted_device_currents, r_i, appli
     return word_line_i
 
 
-def bit_line_currents(extracted_voltages, extracted_device_currents, r_i):
+def bit_line_currents(
+    extracted_voltages: Voltages, extracted_device_currents: npt.NDArray, r_i: Interconnect
+) -> npt.NDArray:
     """Extracts currents flowing through interconnect segments along the bit
     lines.
 
@@ -349,7 +371,9 @@ def bit_line_currents(extracted_voltages, extracted_device_currents, r_i):
     return bit_line_i
 
 
-def insulating_interconnect_solution(resistances, applied_voltages, **kwargs):
+def insulating_interconnect_solution(
+    resistances: npt.NDArray, applied_voltages: npt.NDArray, **kwargs
+) -> Solution:
     """Extracts solution when all interconnects are perfectly insulating.
 
     Parameters

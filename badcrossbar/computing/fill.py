@@ -1,9 +1,10 @@
 import numpy as np
+import numpy.typing as npt
 from badcrossbar.computing import kcl
 from scipy.sparse import lil_matrix
 
 
-def g(resistances, r_i):
+def g(resistances: npt.NDArray, r_i) -> lil_matrix:
     """Creates and fills matrix `g` used in equation `gv = i`.
 
     Parameters
@@ -27,7 +28,7 @@ def g(resistances, r_i):
     return g_matrix
 
 
-def i(applied_voltages, resistances, r_i):
+def i(applied_voltages: npt.NDArray, resistances: npt.NDArray, r_i) -> npt.NDArray:
     """Creates and fills matrix `i` used in equation `gv = i`.
 
     Values are filled by applying nodal analysis at the leftmost nodes on the

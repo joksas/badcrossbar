@@ -1,10 +1,11 @@
 import numpy as np
+import numpy.typing as npt
 from badcrossbar import utils
 from badcrossbar.computing import fill
 from scipy.sparse import linalg
 
 
-def v(resistances, r_i, applied_voltages, **kwargs):
+def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray, **kwargs):
     """Solves matrix equation `gv = i`.
 
     Parameters

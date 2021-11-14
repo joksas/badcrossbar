@@ -3,10 +3,11 @@ import pickle
 from datetime import datetime
 
 import numpy as np
+import numpy.typing as npt
 from pathvalidate import sanitize_filepath
 
 
-def unique_path(path, extension="pdf", sanitize=True):
+def unique_path(path: str, extension: str = "pdf", sanitize: bool = True) -> str:
     """Append a number to the path, if it is not unique.
 
     Parameters
@@ -42,7 +43,7 @@ def unique_path(path, extension="pdf", sanitize=True):
     return full_path
 
 
-def time(keep_ms=False):
+def time(keep_ms: bool = False) -> str:
     """Returns current time.
 
     Parameters
@@ -60,7 +61,7 @@ def time(keep_ms=False):
     return time_str
 
 
-def squeeze_third_axis(array):
+def squeeze_third_axis(array: npt.NDArray) -> npt.NDArray:
     """Removes third axis of ndarray if it has shape of 1.
 
     Parameters
@@ -80,7 +81,7 @@ def squeeze_third_axis(array):
     return array
 
 
-def average_if_3D(array):
+def average_if_3D(array: npt.NDArray) -> npt.NDArray:
     """If array is 3D, it is averaged along the third axis.
 
     Parameters
@@ -99,7 +100,7 @@ def average_if_3D(array):
     return array
 
 
-def message(message_str, **kwargs):
+def message(message_str: str, **kwargs):
     """Prints current time followed by a gap and a custom message.
 
     Parameters
@@ -120,7 +121,7 @@ def message(message_str, **kwargs):
         print(message_str)
 
 
-def gap(gap_size=5):
+def gap(gap_size: int = 5):
     """Returns a given number of whitespace characters.
 
     Parameters
@@ -137,7 +138,7 @@ def gap(gap_size=5):
     return gap_str
 
 
-def arrays_shape(*arrays):
+def arrays_shape(*arrays: list[npt.NDArray]):
     """Returns the shape of the first array that is not None.
 
     Parameters
@@ -156,7 +157,9 @@ def arrays_shape(*arrays):
             return shape
 
 
-def save_pickle(variable, path, allow_overwrite=False, verbose=False, sanitize=True):
+def save_pickle(
+    variable, path: str, allow_overwrite: bool = False, verbose: bool = False, sanitize: bool = True
+):
     """Saves variable to a pickle file.
 
     Parameters
@@ -189,7 +192,7 @@ def save_pickle(variable, path, allow_overwrite=False, verbose=False, sanitize=T
         print("Saved {}.".format(path))
 
 
-def load_pickle(path, sanitize=True):
+def load_pickle(path: str, sanitize: bool = True):
     """Loads pickle file.
 
     Parameters
@@ -214,7 +217,7 @@ def load_pickle(path, sanitize=True):
     return variable
 
 
-def distributed_array(flattened_array, model_array):
+def distributed_array(flattened_array: npt.NDArray, model_array: npt.NDArray) -> npt.NDArray:
     """Reshapes flattened array.
 
     Parameters

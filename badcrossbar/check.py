@@ -1,9 +1,16 @@
 import numpy as np
+import numpy.typing as npt
 
 from badcrossbar import utils
 
 
-def crossbar_requirements(resistances, applied_voltages, r_i_word_line, r_i_bit_line, **kwargs):
+def crossbar_requirements(
+    resistances: npt.ArrayLike,
+    applied_voltages: npt.ArrayLike,
+    r_i_word_line,
+    r_i_bit_line,
+    **kwargs
+) -> tuple[npt.NDArray, npt.NDArray]:
     """Checks if crossbar variables satisfy all requirements.
 
     Parameters
@@ -44,13 +51,13 @@ def crossbar_requirements(resistances, applied_voltages, r_i_word_line, r_i_bit_
 
 
 def plotting_requirements(
-    device_branch_vals=None,
-    word_line_branch_vals=None,
-    bit_line_branch_vals=None,
-    word_line_node_vals=None,
-    bit_line_node_vals=None,
-    branches=True,
-):
+    device_branch_vals: npt.NDArray = None,
+    word_line_branch_vals: npt.NDArray = None,
+    bit_line_branch_vals: npt.NDArray = None,
+    word_line_node_vals: npt.NDArray = None,
+    bit_line_node_vals: npt.NDArray = None,
+    branches: bool = True,
+) -> npt.NDArray:
     """Checks if arrays containing branch or node values satisfy all
     requirements.
 
@@ -139,7 +146,7 @@ def not_none(**kwargs):
     return valid_items
 
 
-def n_dimensional(array, n_list=[2], name="array"):
+def n_dimensional(array: npt.NDArray, n_list: list[int] = [2], name: str = "array"):
     """Checks that array is `n`-dimensional.
 
     Parameters
@@ -167,7 +174,7 @@ def n_dimensional(array, n_list=[2], name="array"):
         raise TypeError(err_msg.format(name, n_list_str, dim))
 
 
-def numeric_array(array, name="array"):
+def numeric_array(array: npt.NDArray, name: str = "array"):
     """Checks that array only contains numbers.
 
     Parameters
@@ -186,7 +193,7 @@ def numeric_array(array, name="array"):
         raise TypeError("'{}' should only contain numbers!".format(name))
 
 
-def non_empty(array, name="array"):
+def non_empty(array: npt.NDArray, name: str = "array"):
     """Checks that array is not empty.
 
     Parameters
@@ -229,7 +236,7 @@ def match_shape(**kwargs):
             )
 
 
-def non_negative_array(array, name="array"):
+def non_negative_array(array: npt.NDArray, name: str = "array"):
     """Checks if all the elements of the array are non-negative.
 
     Parameters
@@ -248,7 +255,7 @@ def non_negative_array(array, name="array"):
         raise ValueError("'{}' array contains at least one negative value!".format(name))
 
 
-def non_infinite_array(array, name="array"):
+def non_infinite_array(array: npt.NDArray, name: str = "array"):
     """Checks if all the elements of the array are non-infinite.
 
     Parameters
@@ -269,7 +276,7 @@ def non_infinite_array(array, name="array"):
         )
 
 
-def number(value, name="variable"):
+def number(value, name: str = "variable"):
     """Checks if the variable is a number.
 
     Parameters
@@ -291,7 +298,7 @@ def number(value, name="variable"):
         )
 
 
-def non_negative_number(value, name="number"):
+def non_negative_number(value: float, name: str = "number"):
     """Checks if the number is negative.
 
     Parameters
@@ -310,7 +317,7 @@ def non_negative_number(value, name="number"):
         raise ValueError("'{}' is negative!".format(name))
 
 
-def short_circuit(resistances, r_i_word_line, r_i_bit_line):
+def short_circuit(resistances: npt.NDArray, r_i_word_line: float, r_i_bit_line: float):
     """Checks if crossbar will be short-circuited.
 
     This refers to a theoretical scenario when there exists a path of zero
@@ -333,9 +340,7 @@ def short_circuit(resistances, r_i_word_line, r_i_bit_line):
 
     if 0 in resistances:
         if r_i_word_line == r_i_bit_line == 0:
-            err_txt = (
-                "At least some crossbar devices have zero resistance " "causing short circuit!"
-            )
+            err_txt = "At least some crossbar devices have zero resistance causing short circuit!"
         else:
             err_txt = (
                 "At least some crossbar devices have zero resistance! "

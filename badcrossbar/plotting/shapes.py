@@ -1,7 +1,8 @@
+import cairo
 import numpy as np
 
 
-def line(ctx, length, angle=0):
+def line(ctx: cairo.Context, length: float, angle: float = 0):
     """Draws a line at a specified angle.
 
     Parameters
@@ -19,7 +20,7 @@ def line(ctx, length, angle=0):
     ctx.rotate(-angle)
 
 
-def semicircle(ctx, diameter, angle=0):
+def semicircle(ctx: cairo.Context, diameter: float, angle: float = 0):
     """Draws a semicircle at a specified angle.
 
     Parameters
@@ -34,12 +35,12 @@ def semicircle(ctx, diameter, angle=0):
     """
     ctx.rotate(angle)
     x, y = ctx.get_current_point()
-    radius = diameter/2
+    radius = diameter / 2
     ctx.arc(x + radius, y, radius, np.pi, 2 * np.pi)
     ctx.rotate(-angle)
 
 
-def rectangle(ctx, width, height, angle=0):
+def rectangle(ctx: cairo.Context, width: float, height: float, angle: float = 0):
     """Draws a rectangle at a specified angle.
 
     Parameters
@@ -58,4 +59,3 @@ def rectangle(ctx, width, height, angle=0):
     x, y = ctx.get_current_point()
     ctx.rectangle(x, y, width, height)
     ctx.rotate(-angle)
-

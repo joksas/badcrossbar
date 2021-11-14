@@ -1,8 +1,15 @@
+import numpy.typing as npt
+
 from badcrossbar import check, computing, utils
 
 
 def compute(
-    applied_voltages, resistances, r_i=None, r_i_word_line=None, r_i_bit_line=None, **kwargs
+    applied_voltages: npt.ArrayLike,
+    resistances: npt.ArrayLike,
+    r_i: float = None,
+    r_i_word_line: float = None,
+    r_i_bit_line: float = None,
+    **kwargs
 ):
     """Computes branch currents and node voltages of a crossbar.
 

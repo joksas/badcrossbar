@@ -1,8 +1,16 @@
 import badcrossbar.plotting as plotting
+import cairo
 import numpy as np
+import numpy.typing as npt
 
 
-def draw_word_line(ctx, colors, segment_length=100, round_middle=False, scaling_factor=1):
+def draw_word_line(
+    ctx: cairo.Context,
+    colors: list[tuple[float, float, float]],
+    segment_length: float = 100,
+    round_middle: bool = False,
+    scaling_factor: float = 1,
+):
     """Draws a word line of a crossbar array.
 
     Parameters
@@ -32,7 +40,12 @@ def draw_word_line(ctx, colors, segment_length=100, round_middle=False, scaling_
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
+def draw_bit_line(
+    ctx: cairo.Context,
+    colors: list[tuple[float, float, float]],
+    segment_length: float = 100,
+    scaling_factor: float = 1,
+):
     """Draws a bit line of a crossbar array.
 
     Parameters
@@ -52,7 +65,13 @@ def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1, device="memristor"):
+def draw_device_row(
+    ctx: cairo.Context,
+    colors: list[tuple[float, float, float]],
+    segment_length: float = 100,
+    scaling_factor: float = 1,
+    device: str = "memristor",
+):
     """Draws a row of crossbar devices.
 
     Parameters
@@ -90,7 +109,12 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1, device="m
 
 
 def draw_node_row(
-    ctx, colors, segment_length=100, bit_line_nodes=True, scaling_factor=1, device="memristor"
+    ctx: cairo.Context,
+    colors: list[tuple[float, float, float]],
+    segment_length: float = 100,
+    bit_line_nodes: bool = True,
+    scaling_factor: float = 1,
+    device: str = "memristor",
 ):
     """Draws a row of nodes.
 
@@ -126,13 +150,13 @@ def draw_node_row(
 
 
 def bit_lines(
-    ctx,
-    bit_line_vals,
-    diagram_pos,
-    low,
-    high,
-    segment_length=120,
-    crossbar_shape=(128, 64),
+    ctx: cairo.Context,
+    bit_line_vals: npt.NDArray,
+    diagram_pos: tuple[float, float],
+    low: float,
+    high: float,
+    segment_length: float = 120,
+    crossbar_shape: tuple[int, int] = (128, 64),
     **kwargs
 ):
     """Draws bit lines.
@@ -198,13 +222,13 @@ def bit_lines(
 
 
 def word_lines(
-    ctx,
-    word_line_vals,
-    diagram_pos,
-    low,
-    high,
-    segment_length=120,
-    crossbar_shape=(128, 64),
+    ctx: cairo.Context,
+    word_line_vals: npt.NDArray,
+    diagram_pos: tuple[float, float],
+    low: float,
+    high: float,
+    segment_length: float = 120,
+    crossbar_shape: tuple[int, int] = (128, 64),
     **kwargs
 ):
     """Draws word lines.
@@ -279,7 +303,14 @@ def word_lines(
 
 
 def devices(
-    ctx, device_vals, diagram_pos, low, high, segment_length=120, crossbar_shape=(128, 64), **kwargs
+    ctx: cairo.Context,
+    device_vals: npt.NDArray,
+    diagram_pos: tuple[float, float],
+    low: float,
+    high: float,
+    segment_length: float = 120,
+    crossbar_shape: tuple[int, int] = (128, 64),
+    **kwargs
 ):
     """Draws crossbar devices.
 
@@ -345,14 +376,14 @@ def devices(
 
 
 def nodes(
-    ctx,
-    node_vals,
-    diagram_pos,
-    low,
-    high,
-    segment_length=120,
-    crossbar_shape=(128, 64),
-    bit_line=False,
+    ctx: cairo.Context,
+    node_vals: npt.NDArray,
+    diagram_pos: tuple[float, float],
+    low: float,
+    high: float,
+    segment_length: float = 120,
+    crossbar_shape: tuple[int, int] = (128, 64),
+    bit_line: bool = False,
     **kwargs
 ):
     """Draws nodes.
@@ -429,7 +460,12 @@ def nodes(
     ctx.move_to(*diagram_pos)
 
 
-def dimensions(shape, width_mm=210, color_bar_fraction=(0.5, 0.15), border_fraction=0.05):
+def dimensions(
+    shape: tuple[int, int],
+    width_mm: float = 210,
+    color_bar_fraction: tuple[float, float] = (0.5, 0.15),
+    border_fraction: float = 0.05,
+):
     """Extracts dimensions of the surface.
 
     Parameters

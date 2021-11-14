@@ -1,7 +1,9 @@
 import numpy as np
+import numpy.typing as npt
+from scipy.sparse import lil_matrix
 
 
-def apply(g_matrix, resistances, r_i):
+def apply(g_matrix: lil_matrix, resistances: npt.NDArray, r_i) -> lil_matrix:
     """Fills matrix `g` used in equation `gv = i`.
 
     Values are filled by applying Kirchhoff's current law at the nodes on the
@@ -30,7 +32,7 @@ def apply(g_matrix, resistances, r_i):
     return g_matrix
 
 
-def word_line_nodes(g_matrix, conductances, r_i):
+def word_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil_matrix:
     """Fills matrix `g` with values corresponding to nodes on the word lines.
 
     Parameters
@@ -93,7 +95,7 @@ def word_line_nodes(g_matrix, conductances, r_i):
     return g_matrix
 
 
-def bit_line_nodes(g_matrix, conductances, r_i):
+def bit_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil_matrix:
     """Fills matrix g with values corresponding to nodes on the bit lines.
 
     Parameters

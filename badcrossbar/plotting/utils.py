@@ -1,11 +1,15 @@
+import cairo
 import numpy as np
 import numpy.lib.recfunctions as nlr
-from sigfig import round
+import numpy.typing as npt
 from badcrossbar import utils
 from pathvalidate import sanitize_filepath
+from sigfig import round
 
 
-def complete_path(ctx, rgb=(0, 0, 0), width=1):
+def complete_path(
+    ctx: cairo.Context, rgb: tuple[float, float, float] = (0, 0, 0), width: float = 1
+):
     """Completes the current path.
 
     Parameters
@@ -27,7 +31,7 @@ def complete_path(ctx, rgb=(0, 0, 0), width=1):
     ctx.move_to(x, y)
 
 
-def complete_fill(ctx, rgb=(0, 0, 0)):
+def complete_fill(ctx: cairo.Context, rgb: tuple[float, float, float] = (0, 0, 0)):
     """Completes the current fill.
 
     Parameters
@@ -46,10 +50,14 @@ def complete_fill(ctx, rgb=(0, 0, 0)):
     ctx.move_to(x, y)
 
 
-def rgb_interpolation(array, low=0, high=1,
-                      low_rgb=(213/255, 94/255, 0/255),
-                      zero_rgb=(235/255, 235/255, 235/255),
-                      high_rgb=(0/255, 114/255, 178/255)):
+def rgb_interpolation(
+    array: npt.NDArray,
+    low: float = 0,
+    high: float = 1,
+    low_rgb: tuple[float, float, float] = (213 / 255, 94 / 255, 0 / 255),
+    zero_rgb: tuple[float, float, float] = (235 / 255, 235 / 255, 235 / 255),
+    high_rgb: tuple[float, float, float] = (0 / 255, 114 / 255, 178 / 255),
+) -> npt.NDArray[tuple[float, float, float]]:
     """Linearly interpolates RGB colors for an array in a specified range.
 
     Parameters
@@ -80,9 +88,11 @@ def rgb_interpolation(array, low=0, high=1,
 
     for low_x, zero_x, high_x in zip(low_rgb, zero_rgb, high_rgb):
         # linearly interpolate in two intervals (above and below zero)
-        x = np.where(array > 0,
-                     zero_x + (array - 0) * (high_x-zero_x)/(high-0),
-                     low_x + (array - low) * (zero_x-low_x)/(0-low))
+        x = np.where(
+            array > 0,
+            zero_x + (array - 0) * (high_x - zero_x) / (high - 0),
+            low_x + (array - low) * (zero_x - low_x) / (0 - low),
+        )
 
         rgb.append(x)
 
@@ -95,7 +105,7 @@ def rgb_interpolation(array, low=0, high=1,
     return rgb
 
 
-def rgb_single_color(shape, color=(0, 0, 0)):
+def rgb_single_color(shape: tuple[int, int], color: tuple[float, float, float] = (0, 0, 0)):
     """Return array with RGB values of a single color.
 
     Parameters
@@ -117,7 +127,7 @@ def rgb_single_color(shape, color=(0, 0, 0)):
     return rgb
 
 
-def arrays_range(*arrays, sf=2):
+def arrays_range(*arrays: list[np.ndarray], sf: int = 2):
     """Finds the color bar range from arbitrary number of arrays.
 
     Parameters
@@ -166,7 +176,7 @@ def arrays_range(*arrays, sf=2):
     return low, high
 
 
-def set_defaults(kwargs, branches=True):
+def set_defaults(kwargs, branches: bool = True):
     """Sets default values for kwargs arguments in `badcrossbar.plot` functions.
 
     Parameters
@@ -182,28 +192,29 @@ def set_defaults(kwargs, branches=True):
     dict of any
         Optional keyword arguments with the default values set.
     """
-    kwargs.setdefault('default_color', (0, 0, 0))
-    kwargs.setdefault('wire_scaling_factor', 1)
-    kwargs.setdefault('device_scaling_factor', 1)
-    kwargs.setdefault('axis_label', 'Current (A)')
-    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
-    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
-    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
-    kwargs.setdefault('allow_overwrite', False)
-    kwargs.setdefault('device_type', 'memristor')
-    kwargs.setdefault('significant_figures', 2)
-    kwargs.setdefault('round_crossings', True)
-    kwargs.setdefault('width', 210)
+    kwargs.setdefault("default_color", (0, 0, 0))
+    kwargs.setdefault("wire_scaling_factor", 1)
+    kwargs.setdefault("device_scaling_factor", 1)
+    kwargs.setdefault("axis_label", "Current (A)")
+    kwargs.setdefault("low_rgb", (213 / 255, 94 / 255, 0 / 255))
+    kwargs.setdefault("zero_rgb", (235 / 255, 235 / 255, 235 / 255))
+    kwargs.setdefault("high_rgb", (0 / 255, 114 / 255, 178 / 255))
+    kwargs.setdefault("allow_overwrite", False)
+    kwargs.setdefault("device_type", "memristor")
+    kwargs.setdefault("significant_figures", 2)
+    kwargs.setdefault("round_crossings", True)
+    kwargs.setdefault("width", 210)
     if branches:
-        kwargs.setdefault('node_scaling_factor', 1)
-        kwargs.setdefault('filename', 'crossbar-currents')
+        kwargs.setdefault("node_scaling_factor", 1)
+        kwargs.setdefault("filename", "crossbar-currents")
     else:
-        kwargs.setdefault('node_scaling_factor', 1.4)
-        kwargs.setdefault('filename', 'crossbar-voltages')
+        kwargs.setdefault("node_scaling_factor", 1.4)
+        kwargs.setdefault("filename", "crossbar-voltages")
 
     return kwargs
 
-def get_filepath(filename, allow_overwrite):
+
+def get_filepath(filename: str, allow_overwrite: bool):
     """Constructs filepath of the diagram.
 
     Parameters
@@ -218,13 +229,12 @@ def get_filepath(filename, allow_overwrite):
     str
         Filepath of the diagram.
     """
-    extension = 'pdf'
+    extension = "pdf"
 
     if allow_overwrite:
-        filepath = '{}.{}'.format(filename, extension)
+        filepath = "{}.{}".format(filename, extension)
         filepath = sanitize_filepath(filepath)
     else:
         filepath = utils.unique_path(filename, extension)
 
     return filepath
-

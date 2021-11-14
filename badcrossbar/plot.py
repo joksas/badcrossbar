@@ -1,4 +1,5 @@
 import cairo
+import numpy.typing as npt
 from pathvalidate import sanitize_filepath
 
 import badcrossbar.check as check
@@ -6,7 +7,13 @@ import badcrossbar.plotting as plotting
 import badcrossbar.utils as utils
 
 
-def branches(device_vals=None, word_line_vals=None, bit_line_vals=None, currents=None, **kwargs):
+def branches(
+    device_vals: npt.ArrayLike = None,
+    word_line_vals: npt.ArrayLike = None,
+    bit_line_vals: npt.ArrayLike = None,
+    currents=None,
+    **kwargs
+):
     """Plots a crossbar array and colors its branches according to the values
     passed. The diagram is saved as a PDF file.
 
@@ -150,7 +157,12 @@ def branches(device_vals=None, word_line_vals=None, bit_line_vals=None, currents
     plotting.color_bar.draw(context, color_bar_pos, color_bar_dims, low, high, **kwargs)
 
 
-def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
+def nodes(
+    word_line_vals: npt.ArrayLike = None,
+    bit_line_vals: npt.ArrayLike = None,
+    voltages=None,
+    **kwargs
+):
     """Plots a crossbar array and colors its nodes according to the values
     passed. The diagram is saved as a PDF file.
 
