@@ -20,7 +20,7 @@ def memristor(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
     rgb : tuple of float, optional
         Normalized RGB value of the path.
     """
-    unit = length/14
+    unit = length / 14
 
     ctx.rotate(angle)
     shapes.line(ctx, 4 * unit)
@@ -57,8 +57,8 @@ def memristor_2(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
     rgb : tuple of float, optional
         Normalized RGB value of the path.
     """
-    real_width = 2/5 * width
-    unit = length/70.866
+    real_width = 2 / 5 * width
+    unit = length / 70.866
 
     ctx.rotate(angle)
 
@@ -67,41 +67,41 @@ def memristor_2(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
 
     # Wire arranged turning at 90 degree angles.
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(-np.pi/2)
+    ctx.rotate(-np.pi / 2)
     shapes.line(ctx, 3.543 * unit)
-    ctx.rotate(np.pi/2)
+    ctx.rotate(np.pi / 2)
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(np.pi/2)
+    ctx.rotate(np.pi / 2)
     shapes.line(ctx, 7.087 * unit)
-    ctx.rotate(-np.pi/2)
+    ctx.rotate(-np.pi / 2)
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(-np.pi/2)
+    ctx.rotate(-np.pi / 2)
     shapes.line(ctx, 7.087 * unit)
-    ctx.rotate(np.pi/2)
+    ctx.rotate(np.pi / 2)
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(np.pi/2)
+    ctx.rotate(np.pi / 2)
     shapes.line(ctx, 3.543 * unit)
-    ctx.rotate(-np.pi/2)
+    ctx.rotate(-np.pi / 2)
     shapes.line(ctx, 6.456 * unit)
     shapes.line(ctx, 4.543 * unit)
 
     # Rectangle enclosing the wire.
     x, y = ctx.get_current_point()
-    ctx.move_to(x, y+7.5865*unit)
-    ctx.rotate(np.pi/2)
-    shapes.rectangle(ctx, -15.173*unit, 36.433*unit)
+    ctx.move_to(x, y + 7.5865 * unit)
+    ctx.rotate(np.pi / 2)
+    shapes.rectangle(ctx, -15.173 * unit, 36.433 * unit)
 
     utils.complete_path(ctx, rgb=rgb, width=real_width)
 
     # Filled bottom rectangle.
     x, y = ctx.get_current_point()
-    shapes.rectangle(ctx, -15.173*unit, 4.543*unit)
+    shapes.rectangle(ctx, -15.173 * unit, 4.543 * unit)
     utils.complete_fill(ctx, rgb=rgb)
 
     # Outside connector.
     x, y = ctx.get_current_point()
-    ctx.move_to(x-7.5865*unit, y)
-    ctx.rotate(-np.pi/2)
+    ctx.move_to(x - 7.5865 * unit, y)
+    ctx.rotate(-np.pi / 2)
     shapes.line(ctx, 17.717 * unit)
     utils.complete_path(ctx, rgb=rgb, width=real_width)
 
@@ -125,20 +125,20 @@ def resistor_usa(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
     rgb : tuple of float, optional
         Normalized RGB value of the path.
     """
-    real_width = 3/5 * width
-    unit = length/14
+    real_width = 3 / 5 * width
+    unit = length / 14
 
     ctx.rotate(angle)
-    zigzag_angle = 3/8 * np.pi
-    zigzag_length = unit/np.cos(zigzag_angle)
+    zigzag_angle = 3 / 8 * np.pi
+    zigzag_length = unit / np.cos(zigzag_angle)
     shapes.line(ctx, 4 * unit)
-    shapes.line(ctx, 0.5*zigzag_length, zigzag_angle)
+    shapes.line(ctx, 0.5 * zigzag_length, zigzag_angle)
     shapes.line(ctx, zigzag_length, -zigzag_angle)
     shapes.line(ctx, zigzag_length, zigzag_angle)
     shapes.line(ctx, zigzag_length, -zigzag_angle)
     shapes.line(ctx, zigzag_length, zigzag_angle)
     shapes.line(ctx, zigzag_length, -zigzag_angle)
-    shapes.line(ctx, 0.5*zigzag_length, zigzag_angle)
+    shapes.line(ctx, 0.5 * zigzag_length, zigzag_angle)
     shapes.line(ctx, 4 * unit)
     ctx.rotate(-angle)
 
@@ -162,16 +162,15 @@ def resistor_europe(ctx, length=100, angle=0, width=1, rgb=(0, 0, 0)):
     rgb : tuple of float, optional
         Normalized RGB value of the path.
     """
-    real_width = 3/5 * width
-    unit = length/14
+    real_width = 3 / 5 * width
+    unit = length / 14
 
     ctx.rotate(angle)
-    shapes.line(ctx, 4*unit)
+    shapes.line(ctx, 4 * unit)
     ctx.rel_move_to(0, -unit)
-    shapes.rectangle(ctx, 6*unit, 2*unit)
-    ctx.rel_move_to(6*unit, unit)
-    shapes.line(ctx, 4*unit)
+    shapes.rectangle(ctx, 6 * unit, 2 * unit)
+    ctx.rel_move_to(6 * unit, unit)
+    shapes.line(ctx, 4 * unit)
     ctx.rotate(-angle)
 
     utils.complete_path(ctx, rgb=rgb, width=real_width)
-

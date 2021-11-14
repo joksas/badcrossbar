@@ -1,7 +1,7 @@
-from scipy.sparse import linalg
+import numpy as np
 from badcrossbar import utils
 from badcrossbar.computing import fill
-import numpy as np
+from scipy.sparse import linalg
 
 
 def v(resistances, r_i, applied_voltages, **kwargs):
@@ -25,9 +25,9 @@ def v(resistances, r_i, applied_voltages, **kwargs):
         g = fill.g(resistances, r_i)
         i = fill.i(applied_voltages, resistances, r_i)
 
-        utils.message('Started solving for v.', **kwargs)
+        utils.message("Started solving for v.", **kwargs)
         v_matrix = linalg.spsolve(g.tocsc(), i)
-        utils.message('Solved for v.', **kwargs)
+        utils.message("Solved for v.", **kwargs)
 
         # if `num_examples == 1`, it can result in 1D array.
         if v_matrix.ndim == 1:
@@ -37,23 +37,26 @@ def v(resistances, r_i, applied_voltages, **kwargs):
         # matrix_v had to be solved. The other half can be filled without
         # solving because the node voltages are known.
         if r_i.word_line == 0:
-            new_v_matrix = np.zeros(
-                (2*resistances.size, applied_voltages.shape[1]))
-            new_v_matrix[:resistances.size, ] = np.repeat(
-                applied_voltages, resistances.shape[1], axis=0)
-            new_v_matrix[resistances.size:, ] = v_matrix
+            new_v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
+            new_v_matrix[
+                : resistances.size,
+            ] = np.repeat(applied_voltages, resistances.shape[1], axis=0)
+            new_v_matrix[
+                resistances.size :,
+            ] = v_matrix
             v_matrix = new_v_matrix
         if r_i.bit_line == 0:
-            new_v_matrix = np.zeros(
-                (2*resistances.size, applied_voltages.shape[1]))
-            new_v_matrix[:resistances.size, ] = v_matrix
+            new_v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
+            new_v_matrix[
+                : resistances.size,
+            ] = v_matrix
             v_matrix = new_v_matrix
     else:
         # if both interconnect resistances are zero, all node voltages are
         # known.
-        v_matrix = np.zeros(
-                (2*resistances.size, applied_voltages.shape[1]))
-        v_matrix[:resistances.size, ] = np.repeat(
-                applied_voltages, resistances.shape[1], axis=0)
+        v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
+        v_matrix[
+            : resistances.size,
+        ] = np.repeat(applied_voltages, resistances.shape[1], axis=0)
 
     return v_matrix

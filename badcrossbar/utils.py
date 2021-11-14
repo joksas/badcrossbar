@@ -1,11 +1,12 @@
 import os
 import pickle
 from datetime import datetime
+
 import numpy as np
 from pathvalidate import sanitize_filepath
 
 
-def unique_path(path, extension='pdf', sanitize=True):
+def unique_path(path, extension="pdf", sanitize=True):
     """Append a number to the path, if it is not unique.
 
     Parameters
@@ -24,14 +25,14 @@ def unique_path(path, extension='pdf', sanitize=True):
         Unique path.
     """
     if sanitize:
-        path = sanitize_filepath(path, platform='auto')
+        path = sanitize_filepath(path, platform="auto")
 
-    full_path = '{}.{}'.format(path, extension)
+    full_path = "{}.{}".format(path, extension)
     if os.path.exists(full_path):
         number = 1
         while True:
             number += 1
-            new_full_path = '{}-{}.{}'.format(path, number, extension)
+            new_full_path = "{}-{}.{}".format(path, number, extension)
             if os.path.exists(new_full_path):
                 continue
             else:
@@ -55,7 +56,7 @@ def time(keep_ms=False):
     """
     time_str = str(datetime.now())
     if keep_ms is False:
-        time_str = time_str.split('.')[0]
+        time_str = time_str.split(".")[0]
     return time_str
 
 
@@ -111,11 +112,11 @@ def message(message_str, **kwargs):
         show_time : bool, optional
             If True, prints out current time.
     """
-    if kwargs.get('verbose', 1) == 1:
-        if kwargs.get('show_time', True):
-            message_str = time(kwargs.get('keep_ms', False)) + \
-                          gap(kwargs.get('gap_size', 5)) + \
-                          message_str
+    if kwargs.get("verbose", 1) == 1:
+        if kwargs.get("show_time", True):
+            message_str = (
+                time(kwargs.get("keep_ms", False)) + gap(kwargs.get("gap_size", 5)) + message_str
+            )
         print(message_str)
 
 
@@ -132,7 +133,7 @@ def gap(gap_size=5):
     str
         Whitespace.
     """
-    gap_str = gap_size*' '
+    gap_str = gap_size * " "
     return gap_str
 
 
@@ -155,8 +156,7 @@ def arrays_shape(*arrays):
             return shape
 
 
-def save_pickle(variable, path, allow_overwrite=False, verbose=False,
-                sanitize=True):
+def save_pickle(variable, path, allow_overwrite=False, verbose=False, sanitize=True):
     """Saves variable to a pickle file.
 
     Parameters
@@ -175,18 +175,18 @@ def save_pickle(variable, path, allow_overwrite=False, verbose=False,
         making the path compatible with the operating system.
     """
     if sanitize:
-        path = sanitize_filepath(path, platform='auto')
+        path = sanitize_filepath(path, platform="auto")
 
     if allow_overwrite:
-        path = '{}.pickle'.format(path)
+        path = "{}.pickle".format(path)
     else:
-        path = unique_path(path, 'pickle')
+        path = unique_path(path, "pickle")
 
-    with open(path, 'wb') as handle:
+    with open(path, "wb") as handle:
         pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     if verbose:
-        print('Saved {}.'.format(path))
+        print("Saved {}.".format(path))
 
 
 def load_pickle(path, sanitize=True):
@@ -206,9 +206,9 @@ def load_pickle(path, sanitize=True):
         Extracted contents.
     """
     if sanitize:
-        path = sanitize_filepath(path, platform='auto')
+        path = sanitize_filepath(path, platform="auto")
 
-    with open(path, 'rb') as handle:
+    with open(path, "rb") as handle:
         variable = pickle.load(handle)
 
     return variable
@@ -230,7 +230,8 @@ def distributed_array(flattened_array, model_array):
         Array or a list of arrays in specified shape.
     """
     reshaped_i = flattened_array.reshape(
-        (model_array.shape[0], model_array.shape[1], flattened_array.shape[1]))
+        (model_array.shape[0], model_array.shape[1], flattened_array.shape[1])
+    )
     reshaped_i = squeeze_third_axis(reshaped_i)
 
     return reshaped_i

@@ -1,9 +1,9 @@
 import numpy as np
+
 from badcrossbar import utils
 
 
-def crossbar_requirements(resistances, applied_voltages,
-                          r_i_word_line, r_i_bit_line, **kwargs):
+def crossbar_requirements(resistances, applied_voltages, r_i_word_line, r_i_bit_line, **kwargs):
     """Checks if crossbar variables satisfy all requirements.
 
     Parameters
@@ -23,22 +23,18 @@ def crossbar_requirements(resistances, applied_voltages,
         Potentially modified (converted to `ndarray`) resistances and applied
         voltages.
     """
-    resistances, applied_voltages = (np.array(i) for i in
-                                     (resistances, applied_voltages))
-    for value, name in ((resistances, 'resistances'),
-                        (applied_voltages, 'applied_voltages')):
+    resistances, applied_voltages = (np.array(i) for i in (resistances, applied_voltages))
+    for value, name in ((resistances, "resistances"), (applied_voltages, "applied_voltages")):
         n_dimensional(value, [2], name)
         numeric_array(value, name)
         non_empty(value, name)
 
-    non_negative_array(resistances, 'resistances')
-    match_shape(resistances=(resistances, 0),
-                applied_voltages=(applied_voltages, 0))
+    non_negative_array(resistances, "resistances")
+    match_shape(resistances=(resistances, 0), applied_voltages=(applied_voltages, 0))
 
-    for value, name in ((r_i_word_line, 'r_i_word_line'),
-                        (r_i_bit_line, 'r_i_bit_line')):
+    for value, name in ((r_i_word_line, "r_i_word_line"), (r_i_bit_line, "r_i_bit_line")):
         if r_i_word_line == r_i_bit_line:
-            name = 'r_i'
+            name = "r_i"
         number(value, name)
         non_negative_number(value, name)
 
@@ -47,9 +43,14 @@ def crossbar_requirements(resistances, applied_voltages,
     return resistances, applied_voltages
 
 
-def plotting_requirements(device_branch_vals=None, word_line_branch_vals=None,
-                          bit_line_branch_vals=None, word_line_node_vals=None,
-                          bit_line_node_vals=None, branches=True):
+def plotting_requirements(
+    device_branch_vals=None,
+    word_line_branch_vals=None,
+    bit_line_branch_vals=None,
+    word_line_node_vals=None,
+    bit_line_node_vals=None,
+    branches=True,
+):
     """Checks if arrays containing branch or node values satisfy all
     requirements.
 
@@ -75,14 +76,16 @@ def plotting_requirements(device_branch_vals=None, word_line_branch_vals=None,
         Potentially modified (converted to `ndarray`) branch or nodes values.
     """
     if branches:
-        valid_arrays = not_none(device_branch_vals=device_branch_vals,
-                                word_line_branch_vals=word_line_branch_vals,
-                                bit_line_branch_vals=bit_line_branch_vals)
+        valid_arrays = not_none(
+            device_branch_vals=device_branch_vals,
+            word_line_branch_vals=word_line_branch_vals,
+            bit_line_branch_vals=bit_line_branch_vals,
+        )
     else:
-        valid_arrays = not_none(word_line_node_vals=word_line_node_vals,
-                                bit_line_node_vals=bit_line_node_vals)
-    valid_arrays = {key: np.array(value) for key, value in
-                    valid_arrays.items()}
+        valid_arrays = not_none(
+            word_line_node_vals=word_line_node_vals, bit_line_node_vals=bit_line_node_vals
+        )
+    valid_arrays = {key: np.array(value) for key, value in valid_arrays.items()}
 
     for key, value in valid_arrays.items():
         numeric_array(valid_arrays[key], key)
@@ -93,17 +96,17 @@ def plotting_requirements(device_branch_vals=None, word_line_branch_vals=None,
 
     if len(valid_arrays) != 1:
         for dim in [0, 1]:
-            dim_arrays = {key: (value, dim)
-                          for key, value in valid_arrays.items()}
+            dim_arrays = {key: (value, dim) for key, value in valid_arrays.items()}
             match_shape(**dim_arrays)
 
     if branches:
-        return valid_arrays.get('device_branch_vals'), \
-            valid_arrays.get('word_line_branch_vals'),\
-            valid_arrays.get('bit_line_branch_vals')
+        return (
+            valid_arrays.get("device_branch_vals"),
+            valid_arrays.get("word_line_branch_vals"),
+            valid_arrays.get("bit_line_branch_vals"),
+        )
     else:
-        return valid_arrays.get('word_line_node_vals'), \
-            valid_arrays.get('bit_line_node_vals')
+        return valid_arrays.get("word_line_node_vals"), valid_arrays.get("bit_line_node_vals")
 
 
 def not_none(**kwargs):
@@ -131,13 +134,12 @@ def not_none(**kwargs):
             all_none = False
             valid_items[key] = value
     if all_none:
-        raise ValueError('At least one of {{{}}} should be not None!'.format(
-            ', '.join(kwargs)))
+        raise ValueError("At least one of {{{}}} should be not None!".format(", ".join(kwargs)))
 
     return valid_items
 
 
-def n_dimensional(array, n_list=[2], name='array'):
+def n_dimensional(array, n_list=[2], name="array"):
     """Checks that array is `n`-dimensional.
 
     Parameters
@@ -156,17 +158,16 @@ def n_dimensional(array, n_list=[2], name='array'):
     """
     dim = array.ndim
     if dim not in n_list:
-        err_msg = '\'{}\' should be {}-dimensional array! Instead received ' \
-                  '{}-dimensional array.'
+        err_msg = "'{}' should be {}-dimensional array! Instead received " "{}-dimensional array."
         if len(n_list) == 1:
             n_list_str = str(n_list[0])
         else:
-            n_list_str = '- or '.join([str(i) for i in n_list])
+            n_list_str = "- or ".join([str(i) for i in n_list])
 
         raise TypeError(err_msg.format(name, n_list_str, dim))
 
 
-def numeric_array(array, name='array'):
+def numeric_array(array, name="array"):
     """Checks that array only contains numbers.
 
     Parameters
@@ -182,10 +183,10 @@ def numeric_array(array, name='array'):
         If array contains non-number elements.
     """
     if np.issubdtype(array.dtype, np.number) is False:
-        raise TypeError('\'{}\' should only contain numbers!'.format(name))
+        raise TypeError("'{}' should only contain numbers!".format(name))
 
 
-def non_empty(array, name='array'):
+def non_empty(array, name="array"):
     """Checks that array is not empty.
 
     Parameters
@@ -201,7 +202,7 @@ def non_empty(array, name='array'):
         If the array is empty.
     """
     if array.size == 0:
-        raise ValueError('\'{}\' array is empty!'. format(name))
+        raise ValueError("'{}' array is empty!".format(name))
 
 
 def match_shape(**kwargs):
@@ -223,12 +224,12 @@ def match_shape(**kwargs):
     for key, value in kwargs.items():
         if value[0].shape[value[1]] != dim:
             raise ValueError(
-                'Dimension {} of array \'{}\' should match dimension {} of '
-                'array \'{}\'!'.format(value[1], key, first_value[1], first_key)
+                "Dimension {} of array '{}' should match dimension {} of "
+                "array '{}'!".format(value[1], key, first_value[1], first_key)
             )
 
 
-def non_negative_array(array, name='array'):
+def non_negative_array(array, name="array"):
     """Checks if all the elements of the array are non-negative.
 
     Parameters
@@ -244,11 +245,10 @@ def non_negative_array(array, name='array'):
         If the array contains negative values.
     """
     if (array < 0).any():
-        raise ValueError(
-            '\'{}\' array contains at least one negative value!'.format(name))
+        raise ValueError("'{}' array contains at least one negative value!".format(name))
 
 
-def non_infinite_array(array, name='array'):
+def non_infinite_array(array, name="array"):
     """Checks if all the elements of the array are non-infinite.
 
     Parameters
@@ -265,11 +265,11 @@ def non_infinite_array(array, name='array'):
     """
     if (array == np.inf).any() or (array == -np.inf).any():
         raise ValueError(
-            '\'{}\' array contains at least one value with infinite '
-            'magnitude!'.format(name))
+            "'{}' array contains at least one value with infinite " "magnitude!".format(name)
+        )
 
 
-def number(value, name='variable'):
+def number(value, name="variable"):
     """Checks if the variable is a number.
 
     Parameters
@@ -286,11 +286,12 @@ def number(value, name='variable'):
     """
     if not isinstance(value, (int, float)):
         raise TypeError(
-            'Type {} of \'{}\' is not supported. Use int or '
-            'float instead.'.format(type(value).__name__, name))
+            "Type {} of '{}' is not supported. Use int or "
+            "float instead.".format(type(value).__name__, name)
+        )
 
 
-def non_negative_number(value, name='number'):
+def non_negative_number(value, name="number"):
     """Checks if the number is negative.
 
     Parameters
@@ -306,7 +307,7 @@ def non_negative_number(value, name='number'):
         If the number is negative.
     """
     if value < 0:
-        raise ValueError('\'{}\' is negative!'. format(name))
+        raise ValueError("'{}' is negative!".format(name))
 
 
 def short_circuit(resistances, r_i_word_line, r_i_bit_line):
@@ -332,10 +333,13 @@ def short_circuit(resistances, r_i_word_line, r_i_bit_line):
 
     if 0 in resistances:
         if r_i_word_line == r_i_bit_line == 0:
-            err_txt = 'At least some crossbar devices have zero resistance ' \
-                      'causing short circuit!'
+            err_txt = (
+                "At least some crossbar devices have zero resistance " "causing short circuit!"
+            )
         else:
-            err_txt = 'At least some crossbar devices have zero resistance! ' \
-                      'This is not currently supported even if it does not ' \
-                      'cause short circuit.'
+            err_txt = (
+                "At least some crossbar devices have zero resistance! "
+                "This is not currently supported even if it does not "
+                "cause short circuit."
+            )
         raise ValueError(err_txt)

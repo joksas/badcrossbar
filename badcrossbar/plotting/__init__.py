@@ -1,1 +1,1 @@
-from badcrossbar.plotting import crossbar, devices, shapes, utils, color_bar
+from badcrossbar.plotting import color_bar, crossbar, devices, shapes, utils

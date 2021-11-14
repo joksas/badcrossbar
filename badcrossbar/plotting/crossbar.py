@@ -1,9 +1,8 @@
-import numpy as np
 import badcrossbar.plotting as plotting
+import numpy as np
 
 
-def draw_word_line(ctx, colors, segment_length=100, round_middle=False,
-                   scaling_factor=1):
+def draw_word_line(ctx, colors, segment_length=100, round_middle=False, scaling_factor=1):
     """Draws a word line of a crossbar array.
 
     Parameters
@@ -20,12 +19,12 @@ def draw_word_line(ctx, colors, segment_length=100, round_middle=False,
     scaling_factor : float, optional
         Scaling factor for the width.
     """
-    width = segment_length/100*3*scaling_factor
+    width = segment_length / 100 * 3 * scaling_factor
     for idx, color in enumerate(colors):
         if idx == 0 or not round_middle:
             plotting.shapes.line(ctx, segment_length)
         else:
-            unit = segment_length/5
+            unit = segment_length / 5
             plotting.shapes.line(ctx, 2 * unit)
             plotting.shapes.semicircle(ctx, unit)
             plotting.shapes.line(ctx, 2 * unit)
@@ -47,14 +46,13 @@ def draw_bit_line(ctx, colors, segment_length=100, scaling_factor=1):
     scaling_factor : float, optional
         Scaling factor for the width.
     """
-    width = segment_length/100*3*scaling_factor
+    width = segment_length / 100 * 3 * scaling_factor
     for color in colors:
         plotting.shapes.line(ctx, segment_length, angle=np.pi / 2)
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
-def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
-                    device='memristor'):
+def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1, device="memristor"):
     """Draws a row of crossbar devices.
 
     Parameters
@@ -70,28 +68,30 @@ def draw_device_row(ctx, colors, segment_length=100, scaling_factor=1,
     device : {'memristor', 'memristor_2', 'resistor_usa', 'resistor_europe'}, optional
         Device type to be drawn.
     """
-    width = segment_length/100*5*scaling_factor
+    width = segment_length / 100 * 5 * scaling_factor
     x, y = ctx.get_current_point()
-    device_length = segment_length/2*np.sqrt(2)  # Pythagorean theorem
+    device_length = segment_length / 2 * np.sqrt(2)  # Pythagorean theorem
 
-    device_functions = {'memristor': plotting.devices.memristor,
-            'memristor_2': plotting.devices.memristor_2,
-            'resistor_usa': plotting.devices.resistor_usa,
-            'resistor_europe': plotting.devices.resistor_europe}
+    device_functions = {
+        "memristor": plotting.devices.memristor,
+        "memristor_2": plotting.devices.memristor_2,
+        "resistor_usa": plotting.devices.resistor_usa,
+        "resistor_europe": plotting.devices.resistor_europe,
+    }
     if device in device_functions:
         device_function = device_functions[device]
     else:
-        raise ValueError('Device \'{}\' is not currently supported!'.format(
-            device))
+        raise ValueError("Device '{}' is not currently supported!".format(device))
 
     for color in colors:
         x += segment_length
         ctx.move_to(x, y)
-        device_function(ctx, length=device_length, angle=np.pi/4, width=width, rgb=color)
+        device_function(ctx, length=device_length, angle=np.pi / 4, width=width, rgb=color)
 
 
-def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
-                  scaling_factor=1, device='memristor'):
+def draw_node_row(
+    ctx, colors, segment_length=100, bit_line_nodes=True, scaling_factor=1, device="memristor"
+):
     """Draws a row of nodes.
 
     Parameters
@@ -109,14 +109,14 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
     device : {'memristor', 'memristor_2', 'resistor_usa', 'resistor_europe'}, optional
         Device type to be drawn (affects node diameter).
     """
-    diameter = segment_length/100*7*scaling_factor
-    if device in ['resistor_usa', 'resistor_europe', 'memristor_2']:
-        diameter *= 5/7
+    diameter = segment_length / 100 * 7 * scaling_factor
+    if device in ["resistor_usa", "resistor_europe", "memristor_2"]:
+        diameter *= 5 / 7
     x, y = ctx.get_current_point()
     if bit_line_nodes:
-        x += segment_length/2
-        y += segment_length/2
-    radius = diameter/2
+        x += segment_length / 2
+        y += segment_length / 2
+    radius = diameter / 2
     for color in colors:
         x += segment_length
         ctx.move_to(x, y)
@@ -125,8 +125,16 @@ def draw_node_row(ctx, colors, segment_length=100, bit_line_nodes=True,
         plotting.utils.complete_fill(ctx, color)
 
 
-def bit_lines(ctx, bit_line_vals, diagram_pos, low, high,
-              segment_length=120, crossbar_shape=(128, 64), **kwargs):
+def bit_lines(
+    ctx,
+    bit_line_vals,
+    diagram_pos,
+    low,
+    high,
+    segment_length=120,
+    crossbar_shape=(128, 64),
+    **kwargs
+):
     """Draws bit lines.
 
     Parameters
@@ -150,34 +158,55 @@ def bit_lines(ctx, bit_line_vals, diagram_pos, low, high,
             Normalized RGB values of the bit lines if their values are not
             provided.
     """
-    x = diagram_pos[0] + 1.5*segment_length
-    y = diagram_pos[1] + 0.5*segment_length
+    x = diagram_pos[0] + 1.5 * segment_length
+    y = diagram_pos[1] + 0.5 * segment_length
     ctx.move_to(x, y)
 
     if bit_line_vals is not None:
         for single_bit_line_vals in np.transpose(bit_line_vals):
             colors = plotting.utils.rgb_interpolation(
-                single_bit_line_vals, low=low, high=high,
-                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
-                high_rgb=kwargs.get('high_rgb'))
-            draw_bit_line(ctx, colors, segment_length=segment_length,
-                          scaling_factor=kwargs.get('wire_scaling_factor'))
+                single_bit_line_vals,
+                low=low,
+                high=high,
+                low_rgb=kwargs.get("low_rgb"),
+                zero_rgb=kwargs.get("zero_rgb"),
+                high_rgb=kwargs.get("high_rgb"),
+            )
+            draw_bit_line(
+                ctx,
+                colors,
+                segment_length=segment_length,
+                scaling_factor=kwargs.get("wire_scaling_factor"),
+            )
             x += segment_length
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=kwargs.get('default_color'))
+            crossbar_shape, color=kwargs.get("default_color")
+        )
         for colors in np.transpose(colors_list):
-            draw_bit_line(ctx, colors, segment_length=segment_length,
-                          scaling_factor=kwargs.get('wire_scaling_factor'))
+            draw_bit_line(
+                ctx,
+                colors,
+                segment_length=segment_length,
+                scaling_factor=kwargs.get("wire_scaling_factor"),
+            )
             x += segment_length
             ctx.move_to(x, y)
 
     ctx.move_to(*diagram_pos)
 
 
-def word_lines(ctx, word_line_vals, diagram_pos, low, high,
-               segment_length=120, crossbar_shape=(128, 64), **kwargs):
+def word_lines(
+    ctx,
+    word_line_vals,
+    diagram_pos,
+    low,
+    high,
+    segment_length=120,
+    crossbar_shape=(128, 64),
+    **kwargs
+):
     """Draws word lines.
 
     Parameters
@@ -207,37 +236,51 @@ def word_lines(ctx, word_line_vals, diagram_pos, low, high,
     if word_line_vals is not None:
         for idx, single_word_line_vals in enumerate(word_line_vals):
             colors = plotting.utils.rgb_interpolation(
-                single_word_line_vals, low=low, high=high,
-                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
-                high_rgb=kwargs.get('high_rgb'))
+                single_word_line_vals,
+                low=low,
+                high=high,
+                low_rgb=kwargs.get("low_rgb"),
+                zero_rgb=kwargs.get("zero_rgb"),
+                high_rgb=kwargs.get("high_rgb"),
+            )
             if idx == 0:
                 round_middle = False
             else:
-                round_middle = kwargs.get('round_crossings')
-            draw_word_line(ctx, colors, round_middle=round_middle,
-                           segment_length=segment_length,
-                           scaling_factor=kwargs.get('wire_scaling_factor'))
+                round_middle = kwargs.get("round_crossings")
+            draw_word_line(
+                ctx,
+                colors,
+                round_middle=round_middle,
+                segment_length=segment_length,
+                scaling_factor=kwargs.get("wire_scaling_factor"),
+            )
             y += segment_length
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=kwargs.get('default_color'))
+            crossbar_shape, color=kwargs.get("default_color")
+        )
         for idx, colors in enumerate(colors_list):
             if idx == 0:
                 round_middle = False
             else:
-                round_middle = kwargs.get('round_crossings')
-            draw_word_line(ctx, colors, round_middle=round_middle,
-                           segment_length=segment_length,
-                           scaling_factor=kwargs.get('wire_scaling_factor'))
+                round_middle = kwargs.get("round_crossings")
+            draw_word_line(
+                ctx,
+                colors,
+                round_middle=round_middle,
+                segment_length=segment_length,
+                scaling_factor=kwargs.get("wire_scaling_factor"),
+            )
             y += segment_length
             ctx.move_to(x, y)
 
     ctx.move_to(*diagram_pos)
 
 
-def devices(ctx, device_vals, diagram_pos, low, high, segment_length=120,
-            crossbar_shape=(128, 64), **kwargs):
+def devices(
+    ctx, device_vals, diagram_pos, low, high, segment_length=120, crossbar_shape=(128, 64), **kwargs
+):
     """Draws crossbar devices.
 
     Parameters
@@ -267,29 +310,51 @@ def devices(ctx, device_vals, diagram_pos, low, high, segment_length=120,
     if device_vals is not None:
         for device_row_vals in device_vals:
             colors = plotting.utils.rgb_interpolation(
-                device_row_vals, low=low, high=high,
-                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
-                high_rgb=kwargs.get('high_rgb'))
-            draw_device_row(ctx, colors, segment_length=segment_length,
-                            scaling_factor=kwargs.get('device_scaling_factor'),
-                            device=kwargs.get('device_type'))
+                device_row_vals,
+                low=low,
+                high=high,
+                low_rgb=kwargs.get("low_rgb"),
+                zero_rgb=kwargs.get("zero_rgb"),
+                high_rgb=kwargs.get("high_rgb"),
+            )
+            draw_device_row(
+                ctx,
+                colors,
+                segment_length=segment_length,
+                scaling_factor=kwargs.get("device_scaling_factor"),
+                device=kwargs.get("device_type"),
+            )
             y += segment_length
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=kwargs.get('default_color'))
+            crossbar_shape, color=kwargs.get("default_color")
+        )
         for colors in colors_list:
-            draw_device_row(ctx, colors, segment_length=segment_length,
-                            scaling_factor=kwargs.get('device_scaling_factor'),
-                            device=kwargs.get('device_type'))
+            draw_device_row(
+                ctx,
+                colors,
+                segment_length=segment_length,
+                scaling_factor=kwargs.get("device_scaling_factor"),
+                device=kwargs.get("device_type"),
+            )
             y += segment_length
             ctx.move_to(x, y)
 
     ctx.move_to(*diagram_pos)
 
 
-def nodes(ctx, node_vals, diagram_pos, low, high, segment_length=120,
-          crossbar_shape=(128, 64), bit_line=False, **kwargs):
+def nodes(
+    ctx,
+    node_vals,
+    diagram_pos,
+    low,
+    high,
+    segment_length=120,
+    crossbar_shape=(128, 64),
+    bit_line=False,
+    **kwargs
+):
     """Draws nodes.
 
     Parameters
@@ -322,38 +387,49 @@ def nodes(ctx, node_vals, diagram_pos, low, high, segment_length=120,
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
-    node_scaling_factor = kwargs.get('device_scaling_factor') * \
-        kwargs.get('node_scaling_factor')
+    node_scaling_factor = kwargs.get("device_scaling_factor") * kwargs.get("node_scaling_factor")
 
     if node_vals is not None:
         for node_row_vals in node_vals:
             colors = plotting.utils.rgb_interpolation(
-                node_row_vals, low=low, high=high,
-                low_rgb=kwargs.get('low_rgb'), zero_rgb=kwargs.get('zero_rgb'),
-                high_rgb=kwargs.get('high_rgb'))
-            draw_node_row(ctx, colors, segment_length=segment_length,
-                          bit_line_nodes=bit_line,
-                          scaling_factor=node_scaling_factor,
-                          device=kwargs.get('device_type'))
+                node_row_vals,
+                low=low,
+                high=high,
+                low_rgb=kwargs.get("low_rgb"),
+                zero_rgb=kwargs.get("zero_rgb"),
+                high_rgb=kwargs.get("high_rgb"),
+            )
+            draw_node_row(
+                ctx,
+                colors,
+                segment_length=segment_length,
+                bit_line_nodes=bit_line,
+                scaling_factor=node_scaling_factor,
+                device=kwargs.get("device_type"),
+            )
             y += segment_length
             ctx.move_to(x, y)
     else:
         colors_list = plotting.utils.rgb_single_color(
-            crossbar_shape, color=kwargs.get('default_color'))
+            crossbar_shape, color=kwargs.get("default_color")
+        )
         for colors in colors_list:
             ctx.move_to(x, y)
-            draw_node_row(ctx, colors, bit_line_nodes=bit_line,
-                          segment_length=segment_length,
-                          scaling_factor=node_scaling_factor,
-                          device=kwargs.get('device_type'))
+            draw_node_row(
+                ctx,
+                colors,
+                bit_line_nodes=bit_line,
+                segment_length=segment_length,
+                scaling_factor=node_scaling_factor,
+                device=kwargs.get("device_type"),
+            )
             y += segment_length
             ctx.move_to(x, y)
 
     ctx.move_to(*diagram_pos)
 
 
-def dimensions(shape, width_mm=210, color_bar_fraction=(0.5, 0.15),
-               border_fraction=0.05):
+def dimensions(shape, width_mm=210, color_bar_fraction=(0.5, 0.15), border_fraction=0.05):
     """Extracts dimensions of the surface.
 
     Parameters
@@ -383,42 +459,41 @@ def dimensions(shape, width_mm=210, color_bar_fraction=(0.5, 0.15),
         Width and height of the color bar.
     """
     # convert millimeters to points
-    width = width_mm * 72/25.4
+    width = width_mm * 72 / 25.4
 
     # when plotted, crossbar will take up additional space horizontally
     # and vertically equivalent to half a section dedicated to a single
     # word/bit line
-    adjusted_shape = (shape[0]+0.5, shape[1]+0.5)
+    adjusted_shape = (shape[0] + 0.5, shape[1] + 0.5)
     # fraction of the horizontal space taken up by the crossbar
     active_horizontal_fraction = 1 - color_bar_fraction[1] - 2 * border_fraction
     # depending on the number of word and bit lines, the larger side of
     # the drawing is determined
-    if adjusted_shape[1]/adjusted_shape[0] > active_horizontal_fraction:
+    if adjusted_shape[1] / adjusted_shape[0] > active_horizontal_fraction:
         width_fraction = active_horizontal_fraction
-        segment_fraction = width_fraction/adjusted_shape[1]
-        height_fraction = segment_fraction*adjusted_shape[0]
-        height = (height_fraction + 2*border_fraction) * width
-        max_dim = width 
+        segment_fraction = width_fraction / adjusted_shape[1]
+        height_fraction = segment_fraction * adjusted_shape[0]
+        height = (height_fraction + 2 * border_fraction) * width
+        max_dim = width
     else:
-        height_fraction = 1 - 2*border_fraction
-        segment_fraction = height_fraction/adjusted_shape[0]
-        width_fraction = segment_fraction*adjusted_shape[1]
-        height = width / (width_fraction +
-                 color_bar_fraction[1] + 2 * border_fraction)
-        max_dim = height 
+        height_fraction = 1 - 2 * border_fraction
+        segment_fraction = height_fraction / adjusted_shape[0]
+        width_fraction = segment_fraction * adjusted_shape[1]
+        height = width / (width_fraction + color_bar_fraction[1] + 2 * border_fraction)
+        max_dim = height
 
     # if the height is very small compared to the width, additional space
     # is added vertically on both sides
-    if height/width < (color_bar_fraction[0] + 2 * border_fraction):
+    if height / width < (color_bar_fraction[0] + 2 * border_fraction):
         height = max_dim * (color_bar_fraction[0] + 2 * border_fraction)
 
     segment_length = segment_fraction * max_dim
 
     x_start = border_fraction * max_dim
-    y_start = height/2 - adjusted_shape[0]*segment_length/2
+    y_start = height / 2 - adjusted_shape[0] * segment_length / 2
     diagram_pos = (x_start, y_start)
     surface_dims = (width, height)
     color_bar_pos, color_bar_dims = plotting.color_bar.dimensions(
-        surface_dims, color_bar_fraction, border_fraction)
-    return surface_dims, diagram_pos, segment_length,\
-        color_bar_pos, color_bar_dims
+        surface_dims, color_bar_fraction, border_fraction
+    )
+    return surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims

@@ -23,8 +23,7 @@ def draw(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     """
     middle = rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs)
     tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims)
-    axis_label(ctx, color_bar_pos, color_bar_dims,
-               label=kwargs.get('axis_label'))
+    axis_label(ctx, color_bar_pos, color_bar_dims, label=kwargs.get("axis_label"))
 
 
 def dimensions(surface_dims, color_bar_fraction, border_fraction):
@@ -48,9 +47,9 @@ def dimensions(surface_dims, color_bar_fraction, border_fraction):
         Width and height of the color bar.
     """
     height = np.max(surface_dims) * color_bar_fraction[0]
-    width = np.max(surface_dims) * color_bar_fraction[1]/4
-    x_start = surface_dims[0] * (1 - border_fraction) - 3*width
-    y_start = 0.5*surface_dims[1] - height/2
+    width = np.max(surface_dims) * color_bar_fraction[1] / 4
+    x_start = surface_dims[0] * (1 - border_fraction) - 3 * width
+    y_start = 0.5 * surface_dims[1] - height / 2
     color_bar_dims = (width, height)
     color_bar_pos = (x_start, y_start)
     return color_bar_pos, color_bar_dims
@@ -137,8 +136,12 @@ def rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs):
     pattern = cairo.LinearGradient(x_start, y_start, x_end, y_end)
 
     bottom_rgb, middle_rgb, top_rgb = rgb(
-        low, high, low_rgb=kwargs.get('low_rgb'),
-        zero_rgb=kwargs.get('zero_rgb'), high_rgb=kwargs.get('high_rgb'))
+        low,
+        high,
+        low_rgb=kwargs.get("low_rgb"),
+        zero_rgb=kwargs.get("zero_rgb"),
+        high_rgb=kwargs.get("high_rgb"),
+    )
     pattern.add_color_stop_rgb(0, *bottom_rgb)
     pattern.add_color_stop_rgb(1, *top_rgb)
     if middle_rgb is not None:
@@ -172,12 +175,12 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
         Width and height of the color bar.
     """
     ctx.set_source_rgb(0, 0, 0)
-    font_size = color_bar_dims[0]/2.5
+    font_size = color_bar_dims[0] / 2.5
     ctx.set_font_size(font_size)
     _, _, _, text_height, _, _ = ctx.text_extents(str(0))
 
-    x = color_bar_pos[0] + color_bar_dims[0]*1.2
-    y = color_bar_pos[1] + 0.5*text_height
+    x = color_bar_pos[0] + color_bar_dims[0] * 1.2
+    y = color_bar_pos[1] + 0.5 * text_height
     ctx.move_to(x, y)
     if high > 0 or middle:
         ctx.show_text(str(high))
@@ -185,16 +188,16 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
         if low == high:
             ctx.show_text(str(low))
         else:
-            ctx.show_text('0')
+            ctx.show_text("0")
 
     if middle:
-        x = color_bar_pos[0] + color_bar_dims[0]*1.2
-        y = color_bar_pos[1] + 0.5*color_bar_dims[1] + 0.5*text_height
+        x = color_bar_pos[0] + color_bar_dims[0] * 1.2
+        y = color_bar_pos[1] + 0.5 * color_bar_dims[1] + 0.5 * text_height
         ctx.move_to(x, y)
-        ctx.show_text('0')
+        ctx.show_text("0")
 
-    x = color_bar_pos[0] + color_bar_dims[0]*1.2
-    y = color_bar_pos[1] + color_bar_dims[1] + 0.5*text_height
+    x = color_bar_pos[0] + color_bar_dims[0] * 1.2
+    y = color_bar_pos[1] + color_bar_dims[1] + 0.5 * text_height
     ctx.move_to(x, y)
     if low < 0 or middle:
         ctx.show_text("−{}".format(abs(low)))
@@ -202,10 +205,10 @@ def tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims):
         if low == high:
             ctx.show_text(str(high))
         else:
-            ctx.show_text('0')
+            ctx.show_text("0")
 
 
-def axis_label(ctx, color_bar_pos, color_bar_dims, label='Current (A)'):
+def axis_label(ctx, color_bar_pos, color_bar_dims, label="Current (A)"):
     """Draws axis label of a color bar.
 
     Parameters
@@ -220,14 +223,14 @@ def axis_label(ctx, color_bar_pos, color_bar_dims, label='Current (A)'):
         Axis label of the color bar.
     """
     ctx.set_source_rgb(0, 0, 0)
-    font_size = 0.6*color_bar_dims[0]
+    font_size = 0.6 * color_bar_dims[0]
     ctx.set_font_size(font_size)
 
     _, _, width, height, _, _ = ctx.text_extents(str(label))
-    x = color_bar_pos[0] + 2*color_bar_dims[0] + height
-    y = color_bar_pos[1] + 0.5*color_bar_dims[1] + 0.5*width
+    x = color_bar_pos[0] + 2 * color_bar_dims[0] + height
+    y = color_bar_pos[1] + 0.5 * color_bar_dims[1] + 0.5 * width
     ctx.move_to(x, y)
 
-    ctx.rotate(-np.pi/2)
+    ctx.rotate(-np.pi / 2)
     ctx.show_text(str(label))
-    ctx.rotate(np.pi/2)
+    ctx.rotate(np.pi / 2)

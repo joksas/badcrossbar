@@ -17,20 +17,19 @@ from setuptools import setup
 
 
 def load_requirements():
-    with open('requirements.txt') as f:
+    with open("requirements.txt") as f:
         return f.read().splitlines()
 
 
 setup(
-    name='badcrossbar',
-    version='1.0.2',
-    packages=['badcrossbar', 'badcrossbar.computing',
-              'badcrossbar.plotting', 'tests'],
+    name="badcrossbar",
+    version="1.0.2",
+    packages=["badcrossbar", "badcrossbar.computing", "badcrossbar.plotting", "tests"],
     install_requires=load_requirements(),
-    url='https://github.com/joksas/badcrossbar',
-    license='MIT license',
-    author='Dovydas Joksas',
-    author_email='dovydas.joksas.15@ucl.ac.uk',
-    description='A Python tool for computing and plotting currents and '
-                'voltages in passive crossbar arrays.'
+    url="https://github.com/joksas/badcrossbar",
+    license="MIT license",
+    author="Dovydas Joksas",
+    author_email="dovydas.joksas.15@ucl.ac.uk",
+    description="A Python tool for computing and plotting currents and "
+    "voltages in passive crossbar arrays.",
 )

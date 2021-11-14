@@ -2,8 +2,8 @@ from badcrossbar import check, computing, utils
 
 
 def compute(
-        applied_voltages, resistances, r_i=None,
-        r_i_word_line=None, r_i_bit_line=None, **kwargs):
+    applied_voltages, resistances, r_i=None, r_i_word_line=None, r_i_bit_line=None, **kwargs
+):
     """Computes branch currents and node voltages of a crossbar.
 
     Parameters
@@ -50,22 +50,23 @@ def compute(
         while all the others are arrays of shape `m x n` if `p == 1`,
         or arrays of shape `m x n x p` if `p > 1`.
     """
-    kwargs.setdefault('node_voltages', True)
-    kwargs.setdefault('all_currents', True)
-    kwargs.setdefault('verbose', 1)
-    kwargs.setdefault('show_time', True)
-    kwargs.setdefault('gap_size', 5)
+    kwargs.setdefault("node_voltages", True)
+    kwargs.setdefault("all_currents", True)
+    kwargs.setdefault("verbose", 1)
+    kwargs.setdefault("show_time", True)
+    kwargs.setdefault("gap_size", 5)
 
     if r_i is not None:
         r_i_word_line = r_i_bit_line = r_i
 
     resistances, applied_voltages = check.crossbar_requirements(
-        resistances, applied_voltages, r_i_word_line, r_i_bit_line)
+        resistances, applied_voltages, r_i_word_line, r_i_bit_line
+    )
 
-    utils.message('Initialising simulation.', **kwargs)
+    utils.message("Initialising simulation.", **kwargs)
 
     solution = computing.extract.solution(
-            resistances, r_i_word_line, r_i_bit_line,
-            applied_voltages, **kwargs)
+        resistances, r_i_word_line, r_i_bit_line, applied_voltages, **kwargs
+    )
 
     return solution

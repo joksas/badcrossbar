@@ -1,12 +1,12 @@
 import cairo
 from pathvalidate import sanitize_filepath
+
+import badcrossbar.check as check
 import badcrossbar.plotting as plotting
 import badcrossbar.utils as utils
-import badcrossbar.check as check
 
 
-def branches(device_vals=None, word_line_vals=None,
-             bit_line_vals=None, currents=None, **kwargs):
+def branches(device_vals=None, word_line_vals=None, bit_line_vals=None, currents=None, **kwargs):
     """Plots a crossbar array and colors its branches according to the values
     passed. The diagram is saved as a PDF file.
 
@@ -75,49 +75,79 @@ def branches(device_vals=None, word_line_vals=None,
         word_line_vals = currents.word_line
         bit_line_vals = currents.bit_line
 
-    device_vals, word_line_vals, bit_line_vals = \
-        check.plotting_requirements(
-            device_branch_vals=device_vals,
-            word_line_branch_vals=word_line_vals,
-            bit_line_branch_vals=bit_line_vals, branches=True)
+    device_vals, word_line_vals, bit_line_vals = check.plotting_requirements(
+        device_branch_vals=device_vals,
+        word_line_branch_vals=word_line_vals,
+        bit_line_branch_vals=bit_line_vals,
+        branches=True,
+    )
 
-    crossbar_shape = utils.arrays_shape(
-        device_vals, word_line_vals, bit_line_vals)
+    crossbar_shape = utils.arrays_shape(device_vals, word_line_vals, bit_line_vals)
 
-    surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
-        plotting.crossbar.dimensions(crossbar_shape,
-                                     width_mm=kwargs.get('width'))
+    (
+        surface_dims,
+        diagram_pos,
+        segment_length,
+        color_bar_pos,
+        color_bar_dims,
+    ) = plotting.crossbar.dimensions(crossbar_shape, width_mm=kwargs.get("width"))
 
-    filename = plotting.utils.get_filepath(kwargs.get('filename'),
-            kwargs.get('allow_overwrite'))
+    filename = plotting.utils.get_filepath(kwargs.get("filename"), kwargs.get("allow_overwrite"))
 
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
     low, high = plotting.utils.arrays_range(
-        device_vals, word_line_vals, bit_line_vals,
-        sf=kwargs.get('significant_figures'))
+        device_vals, word_line_vals, bit_line_vals, sf=kwargs.get("significant_figures")
+    )
 
     plotting.crossbar.bit_lines(
-        context, bit_line_vals, diagram_pos, low, high,
-        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+        context,
+        bit_line_vals,
+        diagram_pos,
+        low,
+        high,
+        segment_length=segment_length,
+        crossbar_shape=crossbar_shape,
+        **kwargs
+    )
 
     plotting.crossbar.word_lines(
-        context, word_line_vals, diagram_pos, low, high,
-        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+        context,
+        word_line_vals,
+        diagram_pos,
+        low,
+        high,
+        segment_length=segment_length,
+        crossbar_shape=crossbar_shape,
+        **kwargs
+    )
 
     plotting.crossbar.devices(
-        context, device_vals, diagram_pos, low, high,
-        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+        context,
+        device_vals,
+        diagram_pos,
+        low,
+        high,
+        segment_length=segment_length,
+        crossbar_shape=crossbar_shape,
+        **kwargs
+    )
 
     for bit_line in [False, True]:
         plotting.crossbar.nodes(
-            context, None, diagram_pos, low, high, bit_line=bit_line,
-            segment_length=segment_length, crossbar_shape=crossbar_shape,
-            **kwargs)
+            context,
+            None,
+            diagram_pos,
+            low,
+            high,
+            bit_line=bit_line,
+            segment_length=segment_length,
+            crossbar_shape=crossbar_shape,
+            **kwargs
+        )
 
-    plotting.color_bar.draw(context, color_bar_pos, color_bar_dims,
-                            low, high, **kwargs)
+    plotting.color_bar.draw(context, color_bar_pos, color_bar_dims, low, high, **kwargs)
 
 
 def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
@@ -186,43 +216,72 @@ def nodes(word_line_vals=None, bit_line_vals=None, voltages=None, **kwargs):
         bit_line_vals = voltages.bit_line
 
     word_line_vals, bit_line_vals = check.plotting_requirements(
-        word_line_node_vals=word_line_vals,
-        bit_line_node_vals=bit_line_vals, branches=False)
+        word_line_node_vals=word_line_vals, bit_line_node_vals=bit_line_vals, branches=False
+    )
 
     crossbar_shape = utils.arrays_shape(word_line_vals, bit_line_vals)
 
-    surface_dims, diagram_pos, segment_length, color_bar_pos, color_bar_dims = \
-        plotting.crossbar.dimensions(crossbar_shape,
-                                     width_mm=kwargs.get('width'))
+    (
+        surface_dims,
+        diagram_pos,
+        segment_length,
+        color_bar_pos,
+        color_bar_dims,
+    ) = plotting.crossbar.dimensions(crossbar_shape, width_mm=kwargs.get("width"))
 
-    filename = plotting.utils.get_filepath(kwargs.get('filename'),
-            kwargs.get('allow_overwrite'))
+    filename = plotting.utils.get_filepath(kwargs.get("filename"), kwargs.get("allow_overwrite"))
 
     surface = cairo.PDFSurface(filename, *surface_dims)
     context = cairo.Context(surface)
 
     low, high = plotting.utils.arrays_range(
-        word_line_vals, bit_line_vals,
-        sf=kwargs.get('significant_figures'))
+        word_line_vals, bit_line_vals, sf=kwargs.get("significant_figures")
+    )
 
     plotting.crossbar.bit_lines(
-        context, None, diagram_pos, low, high,
-        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+        context,
+        None,
+        diagram_pos,
+        low,
+        high,
+        segment_length=segment_length,
+        crossbar_shape=crossbar_shape,
+        **kwargs
+    )
 
     plotting.crossbar.word_lines(
-        context, None, diagram_pos, low, high,
-        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+        context,
+        None,
+        diagram_pos,
+        low,
+        high,
+        segment_length=segment_length,
+        crossbar_shape=crossbar_shape,
+        **kwargs
+    )
 
     plotting.crossbar.devices(
-        context, None, diagram_pos, low, high,
-        segment_length=segment_length, crossbar_shape=crossbar_shape, **kwargs)
+        context,
+        None,
+        diagram_pos,
+        low,
+        high,
+        segment_length=segment_length,
+        crossbar_shape=crossbar_shape,
+        **kwargs
+    )
 
-    for node_voltages, bit_line in zip([word_line_vals, bit_line_vals],
-                                       [False, True]):
+    for node_voltages, bit_line in zip([word_line_vals, bit_line_vals], [False, True]):
         plotting.crossbar.nodes(
-            context, node_voltages, diagram_pos, low, high, bit_line=bit_line,
-            segment_length=segment_length, crossbar_shape=crossbar_shape,
-            **kwargs)
+            context,
+            node_voltages,
+            diagram_pos,
+            low,
+            high,
+            bit_line=bit_line,
+            segment_length=segment_length,
+            crossbar_shape=crossbar_shape,
+            **kwargs
+        )
 
-    plotting.color_bar.draw(context, color_bar_pos, color_bar_dims,
-                            low, high, **kwargs)
+    plotting.color_bar.draw(context, color_bar_pos, color_bar_dims, low, high, **kwargs)
