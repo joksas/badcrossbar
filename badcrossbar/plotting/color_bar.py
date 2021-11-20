@@ -8,7 +8,7 @@ def draw(
     color_bar_dims: tuple[float, float],
     low: float,
     high: float,
-    **kwargs
+    **kwargs,
 ):
     """Draws the color bar together with its labels.
 
@@ -123,7 +123,7 @@ def rectangle(
     color_bar_dims: tuple[float, float],
     low: float,
     high: float,
-    **kwargs
+    **kwargs,
 ) -> bool:
     """Draws rectangle with color gradient.
 
@@ -231,7 +231,7 @@ def tick_labels(
     y = color_bar_pos[1] + color_bar_dims[1] + 0.5 * text_height
     ctx.move_to(x, y)
     if low < 0 or middle:
-        ctx.show_text("−{}".format(abs(low)))
+        ctx.show_text(f"−{abs(low)}")
     else:
         if low == high:
             ctx.show_text(str(high))

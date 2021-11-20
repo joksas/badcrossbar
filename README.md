@@ -171,19 +171,19 @@ solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 # Current that we are interested in (note zero-based indexing).
 current = solution.currents.device[0, 3, 2]
 
-print("\nCurrent through the device in question is {} A.".format(current))
+print(f"\nCurrent through the device in question is ~{current:.3g} A.")
 ```
 
 #### Output
 
 ```text
-2021-11-20 09:32:24 (INFO): Initialising simulation.
-2021-11-20 09:32:24 (INFO): Started solving for v.
-2021-11-20 09:32:24 (INFO): Solved for v.
-2021-11-20 09:32:24 (INFO): Extracted node voltages.
-2021-11-20 09:32:24 (INFO): Extracted currents from all branches in the crossbar.
+2021-11-20 09:47:52 (INFO): Initialising simulation.
+2021-11-20 09:47:52 (INFO): Started solving for v.
+2021-11-20 09:47:52 (INFO): Solved for v.
+2021-11-20 09:47:52 (INFO): Extracted node voltages.
+2021-11-20 09:47:52 (INFO): Extracted currents from all branches in the crossbar.
 
-Current through the device in question is 0.009856197822795888 A.
+Current through the device in question is ~0.00986 A.
 ```
 
 More examples can be found in files [1_single_set_of_inputs.py] and [2_multiple_sets_of_inputs.py].

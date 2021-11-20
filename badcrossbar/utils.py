@@ -28,12 +28,12 @@ def unique_path(path: str, extension: str = "pdf", sanitize: bool = True) -> str
     if sanitize:
         path = sanitize_filepath(path, platform="auto")
 
-    full_path = "{}.{}".format(path, extension)
+    full_path = f"{path}.{extension}"
     if os.path.exists(full_path):
         number = 1
         while True:
             number += 1
-            new_full_path = "{}-{}.{}".format(path, number, extension)
+            new_full_path = f"{path}-{number}.{extension}"
             if os.path.exists(new_full_path):
                 continue
             else:
@@ -143,7 +143,7 @@ def save_pickle(
         path = sanitize_filepath(path, platform="auto")
 
     if allow_overwrite:
-        path = "{}.pickle".format(path)
+        path = f"{path}.pickle"
     else:
         path = unique_path(path, "pickle")
 
@@ -151,7 +151,7 @@ def save_pickle(
         pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     if verbose:
-        print("Saved {}.".format(path))
+        print(f"Saved {path}.")
 
 
 def load_pickle(path: str, sanitize: bool = True):

@@ -100,7 +100,7 @@ def draw_device_row(
     if device in device_functions:
         device_function = device_functions[device]
     else:
-        raise ValueError("Device '{}' is not currently supported!".format(device))
+        raise ValueError(f'Device "{device}" is not currently supported!')
 
     for color in colors:
         x += segment_length
@@ -157,7 +157,7 @@ def bit_lines(
     high: float,
     segment_length: float = 120,
     crossbar_shape: tuple[int, int] = (128, 64),
-    **kwargs
+    **kwargs,
 ):
     """Draws bit lines.
 
@@ -229,7 +229,7 @@ def word_lines(
     high: float,
     segment_length: float = 120,
     crossbar_shape: tuple[int, int] = (128, 64),
-    **kwargs
+    **kwargs,
 ):
     """Draws word lines.
 
@@ -310,7 +310,7 @@ def devices(
     high: float,
     segment_length: float = 120,
     crossbar_shape: tuple[int, int] = (128, 64),
-    **kwargs
+    **kwargs,
 ):
     """Draws crossbar devices.
 
@@ -384,7 +384,7 @@ def nodes(
     segment_length: float = 120,
     crossbar_shape: tuple[int, int] = (128, 64),
     bit_line: bool = False,
-    **kwargs
+    **kwargs,
 ):
     """Draws nodes.
 

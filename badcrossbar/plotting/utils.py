@@ -232,7 +232,7 @@ def get_filepath(filename: str, allow_overwrite: bool):
     extension = "pdf"
 
     if allow_overwrite:
-        filepath = "{}.{}".format(filename, extension)
+        filepath = f"{filename}.{extension}"
         filepath = sanitize_filepath(filepath)
     else:
         filepath = utils.unique_path(filename, extension)

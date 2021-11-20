@@ -9,7 +9,7 @@ def crossbar_requirements(
     applied_voltages: npt.ArrayLike,
     r_i_word_line,
     r_i_bit_line,
-    **kwargs
+    **kwargs,
 ) -> tuple[npt.NDArray, npt.NDArray]:
     """Checks if crossbar variables satisfy all requirements.
 
@@ -141,7 +141,7 @@ def not_none(**kwargs):
             all_none = False
             valid_items[key] = value
     if all_none:
-        raise ValueError("At least one of {{{}}} should be not None!".format(", ".join(kwargs)))
+        raise ValueError(f"At least one of {', '.join(kwargs)} should be not None!")
 
     return valid_items
 
@@ -165,13 +165,15 @@ def n_dimensional(array: npt.NDArray, n_list: list[int] = [2], name: str = "arra
     """
     dim = array.ndim
     if dim not in n_list:
-        err_msg = "'{}' should be {}-dimensional array! Instead received " "{}-dimensional array."
+
         if len(n_list) == 1:
             n_list_str = str(n_list[0])
         else:
             n_list_str = "- or ".join([str(i) for i in n_list])
 
-        raise TypeError(err_msg.format(name, n_list_str, dim))
+        raise TypeError(
+            f'"{name}" should be {n_list_str}-dimensional array! Instead received {dim}-dimensional array.'
+        )
 
 
 def numeric_array(array: npt.NDArray, name: str = "array"):
@@ -190,7 +192,7 @@ def numeric_array(array: npt.NDArray, name: str = "array"):
         If array contains non-number elements.
     """
     if np.issubdtype(array.dtype, np.number) is False:
-        raise TypeError("'{}' should only contain numbers!".format(name))
+        raise TypeError(f'"{name}" should only contain numbers!')
 
 
 def non_empty(array: npt.NDArray, name: str = "array"):
@@ -209,7 +211,7 @@ def non_empty(array: npt.NDArray, name: str = "array"):
         If the array is empty.
     """
     if array.size == 0:
-        raise ValueError("'{}' array is empty!".format(name))
+        raise ValueError(f'"{name}" array is empty!')
 
 
 def match_shape(**kwargs):
@@ -231,8 +233,7 @@ def match_shape(**kwargs):
     for key, value in kwargs.items():
         if value[0].shape[value[1]] != dim:
             raise ValueError(
-                "Dimension {} of array '{}' should match dimension {} of "
-                "array '{}'!".format(value[1], key, first_value[1], first_key)
+                f'Dimension {value[1]} of array "{key}" should match dimension {first_value[1]} of array "{first_key}"!'
             )
 
 
@@ -252,7 +253,7 @@ def non_negative_array(array: npt.NDArray, name: str = "array"):
         If the array contains negative values.
     """
     if (array < 0).any():
-        raise ValueError("'{}' array contains at least one negative value!".format(name))
+        raise ValueError(f'"{name}" array contains at least one negative value!')
 
 
 def non_infinite_array(array: npt.NDArray, name: str = "array"):
@@ -271,9 +272,7 @@ def non_infinite_array(array: npt.NDArray, name: str = "array"):
         If the array contains positive or negative infinities.
     """
     if (array == np.inf).any() or (array == -np.inf).any():
-        raise ValueError(
-            "'{}' array contains at least one value with infinite " "magnitude!".format(name)
-        )
+        raise ValueError(f'"{name}" array contains at least one value with infinite magnitude!')
 
 
 def number(value, name: str = "variable"):
@@ -293,8 +292,7 @@ def number(value, name: str = "variable"):
     """
     if not isinstance(value, (int, float)):
         raise TypeError(
-            "Type {} of '{}' is not supported. Use int or "
-            "float instead.".format(type(value).__name__, name)
+            f'Type {type(value).__name__} of "{name}" is not supported. Use int or float instead.'
         )
 
 
@@ -314,7 +312,7 @@ def non_negative_number(value: float, name: str = "number"):
         If the number is negative.
     """
     if value < 0:
-        raise ValueError("'{}' is negative!".format(name))
+        raise ValueError(f'"{name}" is negative!')
 
 
 def short_circuit(resistances: npt.NDArray, r_i_word_line: float, r_i_bit_line: float):
