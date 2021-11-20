@@ -1,11 +1,15 @@
+import logging
+
 import numpy as np
 import numpy.typing as npt
 from badcrossbar import utils
 from badcrossbar.computing import fill
 from scipy.sparse import linalg
 
+logger = logging.getLogger(__name__)
 
-def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray, **kwargs):
+
+def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
     """Solves matrix equation `gv = i`.
 
     Parameters
@@ -26,9 +30,9 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray, **kwargs):
         g = fill.g(resistances, r_i)
         i = fill.i(applied_voltages, resistances, r_i)
 
-        utils.message("Started solving for v.", **kwargs)
+        logger.info("Started solving for v.")
         v_matrix = linalg.spsolve(g.tocsc(), i)
-        utils.message("Solved for v.", **kwargs)
+        logger.info("Solved for v.")
 
         # if `num_examples == 1`, it can result in 1D array.
         if v_matrix.ndim == 1:

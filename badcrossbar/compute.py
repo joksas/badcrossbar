@@ -1,6 +1,10 @@
+import logging
+
 import numpy.typing as npt
 
 from badcrossbar import check, computing, utils
+
+logger = logging.getLogger(__name__)
 
 
 def compute(
@@ -35,14 +39,6 @@ def compute(
         all_currents : bool, optional
             If False, only output currents are returned, while all the other
             ones are set to None.
-        verbose : {1, 2, 0}, optional
-            If 1, all messages are shown. If 2, only warnings are shown. If
-            0, no messages are shown.
-        show_time : bool, optional
-            If True, includes current time when the messages are printed.
-        gap_size : int, optional
-            Number of whitespace characters to be printed between current
-            time and the message.
 
     Returns
     -------
@@ -59,9 +55,6 @@ def compute(
     """
     kwargs.setdefault("node_voltages", True)
     kwargs.setdefault("all_currents", True)
-    kwargs.setdefault("verbose", 1)
-    kwargs.setdefault("show_time", True)
-    kwargs.setdefault("gap_size", 5)
 
     if r_i is not None:
         r_i_word_line = r_i_bit_line = r_i
@@ -70,7 +63,7 @@ def compute(
         resistances, applied_voltages, r_i_word_line, r_i_bit_line
     )
 
-    utils.message("Initialising simulation.", **kwargs)
+    logger.info("Initialising simulation.")
 
     solution = computing.extract.solution(
         resistances, r_i_word_line, r_i_bit_line, applied_voltages, **kwargs

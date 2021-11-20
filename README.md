@@ -177,13 +177,13 @@ print("\nCurrent through the device in question is {} A.".format(current))
 #### Output
 
 ```text
-2020-06-14 15:09:37     Initialising simulation.
-2020-06-14 15:09:37     Started solving for v.
-2020-06-14 15:09:37     Solved for v.
-2020-06-14 15:09:37     Extracted node voltages.
-2020-06-14 15:09:37     Extracted currents from all branches in the crossbar.
+2021-11-20 09:32:24 (INFO): Initialising simulation.
+2021-11-20 09:32:24 (INFO): Started solving for v.
+2021-11-20 09:32:24 (INFO): Solved for v.
+2021-11-20 09:32:24 (INFO): Extracted node voltages.
+2021-11-20 09:32:24 (INFO): Extracted currents from all branches in the crossbar.
 
-Current through the device in question is 0.009856197822795886 A.
+Current through the device in question is 0.009856197822795888 A.
 ```
 
 More examples can be found in files [1_single_set_of_inputs.py] and [2_multiple_sets_of_inputs.py].

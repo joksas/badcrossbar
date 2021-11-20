@@ -100,44 +100,6 @@ def average_if_3D(array: npt.NDArray) -> npt.NDArray:
     return array
 
 
-def message(message_str: str, **kwargs):
-    """Prints current time followed by a gap and a custom message.
-
-    Parameters
-    ----------
-    message_str : str
-        Message to be printed at the end of the line.
-    **kwargs
-        verbose : int, optional
-            The message is shown only is verbose is equal to 1.
-        show_time : bool, optional
-            If True, prints out current time.
-    """
-    if kwargs.get("verbose", 1) == 1:
-        if kwargs.get("show_time", True):
-            message_str = (
-                time(kwargs.get("keep_ms", False)) + gap(kwargs.get("gap_size", 5)) + message_str
-            )
-        print(message_str)
-
-
-def gap(gap_size: int = 5):
-    """Returns a given number of whitespace characters.
-
-    Parameters
-    ----------
-    gap_size : int, optional
-        Number of whitespace characters to be printed.
-
-    Returns
-    -------
-    str
-        Whitespace.
-    """
-    gap_str = gap_size * " "
-    return gap_str
-
-
 def arrays_shape(*arrays: list[npt.NDArray]):
     """Returns the shape of the first array that is not None.
 

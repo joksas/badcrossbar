@@ -1,9 +1,13 @@
+import logging
 from collections import namedtuple
 
 import numpy as np
 import numpy.typing as npt
 from badcrossbar import utils
 from badcrossbar.computing import solve
+
+logger = logging.getLogger(__name__)
+
 
 Interconnect = namedtuple("Interconnect", ["word_line", "bit_line"])
 Solution = namedtuple("Solution", ["currents", "voltages"])
@@ -45,7 +49,7 @@ def solution(
     if r_i.word_line == r_i.bit_line == np.inf:
         return insulating_interconnect_solution(resistances, applied_voltages, **kwargs)
 
-    v = solve.v(resistances, r_i, applied_voltages, **kwargs)
+    v = solve.v(resistances, r_i, applied_voltages)
 
     extracted_voltages = voltages(v, resistances, **kwargs)
     extracted_currents = currents(extracted_voltages, resistances, r_i, applied_voltages, **kwargs)
@@ -93,10 +97,10 @@ def currents(
     if kwargs.get("all_currents"):
         word_line_i = word_line_currents(extracted_voltages, device_i, r_i, applied_voltages)
         bit_line_i = bit_line_currents(extracted_voltages, device_i, r_i)
-        utils.message("Extracted currents from all branches in the crossbar.", **kwargs)
+        logger.info("Extracted currents from all branches in the crossbar.")
     else:
         device_i = word_line_i = bit_line_i = None
-        utils.message("Extracted output currents.", **kwargs)
+        logger.info("Extracted output currents.")
 
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     return extracted_currents
@@ -122,7 +126,7 @@ def voltages(v: npt.NDArray, resistances: npt.NDArray, **kwargs) -> Voltages:
     bit_line_v = bit_line_voltages(v, resistances)
     extracted_voltages = Voltages(word_line_v, bit_line_v)
     if kwargs.get("node_voltages"):
-        utils.message("Extracted node voltages.", **kwargs)
+        logger.info("Extracted node voltages.")
     return extracted_voltages
 
 
@@ -401,9 +405,8 @@ def insulating_interconnect_solution(
         if initial_verbose == 2:
             kwargs["verbose"] = 1
 
-        utils.message(
-            "Warning: all interconnects are perfectly insulating! Node " "voltages are undefined!",
-            **kwargs
+        logger.info(
+            "Warning: all interconnects are perfectly insulating! Node " "voltages are undefined!"
         )
 
         if initial_verbose == 2:
@@ -414,10 +417,10 @@ def insulating_interconnect_solution(
         same_i = np.zeros((resistances.shape[0], resistances.shape[1], applied_voltages.shape[1]))
         same_i = utils.squeeze_third_axis(same_i)
         device_i = word_line_i = bit_line_i = same_i
-        utils.message("Extracted currents from all branches in the crossbar.", **kwargs)
+        logger.info("Extracted currents from all branches in the crossbar.")
     else:
         device_i = word_line_i = bit_line_i = None
-        utils.message("Extracted output currents.", **kwargs)
+        logger.info("Extracted output currents.")
 
     extracted_currents = Currents(output_i, device_i, word_line_i, bit_line_i)
     extracted_solution = Solution(extracted_currents, extracted_voltages)
