@@ -1,20 +1,21 @@
+import cairo
 import numpy as np
 import numpy.lib.recfunctions as nlr
-from sigfig import round
+import numpy.typing as npt
 from badcrossbar import utils
+from pathvalidate import sanitize_filepath
+from sigfig import round
 
 
-def complete_path(ctx, rgb=(0, 0, 0), width=1):
+def complete_path(
+    ctx: cairo.Context, rgb: tuple[float, float, float] = (0, 0, 0), width: float = 1
+):
     """Completes the current path.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    rgb : tuple of int
-        Normalized RGB value of the path.
-    width : float
-        Width of the path.
+    Args:
+        ctx: Context.
+        width: Width of the path.
+        rgb: Normalized RGB value of the path.
     """
     x, y = ctx.get_current_point()
 
@@ -26,15 +27,12 @@ def complete_path(ctx, rgb=(0, 0, 0), width=1):
     ctx.move_to(x, y)
 
 
-def complete_fill(ctx, rgb=(0, 0, 0)):
+def complete_fill(ctx: cairo.Context, rgb: tuple[float, float, float] = (0, 0, 0)):
     """Completes the current fill.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    rgb : tuple of int
-        Normalized RGB value of the fill.
+    Args:
+        ctx: Context.
+        rgb: Normalized RGB value of the path.
     """
     x, y = ctx.get_current_point()
 
@@ -45,30 +43,25 @@ def complete_fill(ctx, rgb=(0, 0, 0)):
     ctx.move_to(x, y)
 
 
-def rgb_interpolation(array, low=0, high=1,
-                      low_rgb=(213/255, 94/255, 0/255),
-                      zero_rgb=(235/255, 235/255, 235/255),
-                      high_rgb=(0/255, 114/255, 178/255)):
+def rgb_interpolation(
+    array: npt.NDArray,
+    low: float = 0,
+    high: float = 1,
+    low_rgb: tuple[float, float, float] = (213 / 255, 94 / 255, 0 / 255),
+    zero_rgb: tuple[float, float, float] = (235 / 255, 235 / 255, 235 / 255),
+    high_rgb: tuple[float, float, float] = (0 / 255, 114 / 255, 178 / 255),
+) -> npt.NDArray[tuple[float, float, float]]:
     """Linearly interpolates RGB colors for an array in a specified range.
 
-    Parameters
-    ----------
-    array : ndarray
-        Arrays of values.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    low_rgb : tuple of int
-        Colour (in RGB) associated with the lower limit.
-    zero_rgb : tuple of int
-        Colour (in RGB) associated with value of zero.
-    high_rgb : tuple of int
-        Colour (in RGB) associated with the upper limit.
+    Args:
+        array: Array of values.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        low_rgb: Colour (in RGB) associated with the lower limit.
+        zero_rgb: Colour (in RGB) associated with value of zero.
+        high_rgb: Colour (in RGB) associated with the upper limit.
 
-    Returns
-    -------
-    ndarray of tuple of int
+    Returns:
         RGB values associated with each of the entries in the array.
     """
     rgb = []
@@ -79,12 +72,14 @@ def rgb_interpolation(array, low=0, high=1,
 
     for low_x, zero_x, high_x in zip(low_rgb, zero_rgb, high_rgb):
         # linearly interpolate in two intervals (above and below zero)
-        x = np.where(array > 0,
-                     zero_x + (array - 0) * (high_x-zero_x)/(high-0),
-                     low_x + (array - low) * (zero_x-low_x)/(0-low))
+        x = np.where(
+            array > 0,
+            zero_x + (array - 0) * (high_x - zero_x) / (high - 0),
+            low_x + (array - low) * (zero_x - low_x) / (0 - low),
+        )
 
         rgb.append(x)
-    
+
     # return ndarray of RGB tuples
     rgb = np.array(rgb)
     rgb = np.moveaxis(rgb, 0, -1)
@@ -94,19 +89,14 @@ def rgb_interpolation(array, low=0, high=1,
     return rgb
 
 
-def rgb_single_color(shape, color=(0, 0, 0)):
+def rgb_single_color(shape: tuple[int, int], color: tuple[float, float, float] = (0, 0, 0)):
     """Return array with RGB values of a single color.
 
-    Parameters
-    ----------
-    shape : tuple of int
-        Shape of the array.
-    color : tuple of int
-        RGB (normalized to 1) of the color.
+    Args:
+        shape: Shape of the array.
+        color: RGB (normalized to 1) of the color.
 
-    Returns
-    -------
-    ndarray of tuple of int
+    Returns:
         Array with RGB values.
     """
     rgb = np.ones((*shape, len(color))) * color
@@ -116,19 +106,14 @@ def rgb_single_color(shape, color=(0, 0, 0)):
     return rgb
 
 
-def arrays_range(*arrays, sf=2):
+def arrays_range(*arrays: list[np.ndarray], sf: int = 2) -> tuple[float, float]:
     """Finds the color bar range from arbitrary number of arrays.
 
-    Parameters
-    ----------
-    arrays : ndarray
-        Arrays.
-    sf : int, optional
-        Number of significant figures.
+    Args:
+        arrays: Arrays.
+        sf: Number of significant figures.
 
-    Returns
-    -------
-    float
+    Returns:
         Minimum and maximum values in the color bar.
     """
     low = np.inf
@@ -165,65 +150,55 @@ def arrays_range(*arrays, sf=2):
     return low, high
 
 
-def set_defaults(kwargs, branches=True):
+def set_defaults(kwargs, branches: bool = True):
     """Sets default values for kwargs arguments in `badcrossbar.plot` functions.
 
-    Parameters
-    ----------
-    kwargs : dict of any
-        Optional keyword arguments.
-    branches : bool
-        Whether branches are being plotted. If `False`, it is assumed that
-        nodes are being plotted.
+    Args:
+        kwargs: Optional keyword arguments.
+        branches: Whether branches are being plotted. If `False`, it is assumed
+            that nodes are being plotted.
 
-    Returns
-    ----------
-    dict of any
+    Returns:
         Optional keyword arguments with the default values set.
     """
-    kwargs.setdefault('default_color', (0, 0, 0))
-    kwargs.setdefault('wire_scaling_factor', 1)
-    kwargs.setdefault('device_scaling_factor', 1)
-    kwargs.setdefault('axis_label', 'Current (A)')
-    kwargs.setdefault('low_rgb', (213/255, 94/255, 0/255))
-    kwargs.setdefault('zero_rgb', (235/255, 235/255, 235/255))
-    kwargs.setdefault('high_rgb', (0/255, 114/255, 178/255))
-    kwargs.setdefault('allow_overwrite', False)
-    kwargs.setdefault('device_type', 'memristor')
-    kwargs.setdefault('significant_figures', 2)
-    kwargs.setdefault('round_crossings', True)
-    kwargs.setdefault('width', 210)
+    kwargs.setdefault("default_color", (0, 0, 0))
+    kwargs.setdefault("wire_scaling_factor", 1)
+    kwargs.setdefault("device_scaling_factor", 1)
+    kwargs.setdefault("axis_label", "Current (A)")
+    kwargs.setdefault("low_rgb", (213 / 255, 94 / 255, 0 / 255))
+    kwargs.setdefault("zero_rgb", (235 / 255, 235 / 255, 235 / 255))
+    kwargs.setdefault("high_rgb", (0 / 255, 114 / 255, 178 / 255))
+    kwargs.setdefault("allow_overwrite", False)
+    kwargs.setdefault("device_type", "memristor")
+    kwargs.setdefault("significant_figures", 2)
+    kwargs.setdefault("round_crossings", True)
+    kwargs.setdefault("width", 210)
     if branches:
-        kwargs.setdefault('node_scaling_factor', 1)
-        kwargs.setdefault('filename', 'crossbar-currents')
+        kwargs.setdefault("node_scaling_factor", 1)
+        kwargs.setdefault("filename", "crossbar-currents")
     else:
-        kwargs.setdefault('node_scaling_factor', 1.4)
-        kwargs.setdefault('filename', 'crossbar-voltages')
+        kwargs.setdefault("node_scaling_factor", 1.4)
+        kwargs.setdefault("filename", "crossbar-voltages")
 
     return kwargs
 
-def get_filepath(filename, allow_overwrite):
+
+def get_filepath(filename: str, allow_overwrite: bool):
     """Constructs filepath of the diagram.
 
-    Parameters
-    ----------
-    filename : str
-        Filename (without the extension).
-    allow_overwrite :
-        If True, can overwrite existing PDF files with the same name.
+    Args:
+        filename: Filename (without the extension).
+        allow_overwrite: If True, can overwrite existing PDF files with the same name.
 
-    Returns
-    ----------
-    str
+    Returns:
         Filepath of the diagram.
     """
-    extension = 'pdf'
+    extension = "pdf"
 
     if allow_overwrite:
-        filepath = '{}.{}'.format(filename, extension)
+        filepath = f"{filename}.{extension}"
         filepath = sanitize_filepath(filepath)
     else:
         filepath = utils.unique_path(filename, extension)
 
     return filepath
-

@@ -1,5 +1,5 @@
-import numpy as np
 import badcrossbar
+import numpy as np
 
 # Plotting  module produces vector images (as PDF files) that can then be
 # edited in any vector graphics manipulation program. However, it also provides
@@ -23,14 +23,14 @@ r_i = 0.25
 
 # Randomly generated resistances and voltages
 # (in ohms and volts, respectively).
-resistances = 100*np.random.rand(num_word_lines, num_bit_lines)
+resistances = 100 * np.random.rand(num_word_lines, num_bit_lines)
 voltages = np.random.rand(num_word_lines, num_examples)
 
 solution = badcrossbar.compute(voltages, resistances, r_i, verbose=0)
 
 # We are going to make the interconnects and crossbar devices 4 times thinner.
-my_wire_scaling_factor = 1/4
-my_device_scaling_factor = 1/4
+my_wire_scaling_factor = 1 / 4
+my_device_scaling_factor = 1 / 4
 # We are also going to make them lighter in color.
 my_default_color = (0.9, 0.9, 0.9)
 
@@ -40,7 +40,7 @@ my_default_color = (0.9, 0.9, 0.9)
 # that we can use a separate variable `node_scaling_factor` which controls
 # the size of the nodes without affecting the device width.
 # The following line will result in net scaling factor of 8 for the nodes.
-my_node_scaling_factor = 1/my_device_scaling_factor * 8
+my_node_scaling_factor = 1 / my_device_scaling_factor * 8
 
 # Additionally, we are going to change the color bar colors, so that the
 # zero would associated with black and that the maximum positive value would be
@@ -48,16 +48,18 @@ my_node_scaling_factor = 1/my_device_scaling_factor * 8
 my_zero_rgb = (0, 0, 0)
 my_high_rgb = (1, 0, 0)
 
-badcrossbar.plot.nodes(voltages=solution.voltages,
-                       wire_scaling_factor=my_wire_scaling_factor,
-                       device_scaling_factor=my_device_scaling_factor,
-                       default_color=my_default_color,
-                       node_scaling_factor=my_node_scaling_factor,
-                       zero_rgb=my_zero_rgb,
-                       high_rgb=my_high_rgb,
-                       axis_label='Average voltage (V)',
-                       filename='Ex-2',
-                       allow_overwrite=True)
+badcrossbar.plot.nodes(
+    voltages=solution.voltages,
+    wire_scaling_factor=my_wire_scaling_factor,
+    device_scaling_factor=my_device_scaling_factor,
+    default_color=my_default_color,
+    node_scaling_factor=my_node_scaling_factor,
+    zero_rgb=my_zero_rgb,
+    high_rgb=my_high_rgb,
+    axis_label="Average voltage (V)",
+    filename="Ex-2",
+    allow_overwrite=True,
+)
 
 # The produced diagram hopefully helps to visualize the voltage decreases
 # across the crossbar array more clearly. In this specific example, the

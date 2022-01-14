@@ -27,67 +27,14 @@ In most practical scenarios, we want the resistance of the interconnects to be z
 
 # Installation
 
-## Pycairo
-
-The plotting sub-package of [badcrossbar] uses [pycairo] package which requires [cairo](https://www.cairographics.org/) and [pkg-config](https://github.com/pkgconf/pkgconf). The instructions for how to install either these dependencies or [pycairo] directly can be found in this subsection. However, if you are not interested in the plotting functions provided by [badcrossbar], computing sub-package works even without [pycairo] installed, thus you can skip to [badcrossbar installation](#badcrossbar).
-
-### Linux
-
-As described [here](https://pycairo.readthedocs.io/en/latest/getting_started.html), it is straightforward to install [pycairo] dependencies for most Linux distributions.
-
-##### Ubuntu/Debian
-
 ```text
-apt install libcairo2-dev pkg-config python3-dev
+pip install badcrossbar
 ```
 
-##### Arch Linux
+## Requirements
 
-```text
-pacman -S cairo pkgconf
-```
-
-##### Fedora
-
-```text
-dnf install cairo-devel pkg-config python3-devel
-```
-
-##### openSUSE
-
-```text
-zypper install cairo-devel pkg-config python3-devel
-```
-
-### macOS
-
-Similarly for macOS (using [Homebrew package manager](https://brew.sh)):
-```text
-brew install cairo pkg-config
-```
-
-### Windows
-
-Getting [pycairo] to work on Windows might prove to be a bit more challenging. One suggested solution is to download unofficial [pycairo] binary from [University of California, Irvine website](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo) and install it by typing the following command into the terminal (with the correct filename):
-```text
-pip3 install C:\path\to\file\pycairo-1.19.1-cp38-cp38-win32.whl
-```
-As stated in the [website](https://www.lfd.uci.edu/~gohlke/pythonlibs/), "the files are provided "as is" without warranty or support of any kind. The entire risk as to the quality and performance is with you."
-
-*Note*: you might be able to use `pip`, instead of `pip3`, in your terminal as long as it is an alias for the package management system pip of Python 3 (and not Python 2).
-
-## badcrossbar
-
-To install the [badcrossbar] package and its dependencies, type the following commands into the terminal:
-```text
-git clone https://github.com/joksas/badcrossbar
-cd badcrossbar
-python3 setup.py install
-```
-
-If [pycairo] system requirements are not satisfied, command `python3 setup.py install` will fail to install *all* the dependencies. If you are not planning to install [pycairo], please remove the line containing it from [requirements.txt](requirements.txt) before running `python3 setup.py install`.
-
-*Note*: you might be able to use `python`, instead of `python3`, in your terminal as long as it is an alias for Python 3 (and not Python 2).
+* Python >=3.9
+* [cairo](https://cairographics.org/) >=1.15.10. If pip does not install it automatically, see [this](https://pycairo.readthedocs.io/en/latest/getting_started.html).
 
 # Usage
 
@@ -101,14 +48,18 @@ One can compute branch currents and node voltages with the function `badcrossbar
 import badcrossbar
 
 # Applied voltages in volts.
-applied_voltages = [[1.5],
-                    [2.3],
-                    [1.7]]
+applied_voltages = [
+    [1.5],
+    [2.3],
+    [1.7],
+]
 
 # Device resistances in ohms.
-resistances = [[345, 903, 755, 257, 646],
-               [652, 401, 508, 166, 454],
-               [442, 874, 190, 244, 635]]
+resistances = [
+    [345, 903, 755, 257, 646],
+    [652, 401, 508, 166, 454],
+    [442, 874, 190, 244, 635],
+]
 
 # Interconnect resistance in ohms.
 r_i = 0.5
@@ -145,14 +96,18 @@ Suppose we applied four sets of inputs to a crossbar array and wanted to find th
 import badcrossbar
 
 # Applied voltages in volts.
-applied_voltages = [[1.5, 4.1, 2.6, 2.1],
-                    [2.3, 4.5, 1.1, 0.8],
-                    [1.7, 4.0, 3.3, 1.1]]
+applied_voltages = [
+    [1.5, 4.1, 2.6, 2.1],
+    [2.3, 4.5, 1.1, 0.8],
+    [1.7, 4.0, 3.3, 1.1],
+]
 
 # Device resistances in ohms.
-resistances = [[345, 903, 755, 257, 646],
-               [652, 401, 508, 166, 454],
-               [442, 874, 190, 244, 635]]
+resistances = [
+    [345, 903, 755, 257, 646],
+    [652, 401, 508, 166, 454],
+    [442, 874, 190, 244, 635],
+]
 
 # Interconnect resistance in ohms.
 r_i = 0.5
@@ -163,19 +118,19 @@ solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 # Current that we are interested in (note zero-based indexing).
 current = solution.currents.device[0, 3, 2]
 
-print('\nCurrent through the device in question is {} A.'.format(current))
+print(f"\nCurrent through the device in question is ~{current:.3g} A.")
 ```
 
 #### Output
 
 ```text
-2020-06-14 15:09:37     Initialising simulation.
-2020-06-14 15:09:37     Started solving for v.
-2020-06-14 15:09:37     Solved for v.
-2020-06-14 15:09:37     Extracted node voltages.
-2020-06-14 15:09:37     Extracted currents from all branches in the crossbar.
+2021-11-20 09:47:52 (INFO): Initialising simulation.
+2021-11-20 09:47:52 (INFO): Started solving for v.
+2021-11-20 09:47:52 (INFO): Solved for v.
+2021-11-20 09:47:52 (INFO): Extracted node voltages.
+2021-11-20 09:47:52 (INFO): Extracted currents from all branches in the crossbar.
 
-Current through the device in question is 0.009856197822795886 A.
+Current through the device in question is ~0.00986 A.
 ```
 
 More examples can be found in files [1_single_set_of_inputs.py] and [2_multiple_sets_of_inputs.py].
@@ -198,14 +153,18 @@ The following piece of code computes and plots average branch currents over four
 import badcrossbar
 
 # Applied voltages in volts.
-applied_voltages = [[1.5, 4.1, 2.6, 2.1],
-                    [2.3, 4.5, 1.1, 0.8],
-                    [1.7, 4.0, 3.3, 1.1]]
+applied_voltages = [
+    [1.5, 4.1, 2.6, 2.1],
+    [2.3, 4.5, 1.1, 0.8],
+    [1.7, 4.0, 3.3, 1.1],
+]
 
 # Device resistances in ohms.
-resistances = [[345, 903, 755, 257, 646],
-               [652, 401, 508, 166, 454],
-               [442, 874, 190, 244, 635]]
+resistances = [
+    [345, 903, 755, 257, 646],
+    [652, 401, 508, 166, 454],
+    [442, 874, 190, 244, 635],
+]
 
 # Interconnect resistance in ohms.
 r_i = 0.5
@@ -215,9 +174,9 @@ solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
 # Plotting average branch currents over all four sets of inputs.
 # We additionally set a custom filename and label of the color bar.
-badcrossbar.plot.branches(currents=solution.currents,
-                          filename='average-currents',
-			  axis_label='Average current (A)')
+badcrossbar.plot.branches(
+    currents=solution.currents, filename="average-currents", axis_label="Average current (A)"
+)
 ```
 
 The produced PDF file should contain a diagram similar to the one shown below:
@@ -234,14 +193,18 @@ The following piece of code computes and plots average node voltages over four s
 import badcrossbar
 
 # Applied voltages in volts.
-applied_voltages = [[1.5, 4.1, 2.6, 2.1],
-                    [2.3, 4.5, 1.1, 0.8],
-                    [1.7, 4.0, 3.3, 1.1]]
+applied_voltages = [
+    [1.5, 4.1, 2.6, 2.1],
+    [2.3, 4.5, 1.1, 0.8],
+    [1.7, 4.0, 3.3, 1.1],
+]
 
 # Device resistances in ohms.
-resistances = [[345, 903, 755, 257, 646],
-               [652, 401, 508, 166, 454],
-               [442, 874, 190, 244, 635]]
+resistances = [
+    [345, 903, 755, 257, 646],
+    [652, 401, 508, 166, 454],
+    [442, 874, 190, 244, 635],
+]
 
 # Interconnect resistance in ohms.
 r_i = 0.5
@@ -250,9 +213,9 @@ r_i = 0.5
 solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
 # Plotting average node voltages over all four sets of inputs.
-badcrossbar.plot.nodes(voltages=solution.voltages,
-		       axis_label='Average voltage (V)',
-		       filename='average-voltages')
+badcrossbar.plot.nodes(
+    voltages=solution.voltages, axis_label="Average voltage (V)", filename="average-voltages"
+)
 ```
 
 The produced PDF file should contain a diagram similar to the one shown below. Because the crossbar array, in this case, is small and the interconnect resistance is small relative to the resistance of the devices, we do not see much variation between voltages of nodes of the same type. Differences become more apparent with larger crossbar arrays, as explored in [2_custom_parameters.py], for example.
