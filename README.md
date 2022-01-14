@@ -27,67 +27,14 @@ In most practical scenarios, we want the resistance of the interconnects to be z
 
 # Installation
 
-## Pycairo
-
-The plotting sub-package of [badcrossbar] uses [pycairo] package which requires [cairo](https://www.cairographics.org/) and [pkg-config](https://github.com/pkgconf/pkgconf). The instructions for how to install either these dependencies or [pycairo] directly can be found in this subsection. However, if you are not interested in the plotting functions provided by [badcrossbar], computing sub-package works even without [pycairo] installed, thus you can skip to [badcrossbar installation](#badcrossbar).
-
-### Linux
-
-As described [here](https://pycairo.readthedocs.io/en/latest/getting_started.html), it is straightforward to install [pycairo] dependencies for most Linux distributions.
-
-##### Ubuntu/Debian
-
 ```text
-apt install libcairo2-dev pkg-config python3-dev
+pip install badcrossbar
 ```
 
-##### Arch Linux
+## Requirements
 
-```text
-pacman -S cairo pkgconf
-```
-
-##### Fedora
-
-```text
-dnf install cairo-devel pkg-config python3-devel
-```
-
-##### openSUSE
-
-```text
-zypper install cairo-devel pkg-config python3-devel
-```
-
-### macOS
-
-Similarly for macOS (using [Homebrew package manager](https://brew.sh)):
-```text
-brew install cairo pkg-config
-```
-
-### Windows
-
-Getting [pycairo] to work on Windows might prove to be a bit more challenging. One suggested solution is to download unofficial [pycairo] binary from [University of California, Irvine website](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pycairo) and install it by typing the following command into the terminal (with the correct filename):
-```text
-pip3 install C:\path\to\file\pycairo-1.19.1-cp38-cp38-win32.whl
-```
-As stated in the [website](https://www.lfd.uci.edu/~gohlke/pythonlibs/), "the files are provided "as is" without warranty or support of any kind. The entire risk as to the quality and performance is with you."
-
-*Note*: you might be able to use `pip`, instead of `pip3`, in your terminal as long as it is an alias for the package management system pip of Python 3 (and not Python 2).
-
-## badcrossbar
-
-To install the [badcrossbar] package and its dependencies, type the following commands into the terminal:
-```text
-git clone https://github.com/joksas/badcrossbar
-cd badcrossbar
-python3 setup.py install
-```
-
-If [pycairo] system requirements are not satisfied, command `python3 setup.py install` will fail to install *all* the dependencies. If you are not planning to install [pycairo], please remove the line containing it from [requirements.txt](requirements.txt) before running `python3 setup.py install`.
-
-*Note*: you might be able to use `python`, instead of `python3`, in your terminal as long as it is an alias for Python 3 (and not Python 2).
+* Python >=3.9
+* [cairo](https://cairographics.org/) >=1.15.10. If pip does not install it automatically, see [this](https://pycairo.readthedocs.io/en/latest/getting_started.html).
 
 # Usage
 
