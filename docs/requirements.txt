@@ -1,3 +1,2 @@
-sphinx_rtd_theme
-numpydoc
-
+sphinx_autodoc_typehints
+sphinx_book_theme
