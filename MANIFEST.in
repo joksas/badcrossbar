@@ -1,0 +1,3 @@
+include requirements.txt
+include tests/qucs/*.sch
+include tests/qucs/*.pickle

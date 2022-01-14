@@ -1,7 +1,6 @@
 numpy>=1.21
 pytest>=5.4.3
 scipy>=1.4.1
-setuptools>=47.1.1
 pathvalidate>=2.3.0
 sigfig>=1.1.8
 pycairo>=1.19.1

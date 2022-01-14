@@ -13,23 +13,34 @@ For most users, functions `badcrossbar.compute()`,
 the main  task at hand, i.e. computing and plotting crossbar currents and
 voltages.
 """
-from setuptools import setup
+import os
+import pathlib
 
+import setuptools
 
-def load_requirements():
-    with open("requirements.txt") as f:
-        return f.read().splitlines()
+DIR_PATH = pathlib.Path(__file__).parent
+REQUIREMENTS_PATH = DIR_PATH / "requirements.txt"
+README_PATH = DIR_PATH / "README.md"
 
-
-setup(
+setuptools.setup(
     name="badcrossbar",
     version="1.0.2",
     packages=["badcrossbar", "badcrossbar.computing", "badcrossbar.plotting", "tests"],
-    install_requires=load_requirements(),
+    install_requires=REQUIREMENTS_PATH.read_text().splitlines(),
     url="https://github.com/joksas/badcrossbar",
-    license="MIT license",
+    project_urls={
+        "Bug Tracker": "https://github.com/joksas/badcrossbar/issues",
+    },
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
     author="Dovydas Joksas",
     author_email="dovydas.joksas.15@ucl.ac.uk",
     description="A Python tool for computing and plotting currents and "
     "voltages in passive crossbar arrays.",
+    long_description=README_PATH.read_text(),
+    long_description_content_type="text/markdown",
+    python_requires=">=3.9",
 )
