@@ -24,7 +24,7 @@ README_PATH = DIR_PATH / "README.md"
 
 setuptools.setup(
     name="badcrossbar",
-    version="1.0.2",
+    version="1.1.0",
     packages=["badcrossbar", "badcrossbar.computing", "badcrossbar.plotting", "tests"],
     install_requires=REQUIREMENTS_PATH.read_text().splitlines(),
     url="https://github.com/joksas/badcrossbar",

@@ -23,7 +23,7 @@ copyright = "2022, Dovydas Joksas"
 author = "Dovydas Joksas"
 
 # The full version, including alpha/beta/rc tags
-release = "1.0.2"
+release = "1.1.0"
 
 
 # -- General configuration ---------------------------------------------------
