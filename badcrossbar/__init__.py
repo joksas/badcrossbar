@@ -12,7 +12,7 @@ except ModuleNotFoundError as e:
 try:
     import badcrossbar.plot
 except ModuleNotFoundError as e:
-    warnings.warn("Could not import `badcrossbar.plot` ({e})", ImportWarning)
+    warnings.warn(f"Could not import `badcrossbar.plot` ({e})", ImportWarning)
 
 logging.basicConfig(
     stream=sys.stdout,
