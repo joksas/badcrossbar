@@ -6,6 +6,8 @@ import numpy as np
 import numpy.typing as npt
 from pathvalidate import sanitize_filepath
 
+logger = logging.getLogger(__name__)
+
 
 def unique_path(path: str, extension: str = "pdf", sanitize: bool = True) -> str:
     """Append a number to the path, if it is not unique.
@@ -84,9 +86,7 @@ def arrays_shape(*arrays: list[npt.NDArray]):
             return shape
 
 
-def save_pickle(
-    variable, path: str, allow_overwrite: bool = False, verbose: bool = False, sanitize: bool = True
-):
+def save_pickle(variable, path: str, allow_overwrite: bool = False, sanitize: bool = True):
     """Saves variable to a pickle file.
 
     Args:
@@ -94,7 +94,6 @@ def save_pickle(
         path: Path to the pickle file, excluding extension.
         allow_overwrite: If False, will not check for existing files with the
             same name and will overwrite if such files exist.
-        verbose: If True, notifies the user that the file has been saved.
         sanitize: If True, sanitizes the filename by removing illegal
             characters and making the path compatible with the operating
             system.
@@ -110,8 +109,7 @@ def save_pickle(
     with open(path, "wb") as handle:
         pickle.dump(variable, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    if verbose:
-        print(f"Saved {path}.")
+    logger.info("Saved {path}.")
 
 
 def load_pickle(path: str, sanitize: bool = True):
