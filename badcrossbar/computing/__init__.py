@@ -1,5 +1,2 @@
-"""
-This subpackage is used if `r_i != 0`.
-"""
-
 from . import extract
+from .extract import Currents, Solution, Voltages

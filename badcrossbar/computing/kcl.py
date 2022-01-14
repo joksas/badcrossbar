@@ -9,18 +9,12 @@ def apply(g_matrix: lil_matrix, resistances: npt.NDArray, r_i) -> lil_matrix:
     Values are filled by applying Kirchhoff's current law at the nodes on the
     word and bit lines.
 
-    Parameters
-    ----------
-    g_matrix : lil_matrix
-        Matrix `g` used in equation `gv = i`.
-    resistances : ndarray
-        Resistances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
+    Args:
+        g_matrix: Matrix `g` used in equation `gv = i`.
+        resistances: Resistances of crossbar devices.
+        r_i: Interconnect resistances along the word and bit line segments.
 
-    Returns
-    -------
-    lil_matrix
+    Returns:
         Filled matrix `g`.
     """
     with np.errstate(divide="ignore"):
@@ -35,18 +29,12 @@ def apply(g_matrix: lil_matrix, resistances: npt.NDArray, r_i) -> lil_matrix:
 def word_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil_matrix:
     """Fills matrix `g` with values corresponding to nodes on the word lines.
 
-    Parameters
-    ----------
-    g_matrix : lil_matrix
-        Matrix `g` used in equation `gv = i`.
-    conductances : ndarray
-        Conductances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
+    Args:
+        g_matrix: Matrix `g` used in equation `gv = i`.
+        conductances: Conductances of crossbar devices.
+        r_i: Interconnect resistances along the word and bit line segments.
 
-    Returns
-    -------
-    lil_matrix
+    Returns:
         Partially filled matrix `g`.
     """
     (num_word_lines, num_bit_lines) = conductances.shape
@@ -98,18 +86,12 @@ def word_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil
 def bit_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil_matrix:
     """Fills matrix g with values corresponding to nodes on the bit lines.
 
-    Parameters
-    ----------
-    g_matrix : lil_matrix
-        Matrix `g` used in equation `gv = i`.
-    conductances : ndarray
-        Conductances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
+    Args:
+        g_matrix: Matrix `g` used in equation `gv = i`.
+        conductances: Conductances of crossbar devices.
+        r_i: Interconnect resistances along the word and bit line segments.
 
-    Returns
-    -------
-    lil_matrix
+    Returns:
         Filled matrix `g`.
     """
     (num_word_lines, num_bit_lines) = conductances.shape

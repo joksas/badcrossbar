@@ -12,18 +12,12 @@ logger = logging.getLogger(__name__)
 def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
     """Solves matrix equation `gv = i`.
 
-    Parameters
-    ----------
-    resistances : ndarray
-        Resistances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
-    applied_voltages : ndarray
-        Applied voltages.
+    Args:
+        resistances: Resistances of crossbar devices.
+        r_i: Interconnect resistances along the word and bit line segments.
+        applied_voltages: Applied voltages.
 
-    Returns
-    -------
-    ndarray
+    Returns:
         Matrix containing potentials at each of the nodes.
     """
     if r_i.word_line > 0 or r_i.bit_line > 0:

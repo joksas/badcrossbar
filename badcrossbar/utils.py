@@ -10,19 +10,14 @@ from pathvalidate import sanitize_filepath
 def unique_path(path: str, extension: str = "pdf", sanitize: bool = True) -> str:
     """Append a number to the path, if it is not unique.
 
-    Parameters
-    ----------
-    path : str
-        Path of the filename without the extension.
-    extension : str, optional
-        File extension.
-    sanitize : bool, optional
-        If True, sanitizes the filename by removing illegal characters and
-        making the path compatible with the operating system.
+    Args:
+        path: Path of the filename without the extension.
+        extension: File extension.
+        sanitize: If True, sanitizes the filename by removing illegal
+            characters and making the path compatible with the operating
+            system.
 
-    Returns
-    -------
-    str
+    Returns:
         Unique path.
     """
     if sanitize:
@@ -46,14 +41,10 @@ def unique_path(path: str, extension: str = "pdf", sanitize: bool = True) -> str
 def squeeze_third_axis(array: npt.NDArray) -> npt.NDArray:
     """Removes third axis of ndarray if it has shape of 1.
 
-    Parameters
-    ----------
-    array : ndarray
-        3D array.
+    Args:
+        array: 3D array.
 
-    Returns
-    -------
-    ndarray
+    Returns:
         2D or 3D array.
     """
     if array.ndim == 3:
@@ -66,14 +57,10 @@ def squeeze_third_axis(array: npt.NDArray) -> npt.NDArray:
 def average_if_3D(array: npt.NDArray) -> npt.NDArray:
     """If array is 3D, it is averaged along the third axis.
 
-    Parameters
-    ----------
-    array : ndarray
-        2D or 3D array.
+    Args:
+        array: 2D or 3D array.
 
-    Returns
-    -------
-    ndarray
+    Returns:
         2D array.
     """
     if array.ndim == 3:
@@ -85,14 +72,10 @@ def average_if_3D(array: npt.NDArray) -> npt.NDArray:
 def arrays_shape(*arrays: list[npt.NDArray]):
     """Returns the shape of the first array that is not None.
 
-    Parameters
-    ----------
-    arrays : ndarray
-        Arrays.
+    Args:
+        arrays: Arrays.
 
-    Returns
-    -------
-    tuple of int
+    Returns:
         Shape.
     """
     for array in arrays:
@@ -106,20 +89,15 @@ def save_pickle(
 ):
     """Saves variable to a pickle file.
 
-    Parameters
-    ----------
-    variable : any
-        Variable to be saved.
-    path : str
-        Path to the pickle file, excluding extension.
-    allow_overwrite : bool, optional
-        If False, will not check for existing files with the same name and
-        will overwrite if such files exist.
-    verbose : bool, optional
-        If True, notifies the user that the file has been saved.
-    sanitize : bool, optional
-        If True, sanitizes the filename by removing illegal characters and
-        making the path compatible with the operating system.
+    Args:
+        variable: Variable to be saved.
+        path: Path to the pickle file, excluding extension.
+        allow_overwrite: If False, will not check for existing files with the
+            same name and will overwrite if such files exist.
+        verbose: If True, notifies the user that the file has been saved.
+        sanitize: If True, sanitizes the filename by removing illegal
+            characters and making the path compatible with the operating
+            system.
     """
     if sanitize:
         path = sanitize_filepath(path, platform="auto")
@@ -139,17 +117,13 @@ def save_pickle(
 def load_pickle(path: str, sanitize: bool = True):
     """Loads pickle file.
 
-    Parameters
-    ----------
-    path : str
-        Path to the pickle file, including extension.
-    sanitize : bool, optional
-        If True, sanitizes the filename by removing illegal characters and
-        making the path compatible with the operating system.
+    Args:
+        path: Path to the pickle file, including extension.
+        sanitize: If True, sanitizes the filename by removing illegal
+            characters and making the path compatible with the operating
+            system.
 
-    Returns
-    -------
-    any
+    Returns:
         Extracted contents.
     """
     if sanitize:
@@ -164,16 +138,11 @@ def load_pickle(path: str, sanitize: bool = True):
 def distributed_array(flattened_array: npt.NDArray, model_array: npt.NDArray) -> npt.NDArray:
     """Reshapes flattened array.
 
-    Parameters
-    ----------
-    flattened_array : ndarray
-        An array whose each column contains a flattened array.
-    model_array : ndarray
-        An array whose shape is used for reshaping.
+    Args:
+        flattened_array: An array whose each column contains a flattened array.
+        model_array: An array whose shape is used for reshaping.
 
-    Returns
-    -------
-    ndarray
+    Returns:
         Array or a list of arrays in specified shape.
     """
     reshaped_i = flattened_array.reshape(

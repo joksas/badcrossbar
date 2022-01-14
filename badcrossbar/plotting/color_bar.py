@@ -12,21 +12,13 @@ def draw(
 ):
     """Draws the color bar together with its labels.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    color_bar_pos : tuple of float
-        Coordinates of the top left point of the color bar.
-    color_bar_dims : tuple of float
-        Width and height of the color bar.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    **kwargs
-        axis_label : str, optional
-            Axis label of the color bar.
+    Args:
+        ctx: Context.
+        color_bar_pos: Coordinates of the top left point of the color bar.
+        color_bar_dims: Width and height of the color bar.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        **axis_label: Axis label of the color bar.
     """
     middle = rectangle(ctx, color_bar_pos, color_bar_dims, low, high, **kwargs)
     tick_labels(ctx, middle, low, high, color_bar_pos, color_bar_dims)
@@ -40,22 +32,16 @@ def dimensions(
 ) -> tuple[tuple[float, float], tuple[float, float]]:
     """Extracts dimensions of the color bar.
 
-    Parameters
-    ----------
-    surface_dims : tuple of float
-        Dimensions of the surface.
-    color_bar_fraction : tuple of float
-        The fraction of the surface that the color bar region will take on
-        the right (vertically and horizontally).
-    border_fraction : float
-        Fraction of the max_dim that will be blank on all sides of the surface.
+    Args:
+        surface_dims: Dimensions of the surface.
+        color_bar_fraction: The fraction of the surface that the color bar
+            region will take on the right (vertically and horizontally).
+        border_fraction: Fraction of the max_dim that will be blank on all
+            sides of the surface.
 
-    Returns
-    -------
-    color_bar_pos : tuple of float
-        Coordinates of the top left point of the color bar.
-    color_bar_dims : tuple of float
-        Width and height of the color bar.
+    Returns:
+        color_bar_pos: Coordinates of the top left point of the color bar.
+        color_bar_dims: Width and height of the color bar.
     """
     height = np.max(surface_dims) * color_bar_fraction[0]
     width = np.max(surface_dims) * color_bar_fraction[1] / 4
@@ -75,22 +61,14 @@ def rgb(
 ) -> tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]:
     """Extracts RGB values for the color bar gradient.
 
-    Parameters
-    ----------
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    low_rgb : tuple of float
-        Normalized RGB value associated with the lower limit.
-    zero_rgb : tuple of float
-        Normalized RGB value associated with the value of zero.
-    high_rgb : tuple of float
-        Normalized RGB value associated with the upper limit.
+    Args:
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        low_rgb: Normalized RGB value associated with the lower limit.
+        zero_rgb: Normalized RGB value associated with the value of zero.
+        high_rgb: Normalized RGB value associated with the upper limit.
 
-    Returns
-    -------
-    tuple of int
+    Returns:
         RGB values for the bottom, middle and top parts of the color map
         gradient. If only two colors are used, `middle_rgb` is returned as None.
     """
@@ -127,29 +105,17 @@ def rectangle(
 ) -> bool:
     """Draws rectangle with color gradient.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    color_bar_pos : tuple of float
-        Coordinates of the top left point of the color bar.
-    color_bar_dims : tuple of float
-        Width and height of the color bar.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    **kwargs
-        low_rgb : tuple of int, optional
-            Normalized RGB value associated with the lower limit.
-        zero_rgb : tuple of int, optional
-            Normalized RGB value associated with value of zero.
-        high_rgb : tuple of int, optional
-            Normalized RGB value associated with the upper limit.
+    Args:
+        ctx: Context.
+        color_bar_pos: Coordinates of the top left point of the color bar.
+        color_bar_dims: Width and height of the color bar.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        **low_rgb: Normalized RGB value associated with the lower limit.
+        **zero_rgb: Normalized RGB value associated with value of zero.
+        **high_rgb: Normalized RGB value associated with the upper limit.
 
-    Returns
-    -------
-    bool
+    Returns:
         If False, only two colors were used for the gradient.
     """
     ctx.rectangle(*color_bar_pos, *color_bar_dims)
@@ -190,20 +156,13 @@ def tick_labels(
 ):
     """Draws tick labels of the color bar.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    middle : bool
-        If False, only two colors were used for the gradient.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    color_bar_pos : tuple of float
-        Coordinates of the top left point of the color bar.
-    color_bar_dims : tuple of float
-        Width and height of the color bar.
+    Args:
+        ctx: Context.
+        middle: If False, only two colors were used for the gradient.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        color_bar_pos: Coordinates of the top left point of the color bar.
+        color_bar_dims: Width and height of the color bar.
     """
     ctx.set_source_rgb(0, 0, 0)
     font_size = color_bar_dims[0] / 2.5
@@ -247,16 +206,11 @@ def axis_label(
 ):
     """Draws axis label of a color bar.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    color_bar_pos : tuple of float
-        Coordinates of the top left point of the color bar.
-    color_bar_dims : tuple of float
-        Width and height of the color bar.
-    label : str, optional
-        Axis label of the color bar.
+    Args:
+        ctx: Context.
+        color_bar_pos: Coordinates of the top left point of the color bar.
+        color_bar_dims: Width and height of the color bar.
+        label: Axis label of the color bar.
     """
     ctx.set_source_rgb(0, 0, 0)
     font_size = 0.6 * color_bar_dims[0]

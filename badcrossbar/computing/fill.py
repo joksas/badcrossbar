@@ -7,16 +7,11 @@ from scipy.sparse import lil_matrix
 def g(resistances: npt.NDArray, r_i) -> lil_matrix:
     """Creates and fills matrix `g` used in equation `gv = i`.
 
-    Parameters
-    ----------
-    resistances : ndarray
-        Resistances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
+    Args:
+        resistances: Resistances of crossbar devices.
+        r_i: Interconnect resistances along the word and bit line segments.
 
-    Returns
-    -------
-    lil_matrix
+    Returns:
         Filled matrix `g`.
     """
     if 0 in r_i:
@@ -34,18 +29,12 @@ def i(applied_voltages: npt.NDArray, resistances: npt.NDArray, r_i) -> npt.NDArr
     Values are filled by applying nodal analysis at the leftmost nodes on the
     word lines.
 
-    Parameters
-    ----------
-    applied_voltages : ndarray
-        Applied voltages.
-    resistances : ndarray
-        Resistances of crossbar devices.
-    r_i : named tuple of (int or float)
-        Interconnect resistances along the word and bit line segments.
+    Args:
+        applied_voltages: Applied voltages.
+        resistances: Resistances of crossbar devices.
+        r_i: Interconnect resistances along the word and bit line segments.
 
-    Returns
-    -------
-    ndarray
+    Returns:
         Filled matrix `i`.
     """
     if 0 in r_i:

@@ -2,16 +2,14 @@ import cairo
 import numpy.typing as npt
 from pathvalidate import sanitize_filepath
 
-import badcrossbar.check as check
-import badcrossbar.plotting as plotting
-import badcrossbar.utils as utils
+from badcrossbar import check, computing, plotting, utils
 
 
 def branches(
     device_vals: npt.ArrayLike = None,
     word_line_vals: npt.ArrayLike = None,
     bit_line_vals: npt.ArrayLike = None,
-    currents=None,
+    currents: computing.Currents = None,
     **kwargs
 ):
     """Plots a crossbar array and colors its branches according to the values
@@ -21,59 +19,43 @@ def branches(
     branches. Otherwise, at least one of {`device_vals`, `word_line_vals`,
     `bit_line_vals`} has to be passed.
 
-    Parameters
-    ----------
-    device_vals : array_like, optional
-        Values associated with crossbar devices.
-    word_line_vals : array_like, optional
-        Values associated with the interconnect segments along the word lines.
-    bit_line_vals : array_like, optional
-        Values associated with the interconnect segments along the bit lines.
-    currents : named tuple, optional
-        Crossbar branch currents. It should have fields `device`, `word_line`
-        and `bit_line` that contain currents flowing through the devices and
-        interconnect segments of the word and bit lines (at least one of them
-        should be not None).
-
-    **kwargs
-        default_color : tuple of float, optional
-            Normalized RGB values of the nodes and certain types of branches
-            if their values are not provided.
-        wire_scaling_factor : float, optional
-            Scaling factor for the width of the word and bit lines.
-        device_scaling_factor : float, optional
-            Scaling factor for the width of the devices. Also scales the nodes.
-        node_scaling_factor : float, optional
-            Scaling factor for the diameter of the nodes which is combined
-            with `device_scaling_factor`. For example, if one wanted to only
-            scale the device width by a factor of 2, but keep the node diameter
-            the same, arguments `device_scaling_factor = 2` and
-            `node_scaling_factor = 1/2` would have to be passed.
-        axis_label : str, optional, optional
-            Axis label of the color bar.
-        low_rgb : tuple of float, optional
-            Normalized RGB value associated with the lower limit.
-        zero_rgb : tuple of float, optional
-            Normalized RGB value associated with the value of zero.
-        high_rgb : tuple of float, optional
-            Normalized RGB value associated with the upper limit.
-        allow_overwrite : bool, optional
-            If True, can overwrite existing PDF files with the same name.
-        filename : str, optional
-            Filename, excluding PDF extension.
-        device_type : {'memristor', 'memristor_2', 'resistor_usa',
-        'resistor_europe'}, optional
-            Device type to be drawn.
-        significant_figures : int, optional
-            Number of significant figures to use for the limits of the color
-            bar.
-        round_crossings : bool, optional
-            Because the circuit of a crossbar array is non-planar, the 2D
-            diagram of it will have some wire crossings. If `round_crossings`
-            is False, these crossings will be drawn as straight lines.
-            Otherwise, they will be drawn as semicircles.
-        width : float, optional
-            Width of the diagram in millimeters.
+    Args:
+        device_vals: Values associated with crossbar devices.
+        word_line_vals: Values associated with the interconnect segments along
+            the word lines.
+        bit_line_vals: Values associated with the interconnect segments along
+            the bit lines.
+        currents: Crossbar branch currents. It should have fields `device`,
+            `word_line` and `bit_line` that contain currents flowing through
+            the devices and interconnect segments of the word and bit lines (at
+            least one of them should be not None).
+        **default_color: Normalized RGB values of the nodes and certain types
+            of branches if their values are not provided.
+        **wire_scaling_factor: Scaling factor for the width of the word and bit
+            lines.
+        **device_scaling_factor: Scaling factor for the width of the devices.
+            Also scales the nodes.
+        **node_scaling_factor: Scaling factor for the diameter of the nodes
+            which is combined with `device_scaling_factor`. For example, if one
+            wanted to only scale the device width by a factor of 2, but keep
+            the node diameter the same, arguments `device_scaling_factor = 2`
+            and `node_scaling_factor = 1/2` would have to be passed.
+        **axis_label: Axis label of the color bar.
+        **low_rgb: Normalized RGB value associated with the lower limit.
+        **zero_rgb: Normalized RGB value associated with the value of zero.
+        **high_rgb: Normalized RGB value associated with the upper limit.
+        **allow_overwrite: If True, can overwrite existing PDF files with the
+            same name.
+        **filename: Filename, excluding PDF extension.
+        **device_type: Device type to be drawn. One of {'memristor',
+            'memristor_2', 'resistor_usa', 'resistor_europe'}.
+        **significant_figures: Number of significant figures to use for the
+            limits of the color bar.
+        **round_crossings: Because the circuit of a crossbar array is
+            non-planar, the 2D diagram of it will have some wire crossings. If
+            `round_crossings` is False, these crossings will be drawn as
+            straight lines.  Otherwise, they will be drawn as semicircles.
+        **width: Width of the diagram in millimeters.
     """
     kwargs = plotting.utils.set_defaults(kwargs, True)
 
@@ -160,7 +142,7 @@ def branches(
 def nodes(
     word_line_vals: npt.ArrayLike = None,
     bit_line_vals: npt.ArrayLike = None,
-    voltages=None,
+    voltages: computing.Voltages = None,
     **kwargs
 ):
     """Plots a crossbar array and colors its nodes according to the values
@@ -170,56 +152,39 @@ def nodes(
     nodes. Otherwise, at least one of {`word_line_vals`, `bit_line_vals`}
     has to be passed.
 
-    Parameters
-    ----------
-    word_line_vals : array_like, optional
-        Values associated with the nodes on the word lines.
-    bit_line_vals : array_like, optional
-        Values associated with the nodes on the bit lines.
-    voltages : named tuple, optional
-        Crossbar node voltages. It should have fields `word_line` and
-        `bit_line` that contain the potentials at the nodes on the word and
-        bit lines (at least one of them should be not None).
+    Args:
+        word_line_vals: Values associated with the nodes on the word lines.
+        bit_line_vals: Values associated with the nodes on the bit lines.
+        voltages: Crossbar node voltages. It should have fields `word_line` and
+            `bit_line` that contain the potentials at the nodes on the word and
+            bit lines (at least one of them should be not None).
 
-    **kwargs
-        default_color : tuple of float, optional
-            Normalized RGB values of the branches and certain type of nodes
-            if its values are not provided.
-        wire_scaling_factor : float, optional
-            Scaling factor for the width of the word and bit lines.
-        device_scaling_factor : float, optional
-            Scaling factor for the width of the devices. Also scales the nodes.
-        node_scaling_factor : float, optional
-            Scaling factor for the diameter of the nodes which is combined
-            with `device_scaling_factor`. For example, if one wanted to only
-            scale the device width by a factor of 2, but keep the node diameter
-            the same, arguments `device_scaling_factor = 2` and
-            `node_scaling_factor = 1/2` would have to be passed.
-        axis_label : str, optional, optional
-            Axis label of the color bar.
-        low_rgb : tuple of float, optional
-            Normalized RGB value associated with the lower limit.
-        zero_rgb : tuple of float, optional
-            Normalized RGB value associated with the value of zero.
-        high_rgb : tuple of float, optional
-            Normalized RGB value associated with the upper limit.
-        allow_overwrite : bool, optional
-            If True, can overwrite existing PDF files with the same name.
-        filename : str, optional
-            Filename, excluding PDF extension.
-        device_type : {'memristor', 'memristor_2', 'resistor_usa',
-        'resistor_europe'}, optional
-            Device type to be drawn.
-        significant_figures : int, optional
-            Number of significant figures to use for the limits of the color
-            bar.
-        round_crossings : bool, optional
-            Because the circuit of a crossbar array is non-planar, the 2D
-            diagram of it will have some wire crossings. If `round_crossings`
-            is False, these crossings will be drawn as straight lines.
-            Otherwise, they will be drawn as semicircles.
-        width : float, optional
-            Width of the diagram in millimeters.
+        **default_color: Normalized RGB values of the branches and certain type
+            of nodes if its values are not provided.
+        **wire_scaling_factor: Scaling factor for the width of the word and bit
+            lines.
+        **device_scaling_factor: Scaling factor for the width of the devices.
+        Also scales the nodes.
+        **node_scaling_factor: Scaling factor for the diameter of the nodes
+            which is combined with `device_scaling_factor`. For example, if one
+            wanted to only scale the device width by a factor of 2, but keep
+            the node diameter the same, arguments `device_scaling_factor = 2`
+            and `node_scaling_factor = 1/2` would have to be passed.
+        **axis_label: Axis label of the color bar.
+        **low_rgb: Normalized RGB value associated with the lower limit.
+        **zero_rgb: Normalized RGB value associated with the value of zero.
+        **high_rgb: Normalized RGB value associated with the upper limit.
+        **allow_overwrite: If True, can overwrite existing PDF files with the same name.
+        **filename: Filename, excluding PDF extension.
+        **device_type: Device type to be drawn. One of {'memristor',
+            'memristor_2', 'resistor_usa', 'resistor_europe'}.
+        **significant_figures: Number of significant figures to use for the
+            limits of the color bar.
+        **round_crossings: Because the circuit of a crossbar array is
+            non-planar, the 2D diagram of it will have some wire crossings. If
+            `round_crossings` is False, these crossings will be drawn as
+            straight lines.  Otherwise, they will be drawn as semicircles.
+        **width: Width of the diagram in millimeters.
     """
     kwargs = plotting.utils.set_defaults(kwargs, False)
 

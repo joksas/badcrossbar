@@ -12,14 +12,10 @@ def complete_path(
 ):
     """Completes the current path.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-        width : float, optional
-        Width of the path.
-    rgb : tuple of float, optional
-        Normalized RGB value of the path.
+    Args:
+        ctx: Context.
+        width: Width of the path.
+        rgb: Normalized RGB value of the path.
     """
     x, y = ctx.get_current_point()
 
@@ -34,12 +30,9 @@ def complete_path(
 def complete_fill(ctx: cairo.Context, rgb: tuple[float, float, float] = (0, 0, 0)):
     """Completes the current fill.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    rgb : tuple of float, optional
-        Normalized RGB value of the path.
+    Args:
+        ctx: Context.
+        rgb: Normalized RGB value of the path.
     """
     x, y = ctx.get_current_point()
 
@@ -60,24 +53,15 @@ def rgb_interpolation(
 ) -> npt.NDArray[tuple[float, float, float]]:
     """Linearly interpolates RGB colors for an array in a specified range.
 
-    Parameters
-    ----------
-    array : ndarray
-        Arrays of values.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    low_rgb : tuple of float, optional
-        Colour (in RGB) associated with the lower limit.
-    zero_rgb : tuple of float, optional
-        Colour (in RGB) associated with value of zero.
-    high_rgb : tuple of float, optional
-        Colour (in RGB) associated with the upper limit.
+    Args:
+        array: Array of values.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        low_rgb: Colour (in RGB) associated with the lower limit.
+        zero_rgb: Colour (in RGB) associated with value of zero.
+        high_rgb: Colour (in RGB) associated with the upper limit.
 
-    Returns
-    -------
-    ndarray of tuple of float, optional
+    Returns:
         RGB values associated with each of the entries in the array.
     """
     rgb = []
@@ -108,16 +92,11 @@ def rgb_interpolation(
 def rgb_single_color(shape: tuple[int, int], color: tuple[float, float, float] = (0, 0, 0)):
     """Return array with RGB values of a single color.
 
-    Parameters
-    ----------
-    shape : tuple of int
-        Shape of the array.
-    color : tuple of int
-        RGB (normalized to 1) of the color.
+    Args:
+        shape: Shape of the array.
+        color: RGB (normalized to 1) of the color.
 
-    Returns
-    -------
-    ndarray of tuple of float, optional
+    Returns:
         Array with RGB values.
     """
     rgb = np.ones((*shape, len(color))) * color
@@ -127,19 +106,14 @@ def rgb_single_color(shape: tuple[int, int], color: tuple[float, float, float] =
     return rgb
 
 
-def arrays_range(*arrays: list[np.ndarray], sf: int = 2):
+def arrays_range(*arrays: list[np.ndarray], sf: int = 2) -> tuple[float, float]:
     """Finds the color bar range from arbitrary number of arrays.
 
-    Parameters
-    ----------
-    arrays : ndarray
-        Arrays.
-    sf : int, optional
-        Number of significant figures.
+    Args:
+        arrays: Arrays.
+        sf: Number of significant figures.
 
-    Returns
-    -------
-    float
+    Returns:
         Minimum and maximum values in the color bar.
     """
     low = np.inf
@@ -179,17 +153,12 @@ def arrays_range(*arrays: list[np.ndarray], sf: int = 2):
 def set_defaults(kwargs, branches: bool = True):
     """Sets default values for kwargs arguments in `badcrossbar.plot` functions.
 
-    Parameters
-    ----------
-    kwargs : dict of any
-        Optional keyword arguments.
-    branches : bool
-        Whether branches are being plotted. If `False`, it is assumed that
-        nodes are being plotted.
+    Args:
+        kwargs: Optional keyword arguments.
+        branches: Whether branches are being plotted. If `False`, it is assumed
+            that nodes are being plotted.
 
-    Returns
-    ----------
-    dict of any
+    Returns:
         Optional keyword arguments with the default values set.
     """
     kwargs.setdefault("default_color", (0, 0, 0))
@@ -217,16 +186,11 @@ def set_defaults(kwargs, branches: bool = True):
 def get_filepath(filename: str, allow_overwrite: bool):
     """Constructs filepath of the diagram.
 
-    Parameters
-    ----------
-    filename : str
-        Filename (without the extension).
-    allow_overwrite :
-        If True, can overwrite existing PDF files with the same name.
+    Args:
+        filename: Filename (without the extension).
+        allow_overwrite: If True, can overwrite existing PDF files with the same name.
 
-    Returns
-    ----------
-    str
+    Returns:
         Filepath of the diagram.
     """
     extension = "pdf"

@@ -13,19 +13,13 @@ def memristor(
 ):
     """Draws a memristor.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    length : float, optional
-        Total length of the memristor.
-    angle : float, optional
-        Angle in radians of the rotation of plane from the positive `x` axis
-        towards positive `y` axis.
-    width : float, optional
-        Width of the path.
-    rgb : tuple of float, optional
-        Normalized RGB value of the path.
+    Args:
+        ctx: Context.
+        length: Total length of the memristor.
+        angle: Angle in radians of the rotation of plane from the positive `x`
+            axis towards positive `y` axis.
+        width: Width of the path.
+        rgb: Normalized RGB value of the path.
     """
     unit = length / 14
 
@@ -56,19 +50,13 @@ def memristor_2(
     Replicated from
     <https://commons.wikimedia.org/wiki/File:Memristor-Symbol.svg>
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    length : float, optional
-        Total length of the memristor.
-    angle : float, optional
-        Angle in radians of the rotation of plane from the positive `x` axis
-        towards positive `y` axis.
-    width : float, optional
-        Width of the path.
-    rgb : tuple of float, optional
-        Normalized RGB value of the path.
+    Args:
+        ctx: Context.
+        length: Total length of the memristor.
+        angle: Angle in radians of the rotation of plane from the positive `x`
+            axis towards positive `y` axis.
+        width: Width of the path.
+        rgb: Normalized RGB value of the path.
     """
     real_width = 2 / 5 * width
     unit = length / 70.866
@@ -130,19 +118,13 @@ def resistor_usa(
 ):
     """Draws a resistor (USA version).
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    length : float, optional
-        Total length of the resistor.
-    angle : float, optional
-        Angle in radians of the rotation of plane from the positive `x` axis
-        towards positive `y` axis.
-    width : float, optional
-        Width of the path.
-    rgb : tuple of float, optional
-        Normalized RGB value of the path.
+    Args:
+        ctx: Context.
+        length: Total length of the resistor.
+        angle: Angle in radians of the rotation of plane from the positive `x`
+            axis towards positive `y` axis.
+        width: Width of the path.
+        rgb: Normalized RGB value of the path.
     """
     real_width = 3 / 5 * width
     unit = length / 14
@@ -173,19 +155,13 @@ def resistor_europe(
 ):
     """Draws a resistor (European version).
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    length : float, optional
-        Total length of the resistor.
-    angle : float, optional
-        Angle in radians of the rotation of plane from the positive `x` axis
-        towards positive `y` axis.
-    width : float, optional
-        Width of the path.
-    rgb : tuple of float, optional
-        Normalized RGB value of the path.
+    Args:
+        ctx: Context.
+        length: Total length of the resistor.
+        angle: Angle in radians of the rotation of plane from the positive `x`
+            axis towards positive `y` axis.
+        width: Width of the path.
+        rgb: Normalized RGB value of the path.
     """
     real_width = 3 / 5 * width
     unit = length / 14

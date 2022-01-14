@@ -13,19 +13,13 @@ def draw_word_line(
 ):
     """Draws a word line of a crossbar array.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    colors : list of tuple of float
-        Normalized RGB values of the word line segments.
-    segment_length : float, optional
-        The length of each segment.
-    round_middle : bool, optional
-        If True, draws a semicircle midway between each two neighbouring
-        nodes, instead of a straight line.
-    scaling_factor : float, optional
-        Scaling factor for the width.
+    Args:
+        ctx: Context.
+        colors: Normalized RGB values of the word line segments.
+        segment_length: The length of each segment.
+        round_middle: If True, draws a semicircle midway between each two
+            neighbouring nodes, instead of a straight line.
+        scaling_factor: Scaling factor for the width.
     """
     width = segment_length / 100 * 3 * scaling_factor
     for idx, color in enumerate(colors):
@@ -48,16 +42,11 @@ def draw_bit_line(
 ):
     """Draws a bit line of a crossbar array.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    colors : list of tuple of float
-        Normalized RGB values of the bit line segments.
-    segment_length : float, optional
-        The length of each segment.
-    scaling_factor : float, optional
-        Scaling factor for the width.
+    Args:
+        ctx: Context.
+        colors: Normalized RGB values of the bit line segments.
+        segment_length: The length of each segment.
+        scaling_factor: Scaling factor for the width.
     """
     width = segment_length / 100 * 3 * scaling_factor
     for color in colors:
@@ -74,18 +63,14 @@ def draw_device_row(
 ):
     """Draws a row of crossbar devices.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    colors : list of tuple of float
-        Normalized RGB values of the crossbar devices.
-    segment_length : float, optional
-        The length of each segment.
-    scaling_factor : float, optional
-        Scaling factor for the width.
-    device : {'memristor', 'memristor_2', 'resistor_usa', 'resistor_europe'}, optional
-        Device type to be drawn.
+    Args:
+        ctx: Context.
+        colors: Normalized RGB values of the crossbar devices.
+        segment_length: The length of each segment.
+        scaling_factor: Scaling factor for the width.
+        device : Device type to be drawn. One of {'memristor', 'memristor_2',
+            'resistor_usa', 'resistor_europe'}.
+
     """
     width = segment_length / 100 * 5 * scaling_factor
     x, y = ctx.get_current_point()
@@ -118,20 +103,14 @@ def draw_node_row(
 ):
     """Draws a row of nodes.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    colors : list of tuple of float
-        Normalized RGB values of the nodes.
-    segment_length : float, optional
-        The length of each segment.
-    bit_line_nodes : bool, optional
-        If True, draws nodes on the bit lines.
-    scaling_factor : float, optional
-        Scaling factor for the diameter.
-    device : {'memristor', 'memristor_2', 'resistor_usa', 'resistor_europe'}, optional
-        Device type to be drawn (affects node diameter).
+    Args:
+        ctx: Context.
+        colors: Normalized RGB values of the nodes.
+        segment_length: The length of each segment.
+        bit_line_nodes: If True, draws nodes on the bit lines.
+        scaling_factor: Scaling factor for the diameter.
+        device : Device type to be drawn (affects node diameter). One of
+            {'memristor', 'memristor_2', 'resistor_usa', 'resistor_europe'}.
     """
     diameter = segment_length / 100 * 7 * scaling_factor
     if device in ["resistor_usa", "resistor_europe", "memristor_2"]:
@@ -161,26 +140,18 @@ def bit_lines(
 ):
     """Draws bit lines.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    bit_line_vals : ndarray or None
-        Values associated with the interconnect segments along the bit lines.
-    diagram_pos : tuple of float
-        Coordinates of the top left point of the diagram.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    segment_length : float, optional
-        The length of each segment.
-    crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `bit_line_vals` is None.
-    **kwargs
-        default_color : tuple of float, optional
-            Normalized RGB values of the bit lines if their values are not
-            provided.
+    Args:
+        ctx: Context.
+        bit_line_vals: Values associated with the interconnect segments along
+            the bit lines.
+        diagram_pos: Coordinates of the top left point of the diagram.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        segment_length: The length of each segment.
+        crossbar_shape: Shape of the crossbar array. Used when `bit_line_vals`
+            is None.
+        **default_color: Normalized RGB values of the bit lines if their values
+            are not provided.
     """
     x = diagram_pos[0] + 1.5 * segment_length
     y = diagram_pos[1] + 0.5 * segment_length
@@ -233,26 +204,18 @@ def word_lines(
 ):
     """Draws word lines.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    word_line_vals : ndarray or None
-        Values associated with the interconnect segments along the word lines.
-    diagram_pos : tuple of float
-        Coordinates of the top left point of the diagram.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    segment_length : float, optional
-        The length of each segment.
-    crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `word_line_vals` is None.
-    **kwargs
-        default_color : tuple of float, optional
-            Normalized RGB values of the word lines if their values are not
-            provided.
+    Args:
+        ctx: Context.
+        word_line_vals: Values associated with the interconnect segments along
+            the word lines.
+        diagram_pos: Coordinates of the top left point of the diagram.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        segment_length: The length of each segment.
+        crossbar_shape: Shape of the crossbar array. Used when `word_line_vals`
+            is None.
+        **default_color: Normalized RGB values of the word lines if their
+            values are not provided.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
@@ -314,26 +277,17 @@ def devices(
 ):
     """Draws crossbar devices.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    device_vals : ndarray or None
-        Values associated with crossbar devices.
-    diagram_pos : tuple of float
-        Coordinates of the top left point of the diagram.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    segment_length : float, optional
-        The length of each segment.
-    crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `device_vals` is None.
-    **kwargs
-        default_color : tuple of float, optional
-            Normalized RGB values of the crossbar devices if their values
-            are not provided.
+    Args:
+        ctx: Context.
+        device_vals: Values associated with crossbar devices.
+        diagram_pos: Coordinates of the top left point of the diagram.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        segment_length: The length of each segment.
+        crossbar_shape: Shape of the crossbar array. Used when `device_vals` is
+            None.
+        **default_color: Normalized RGB values of the crossbar devices if their
+            values are not provided.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
@@ -388,33 +342,23 @@ def nodes(
 ):
     """Draws nodes.
 
-    Parameters
-    ----------
-    ctx : cairo.Context
-        Context.
-    node_vals : ndarray or None
-        Values associated with the nodes.
-    diagram_pos : tuple of float
-        Coordinates of the top left point of the diagram.
-    low : float
-        Lower limit of the linear range.
-    high : float
-        Upper limit of the linear range.
-    segment_length : float, optional
-        The length of each segment.
-    crossbar_shape : tuple of int, optional
-        Shape of the crossbar array. Used when `node_vals` is None.
-    bit_line : bool, optional
-        If True, draws nodes on the bit lines.
-    kwargs
-        device_scaling_factor : float, optional
-            Scaling factor for the width of the devices. Also scales the nodes.
-        node_scaling_factor : float, optional
-            Scaling factor for the diameter of the nodes which is combined
-            with `device_scaling_factor`. For example, if one wanted to only
-            scale the device width by a factor of 2, but keep the node diameter
-            the same, arguments `device_scaling_factor = 2` and
-            `node_scaling_factor = 1/2` would have to be passed.
+    Args:
+        ctx: Context.
+        node_vals: Values associated with the nodes.
+        diagram_pos: Coordinates of the top left point of the diagram.
+        low: Lower limit of the linear range.
+        high: Upper limit of the linear range.
+        segment_length: The length of each segment.
+        crossbar_shape: Shape of the crossbar array. Used when `node_vals` is
+            None.
+        bit_line: If True, draws nodes on the bit lines.
+        **device_scaling_factor: Scaling factor for the width of the devices.
+            Also scales the nodes.
+        **node_scaling_factor: Scaling factor for the diameter of the nodes
+            which is combined with `device_scaling_factor`. For example, if one
+            wanted to only scale the device width by a factor of 2, but keep
+            the node diameter the same, arguments `device_scaling_factor = 2`
+            and `node_scaling_factor = 1/2` would have to be passed.
     """
     x, y = diagram_pos
     ctx.move_to(x, y)
@@ -468,31 +412,20 @@ def dimensions(
 ):
     """Extracts dimensions of the surface.
 
-    Parameters
-    ----------
-    shape : tuple of int
-        Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
-    max_dim_mm : float, optional
-        Width of the diagram in millimeters.
-    color_bar_fraction : tuple of float, optional
-        The fraction of the surface that the color bar region will take on
-        the right (vertically and horizontally.
-    border_fraction : float, optional
-        Fraction of the `max_dim` that will be blank on all sides of the
-        surface.
+    Args:
+        shape: Shape of the crossbar array (`num_word_lines`, `num_bit_lines`).
+        max_dim_mm: Width of the diagram in millimeters.
+        color_bar_fraction: The fraction of the surface that the color bar
+            region will take on the right (vertically and horizontally.
+        border_fraction: Fraction of the `max_dim` that will be blank on all
+            sides of the surface.
 
-    Returns
-    -------
-    surface_dims : tuple of float
-        Dimensions of the surface.
-    diagram_pos : tuple of float
-        Coordinates of the top left point of the diagram.
-    segment_length : float
-        The length of each segment.
-    color_bar_pos : tuple of float
-        Coordinates of the top left point of the color bar.
-    color_bar_dims : tuple of float
-        Width and height of the color bar.
+    Returns:
+        surface_dims: Dimensions of the surface.
+        diagram_pos: Coordinates of the top left point of the diagram.
+        segment_length: The length of each segment.
+        color_bar_pos: Coordinates of the top left point of the color bar.
+        color_bar_dims: Width and height of the color bar.
     """
     # convert millimeters to points
     width = width_mm * 72 / 25.4
