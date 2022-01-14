@@ -104,7 +104,7 @@ def plotting_requirements(
         return valid_arrays.get("word_line_node_vals"), valid_arrays.get("bit_line_node_vals")
 
 
-def not_none(**kwargs: dict[str, Any]) -> dict[str, Any]:
+def not_none(**kwargs: Any) -> dict[str, Any]:
     """Confirms that at least one of the items is not None.
 
     Args:

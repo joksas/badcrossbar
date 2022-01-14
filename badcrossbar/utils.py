@@ -71,7 +71,7 @@ def average_if_3D(array: npt.NDArray) -> npt.NDArray:
     return array
 
 
-def arrays_shape(*arrays: list[npt.NDArray]):
+def arrays_shape(*arrays: npt.NDArray):
     """Returns the shape of the first array that is not None.
 
     Args:
