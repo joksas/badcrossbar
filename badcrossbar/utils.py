@@ -43,24 +43,6 @@ def unique_path(path: str, extension: str = "pdf", sanitize: bool = True) -> str
     return full_path
 
 
-def time(keep_ms: bool = False) -> str:
-    """Returns current time.
-
-    Parameters
-    ----------
-    keep_ms : bool, optional
-        If True, includes milliseconds.
-    Returns
-    -------
-    str
-        Current time.
-    """
-    time_str = str(datetime.now())
-    if keep_ms is False:
-        time_str = time_str.split(".")[0]
-    return time_str
-
-
 def squeeze_third_axis(array: npt.NDArray) -> npt.NDArray:
     """Removes third axis of ndarray if it has shape of 1.
 
