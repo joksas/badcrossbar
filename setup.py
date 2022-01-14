@@ -30,6 +30,7 @@ setuptools.setup(
     url="https://github.com/joksas/badcrossbar",
     project_urls={
         "Bug Tracker": "https://github.com/joksas/badcrossbar/issues",
+        "Documentation": "https://badcrossbar.readthedocs.io",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
