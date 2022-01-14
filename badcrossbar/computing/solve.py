@@ -2,7 +2,6 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-from badcrossbar import utils
 from badcrossbar.computing import fill
 from scipy.sparse import linalg
 

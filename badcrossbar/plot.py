@@ -1,6 +1,5 @@
 import cairo
 import numpy.typing as npt
-from pathvalidate import sanitize_filepath
 
 from badcrossbar import check, computing, plotting, utils
 

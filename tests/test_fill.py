@@ -1,10 +1,8 @@
-import copy
 from collections import namedtuple
 
 import badcrossbar.computing as computing
 import numpy as np
 import pytest
-from scipy.sparse import lil_matrix
 
 Interconnect = namedtuple("Interconnect", ["word_line", "bit_line"])
 
