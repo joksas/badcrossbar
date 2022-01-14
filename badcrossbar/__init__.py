@@ -6,13 +6,13 @@ warnings.simplefilter("always", ImportWarning)
 
 try:
     from .compute import compute
-except ModuleNotFoundError:
-    warnings.warn("Could not import `badcrossbar.compute()`!", ImportWarning)
+except ModuleNotFoundError as e:
+    warnings.warn(f"Could not import `badcrossbar.compute()` ({e})", ImportWarning)
 
 try:
     import badcrossbar.plot
-except ModuleNotFoundError:
-    warnings.warn("Could not import `badcrossbar.plot`!", ImportWarning)
+except ModuleNotFoundError as e:
+    warnings.warn("Could not import `badcrossbar.plot` ({e})", ImportWarning)
 
 logging.basicConfig(
     stream=sys.stdout,
