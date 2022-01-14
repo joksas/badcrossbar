@@ -333,24 +333,15 @@ def insulating_interconnect_solution(
         applied_voltages: Applied voltages.
         **all_currents: If False, only output currents are returned, while all
             the other ones are set to None.
-        **verbose: If 2, makes sure that warning is displayed.
 
     Returns:
         Branch currents and node voltages of the crossbar.
     """
     extracted_voltages = Voltages(None, None)
     if kwargs.get("node_voltages"):
-        initial_verbose = kwargs.get("verbose")
-
-        if initial_verbose == 2:
-            kwargs["verbose"] = 1
-
         logger.info(
             "Warning: all interconnects are perfectly insulating! Node voltages are undefined!"
         )
-
-        if initial_verbose == 2:
-            kwargs["verbose"] = 2
 
     output_i = np.zeros((applied_voltages.shape[1], resistances.shape[1]))
     if kwargs.get("all_currents", True):
