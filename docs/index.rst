@@ -1,4 +1,4 @@
-``badcrossbar``'s docs
+`badcrossbar`'s docs
 =======================================
 
 Computing

@@ -25,3 +25,4 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 
 html_theme = "sphinx_book_theme"
+default_role = "literal"
