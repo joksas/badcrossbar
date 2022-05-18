@@ -6,14 +6,13 @@ This package was published in [SoftwareX](https://www.journals.elsevier.com/soft
 
 ```bibtex
 @article{JoksasMehonic2020,
-  title     = {{badcrossbar}: A {Python} tool for computing and plotting currents and voltages in passive crossbar arrays},
-  author    = {Joksas, Dovydas and Mehonic, Adnan},
-  journal   = {SoftwareX},
-  volume    = {12},
-  pages     = {100617},
-  year      = {2020},
-  publisher = {Elsevier},
-  doi       = {10.1016/j.softx.2020.100617}
+  author       = {Joksas, Dovydas and Mehonic, Adnan},
+  date         = {2020},
+  doi          = {10.1016/j.softx.2020.100617},
+  journaltitle = {SoftwareX},
+  pages        = {100617},
+  title        = {\texttt{badcrossbar}: A {Python} tool for computing and plotting currents and voltages in passive crossbar arrays},
+  volume       = {12},
 }
 ```
 
