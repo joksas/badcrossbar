@@ -26,3 +26,10 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "sphinx_book_theme"
 default_role = "literal"
+html_theme_options = {
+    "single_page": True,
+    "repository_url": "https://github.com/joksas/badcrossbar",
+    "use_repository_button": True,
+    "use_download_button": False,
+    "use_fullscreen_button": False,
+}
