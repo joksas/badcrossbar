@@ -46,8 +46,8 @@ def branches(
         **allow_overwrite: If True, can overwrite existing PDF files with the
             same name.
         **filename: Filename, excluding PDF extension.
-        **device_type: Device type to be drawn. One of {'memristor',
-            'memristor_2', 'resistor_usa', 'resistor_europe'}.
+        **device_type: Device type to be drawn. One of {`"memristor"`,
+            `"memristor_2"`, `"resistor_usa"`, `"resistor_europe"`}.
         **significant_figures: Number of significant figures to use for the
             limits of the color bar.
         **round_crossings: Because the circuit of a crossbar array is
@@ -175,8 +175,8 @@ def nodes(
         **high_rgb: Normalized RGB value associated with the upper limit.
         **allow_overwrite: If True, can overwrite existing PDF files with the same name.
         **filename: Filename, excluding PDF extension.
-        **device_type: Device type to be drawn. One of {'memristor',
-            'memristor_2', 'resistor_usa', 'resistor_europe'}.
+        **device_type: Device type to be drawn. One of {`"memristor"`,
+            `"memristor_2"`, `"resistor_usa"`, `"resistor_europe"`}.
         **significant_figures: Number of significant figures to use for the
             limits of the color bar.
         **round_crossings: Because the circuit of a crossbar array is
