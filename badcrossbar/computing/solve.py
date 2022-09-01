@@ -1,9 +1,11 @@
 import logging
 
+import jax.numpy as jnp
 import numpy as np
 import numpy.typing as npt
 from badcrossbar.computing import fill
-from scipy.sparse import linalg
+from jax.scipy.sparse import linalg
+from jax.experimental.sparse import BCOO
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +23,20 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
     """
     if r_i.word_line > 0 or r_i.bit_line > 0:
         g = fill.g(resistances, r_i)
+        g_indices = []
+        g_data = []
+        for (row, col) in g:
+            g_indices.append([row, col])
+            g_data.append(g[(row, col)])
+
         i = fill.i(applied_voltages, resistances, r_i)
+        g_matrix = BCOO((g_data, g_indices), shape=(i.shape[0], i.shape[0]))
 
         logger.info("Started solving for v.")
-        v_matrix = linalg.spsolve(g.tocsc(), i)
+        v_matrix, _ = linalg.cg(g_matrix, i, tol=1e-12, atol=1e-12)
         logger.info("Solved for v.")
 
+        v_matrix = np.array(v_matrix)
         # if `num_examples == 1`, it can result in 1D array.
         if v_matrix.ndim == 1:
             v_matrix = v_matrix.reshape(v_matrix.shape[0], 1)

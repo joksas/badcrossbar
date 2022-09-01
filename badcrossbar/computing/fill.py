@@ -1,10 +1,11 @@
+from collections import defaultdict
+
 import numpy as np
 import numpy.typing as npt
 from badcrossbar.computing import kcl
-from scipy.sparse import lil_matrix
 
 
-def g(resistances: npt.NDArray, r_i) -> lil_matrix:
+def g(resistances: npt.NDArray, r_i) -> dict[(int, int), float]:
     """Creates and fills matrix `g` used in equation `gv = i`.
 
     Args:
@@ -18,7 +19,7 @@ def g(resistances: npt.NDArray, r_i) -> lil_matrix:
         g_shape = tuple(resistances.size for _ in range(2))
     else:
         g_shape = tuple(2 * resistances.size for _ in range(2))
-    g_matrix = lil_matrix(g_shape)
+    g_matrix = defaultdict(float)
     g_matrix = kcl.apply(g_matrix, resistances, r_i)
     return g_matrix
 

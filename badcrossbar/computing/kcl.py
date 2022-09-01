@@ -1,9 +1,8 @@
 import numpy as np
 import numpy.typing as npt
-from scipy.sparse import lil_matrix
 
 
-def apply(g_matrix: lil_matrix, resistances: npt.NDArray, r_i) -> lil_matrix:
+def apply(g_matrix: dict[(int, int), float], resistances: npt.NDArray, r_i) -> dict[(int, int), float]:
     """Fills matrix `g` used in equation `gv = i`.
 
     Values are filled by applying Kirchhoff's current law at the nodes on the
@@ -26,7 +25,7 @@ def apply(g_matrix: lil_matrix, resistances: npt.NDArray, r_i) -> lil_matrix:
     return g_matrix
 
 
-def word_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil_matrix:
+def word_line_nodes(g_matrix: dict[(int, int), float], conductances: npt.NDArray, r_i) -> dict[(int, int), float]:
     """Fills matrix `g` with values corresponding to nodes on the word lines.
 
     Args:
@@ -46,44 +45,69 @@ def word_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil
         # first column
         idx_word_lines = np.arange(num_word_lines)
         idx_bit_lines = np.repeat(0, num_word_lines)
-        idx = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-        g_matrix[idx, idx] = np.ones((num_word_lines,)) * 2 * g_i + conductances[:, 0]
-        g_matrix[idx, idx + 1] = -np.ones((num_word_lines,)) * g_i
+        idxs = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+        vals = np.ones((num_word_lines,)) * 2 * g_i + conductances[:, 0]
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx)] = val
+        vals = -np.ones((num_word_lines,)) * g_i
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx+1)] = val
+
         if r_i.bit_line > 0:
-            g_matrix[idx, idx + conductances.size] = -conductances[:, 0]
+            vals = -conductances[:, 0]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx + conductances.size)] = val
 
         # middle columns
         for i in range(1, num_bit_lines - 1):
             idx_word_lines = np.arange(num_word_lines)
             idx_bit_lines = np.repeat(i, num_word_lines)
-            idx = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-            g_matrix[idx, idx] = np.ones((num_word_lines,)) * 2 * g_i + conductances[:, i]
-            g_matrix[idx, idx - 1] = -np.ones((num_word_lines,)) * g_i
-            g_matrix[idx, idx + 1] = -np.ones((num_word_lines,)) * g_i
+            idxs = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+            vals = np.ones((num_word_lines,)) * 2 * g_i + conductances[:, i]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx)] = val
+            vals = -np.ones((num_word_lines,)) * g_i
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx-1)] = val
+            vals = -np.ones((num_word_lines,)) * g_i
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx+1)] = val
             if r_i.bit_line > 0:
-                g_matrix[idx, idx + conductances.size] = -conductances[:, i]
+                vals = -conductances[:, i]
+                for idx, val in zip(idxs, vals):
+                    g_matrix[(idx, idx + conductances.size)] = val
 
         # last column
         idx_word_lines = np.arange(num_word_lines)
         idx_bit_lines = np.repeat(num_bit_lines - 1, num_word_lines)
-        idx = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-        g_matrix[idx, idx] = np.ones((num_word_lines,)) * g_i + conductances[:, -1]
-        g_matrix[idx, idx - 1] = -np.ones((num_word_lines,)) * g_i
+        idxs = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+        vals = np.ones((num_word_lines,)) * g_i + conductances[:, -1]
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx)] = val
+        vals = -np.ones((num_word_lines,)) * g_i
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx - 1)] = val
         if r_i.bit_line > 0:
-            g_matrix[idx, idx + conductances.size] = -conductances[:, -1]
+            vals = -conductances[:, -1]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx + conductances.size)] = val
     else:
         # the only column
         idx_word_lines = np.arange(num_word_lines)
         idx_bit_lines = np.repeat(0, num_word_lines)
-        idx = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-        g_matrix[idx, idx] = np.ones((num_word_lines,)) * g_i + conductances[:, 0]
+        idxs = np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+        vals = np.ones((num_word_lines,)) * g_i + conductances[:, 0]
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx)] = val
         if r_i.bit_line > 0:
-            g_matrix[idx, idx + conductances.size] = -conductances[:, 0]
+            vals = -conductances[:, 0]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx + conductances.size)] = val
 
     return g_matrix
 
 
-def bit_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil_matrix:
+def bit_line_nodes(g_matrix: dict[(int, int), float], conductances: npt.NDArray, r_i) -> dict[(int, int), float]:
     """Fills matrix g with values corresponding to nodes on the bit lines.
 
     Args:
@@ -107,38 +131,62 @@ def bit_line_nodes(g_matrix: lil_matrix, conductances: npt.NDArray, r_i) -> lil_
         # first row
         idx_word_lines = np.repeat(0, num_bit_lines)
         idx_bit_lines = np.arange(num_bit_lines)
-        idx = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-        g_matrix[idx, idx] = np.ones((num_bit_lines,)) * g_bl + conductances[0, :]
-        g_matrix[idx, idx + num_bit_lines] = -np.ones((num_bit_lines,)) * g_bl
+        idxs = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+        vals = np.ones((num_bit_lines,)) * g_bl + conductances[0, :]
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx)] = val
+        vals = -np.ones((num_bit_lines,)) * g_bl
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx + num_bit_lines)] = val
         if r_i.word_line > 0:
-            g_matrix[idx, idx - conductances.size] = -conductances[0, :]
+            vals = -conductances[0, :]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx - conductances.size)] = val
 
         # middle rows
         for i in range(1, num_word_lines - 1):
             idx_word_lines = np.repeat(i, num_bit_lines)
             idx_bit_lines = np.arange(num_bit_lines)
-            idx = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-            g_matrix[idx, idx] = np.ones((num_bit_lines,)) * 2 * g_bl + conductances[i, :]
-            g_matrix[idx, idx + num_bit_lines] = -np.ones((num_bit_lines,)) * g_bl
-            g_matrix[idx, idx - num_bit_lines] = -np.ones((num_bit_lines,)) * g_bl
+            idxs = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+            vals = np.ones((num_bit_lines,)) * 2 * g_bl + conductances[i, :]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx)] = val
+            vals = -np.ones((num_bit_lines,)) * g_bl
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx + num_bit_lines)] = val
+            vals = -np.ones((num_bit_lines,)) * g_bl
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx - num_bit_lines)] = val
             if r_i.word_line > 0:
-                g_matrix[idx, idx - conductances.size] = -conductances[i, :]
+                vals = -conductances[i, :]
+                for idx, val in zip(idxs, vals):
+                    g_matrix[(idx, idx - conductances.size)] = val
 
         # last row
         idx_word_lines = np.repeat(num_word_lines - 1, num_bit_lines)
         idx_bit_lines = np.arange(num_bit_lines)
-        idx = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-        g_matrix[idx, idx] = np.ones((num_bit_lines,)) * 2 * g_bl + conductances[-1, :]
-        g_matrix[idx, idx - num_bit_lines] = -np.ones((num_bit_lines,)) * g_bl
+        idxs = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+        vals = np.ones((num_bit_lines,)) * 2 * g_bl + conductances[-1, :]
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx)] = val
+        vals = -np.ones((num_bit_lines,)) * g_bl
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx - num_bit_lines)] = val
         if r_i.word_line > 0:
-            g_matrix[idx, idx - conductances.size] = -conductances[-1, :]
+            vals = -conductances[-1, :]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx - conductances.size)] = val
     else:
         # the only row
         idx_word_lines = np.repeat(0, num_bit_lines)
         idx_bit_lines = np.arange(num_bit_lines)
-        idx = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
-        g_matrix[idx, idx] = np.ones((num_bit_lines,)) * g_bl + conductances[0, :]
+        idxs = offset + np.ravel_multi_index((idx_word_lines, idx_bit_lines), conductances.shape)
+        vals = np.ones((num_bit_lines,)) * g_bl + conductances[0, :]
+        for idx, val in zip(idxs, vals):
+            g_matrix[(idx, idx)] = val
         if r_i.word_line > 0:
-            g_matrix[idx, idx - conductances.size] = -conductances[0, :]
+            vals = -conductances[0, :]
+            for idx, val in zip(idxs, vals):
+                g_matrix[(idx, idx - conductances.size)] = val
 
     return g_matrix
