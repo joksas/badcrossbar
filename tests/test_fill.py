@@ -4,6 +4,8 @@ import badcrossbar.computing as computing
 import numpy as np
 import pytest
 
+from tests import utils as test_utils
+
 Interconnect = namedtuple("Interconnect", ["word_line", "bit_line"])
 
 applied_voltages_list = [
@@ -53,4 +55,4 @@ i_inputs = [i for i in zip(applied_voltages_list, resistances_list, r_i_list, i_
 def test_i(applied_voltages, resistances, r_i, expected):
     """Tests `badcrossbar.computing.fill.i()`."""
     i_matrix = computing.fill.i(applied_voltages, resistances, r_i)
-    np.testing.assert_array_almost_equal(i_matrix, expected)
+    test_utils.assert_almost_equal(i_matrix, expected)

@@ -6,6 +6,9 @@ import numpy as np
 import pytest
 from scipy.sparse import lil_matrix
 
+from tests import utils as test_utils
+
+
 Interconnect = namedtuple("Interconnect", ["word_line", "bit_line"])
 r_i = Interconnect(0.5, 0.25)
 
@@ -67,7 +70,7 @@ def test_word_line_nodes(conductances, g_matrix, expected):
     filled_g_matrix = computing.kcl.word_line_nodes(
         copy.deepcopy(g_matrix), conductances, r_i
     ).toarray()
-    np.testing.assert_array_almost_equal(filled_g_matrix, expected)
+    test_utils.assert_almost_equal(filled_g_matrix, expected)
 
 
 @pytest.mark.parametrize("conductances,g_matrix,expected", bit_line_nodes_inputs)
@@ -76,4 +79,4 @@ def test_bit_line_nodes(conductances, g_matrix, expected):
     filled_g_matrix = computing.kcl.bit_line_nodes(
         copy.deepcopy(g_matrix), conductances, r_i
     ).toarray()
-    np.testing.assert_array_almost_equal(filled_g_matrix, expected)
+    test_utils.assert_almost_equal(filled_g_matrix, expected)

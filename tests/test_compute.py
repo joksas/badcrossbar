@@ -6,6 +6,8 @@ import numpy as np
 import pytest
 from badcrossbar import utils
 
+from tests import utils as test_utils
+
 Solution = namedtuple("Solution", ["currents", "voltages"])
 Currents = namedtuple("Currents", ["output", "device", "word_line", "bit_line"])
 Voltages = namedtuple("Voltages", ["word_line", "bit_line"])
@@ -247,10 +249,10 @@ def compare_currents(computed_currents, expected_currents):
     expected_currents : named tuple of ndarray
         Expected crossbar branch currents.
     """
-    np.testing.assert_array_almost_equal(computed_currents.output, expected_currents.output)
-    np.testing.assert_array_almost_equal(computed_currents.device, expected_currents.device)
-    np.testing.assert_array_almost_equal(computed_currents.word_line, expected_currents.word_line)
-    np.testing.assert_array_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
+    test_utils.assert_almost_equal(computed_currents.output, expected_currents.output)
+    test_utils.assert_almost_equal(computed_currents.device, expected_currents.device)
+    test_utils.assert_almost_equal(computed_currents.word_line, expected_currents.word_line)
+    test_utils.assert_almost_equal(computed_currents.bit_line, expected_currents.bit_line)
 
 
 def compare_voltages(computed_voltages, expected_voltages):
@@ -263,5 +265,5 @@ def compare_voltages(computed_voltages, expected_voltages):
     expected_voltages : named tuple of ndarray
         Expected crossbar node voltages.
     """
-    np.testing.assert_array_almost_equal(computed_voltages.word_line, expected_voltages.word_line)
-    np.testing.assert_array_almost_equal(computed_voltages.bit_line, expected_voltages.bit_line)
+    test_utils.assert_almost_equal(computed_voltages.word_line, expected_voltages.word_line)
+    test_utils.assert_almost_equal(computed_voltages.bit_line, expected_voltages.bit_line)
