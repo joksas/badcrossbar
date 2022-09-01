@@ -1,5 +1,6 @@
 import logging
 
+import jax
 import jax.numpy as jnp
 import numpy as np
 import numpy.typing as npt
@@ -33,7 +34,7 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         g_matrix = BCOO((g_data, g_indices), shape=(i.shape[0], i.shape[0]))
 
         logger.info("Started solving for v.")
-        v_matrix, _ = linalg.cg(g_matrix, i, tol=1e-12, atol=1e-12)
+        v_matrix, _ = jax.jit(linalg.cg)(g_matrix, i, tol=1e-12, atol=1e-12)
         logger.info("Solved for v.")
 
         v_matrix = np.array(v_matrix)
