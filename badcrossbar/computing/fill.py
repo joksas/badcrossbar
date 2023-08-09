@@ -5,7 +5,7 @@ from jax import Array
 from badcrossbar.computing import kcl
 
 
-def g(resistances: Array, r_i) -> dict[(int, int), float]:
+def g(resistances: Array, r_i) -> dict[tuple[int, int], float]:
     """Creates and fills matrix `g` used in equation `gv = i`.
 
     Args:
