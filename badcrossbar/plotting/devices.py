@@ -1,7 +1,8 @@
+import cairo
+import jax.numpy as jnp
+
 import badcrossbar.plotting.shapes as shapes
 import badcrossbar.plotting.utils as utils
-import cairo
-import numpy as np
 
 
 def memristor(
@@ -25,13 +26,13 @@ def memristor(
 
     ctx.rotate(angle)
     shapes.line(ctx, 4 * unit)
-    shapes.line(ctx, 1.5 * unit, -np.pi / 2)
+    shapes.line(ctx, 1.5 * unit, -jnp.pi / 2)
     shapes.line(ctx, 2 * unit)
-    shapes.line(ctx, 3 * unit, np.pi / 2)
+    shapes.line(ctx, 3 * unit, jnp.pi / 2)
     shapes.line(ctx, 2 * unit)
-    shapes.line(ctx, 3 * unit, -np.pi / 2)
+    shapes.line(ctx, 3 * unit, -jnp.pi / 2)
     shapes.line(ctx, 2 * unit)
-    shapes.line(ctx, 1.5 * unit, np.pi / 2)
+    shapes.line(ctx, 1.5 * unit, jnp.pi / 2)
     shapes.line(ctx, 4 * unit)
     ctx.rotate(-angle)
 
@@ -68,28 +69,28 @@ def memristor_2(
 
     # Wire arranged turning at 90 degree angles.
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(-np.pi / 2)
+    ctx.rotate(-jnp.pi / 2)
     shapes.line(ctx, 3.543 * unit)
-    ctx.rotate(np.pi / 2)
+    ctx.rotate(jnp.pi / 2)
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(np.pi / 2)
+    ctx.rotate(jnp.pi / 2)
     shapes.line(ctx, 7.087 * unit)
-    ctx.rotate(-np.pi / 2)
+    ctx.rotate(-jnp.pi / 2)
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(-np.pi / 2)
+    ctx.rotate(-jnp.pi / 2)
     shapes.line(ctx, 7.087 * unit)
-    ctx.rotate(np.pi / 2)
+    ctx.rotate(jnp.pi / 2)
     shapes.line(ctx, 6.456 * unit)
-    ctx.rotate(np.pi / 2)
+    ctx.rotate(jnp.pi / 2)
     shapes.line(ctx, 3.543 * unit)
-    ctx.rotate(-np.pi / 2)
+    ctx.rotate(-jnp.pi / 2)
     shapes.line(ctx, 6.456 * unit)
     shapes.line(ctx, 4.543 * unit)
 
     # Rectangle enclosing the wire.
     x, y = ctx.get_current_point()
     ctx.move_to(x, y + 7.5865 * unit)
-    ctx.rotate(np.pi / 2)
+    ctx.rotate(jnp.pi / 2)
     shapes.rectangle(ctx, -15.173 * unit, 36.433 * unit)
 
     utils.complete_path(ctx, rgb=rgb, width=real_width)
@@ -102,7 +103,7 @@ def memristor_2(
     # Outside connector.
     x, y = ctx.get_current_point()
     ctx.move_to(x - 7.5865 * unit, y)
-    ctx.rotate(-np.pi / 2)
+    ctx.rotate(-jnp.pi / 2)
     shapes.line(ctx, 17.717 * unit)
     utils.complete_path(ctx, rgb=rgb, width=real_width)
 
@@ -130,8 +131,8 @@ def resistor_usa(
     unit = length / 14
 
     ctx.rotate(angle)
-    zigzag_angle = 3 / 8 * np.pi
-    zigzag_length = unit / np.cos(zigzag_angle)
+    zigzag_angle = 3 / 8 * jnp.pi
+    zigzag_length = unit / jnp.cos(zigzag_angle)
     shapes.line(ctx, 4 * unit)
     shapes.line(ctx, 0.5 * zigzag_length, zigzag_angle)
     shapes.line(ctx, zigzag_length, -zigzag_angle)

@@ -1,5 +1,5 @@
 import cairo
-import numpy as np
+import jax.numpy as jnp
 
 
 def draw(
@@ -43,8 +43,8 @@ def dimensions(
         color_bar_pos: Coordinates of the top left point of the color bar.
         color_bar_dims: Width and height of the color bar.
     """
-    height = np.max(surface_dims) * color_bar_fraction[0]
-    width = np.max(surface_dims) * color_bar_fraction[1] / 4
+    height = max(surface_dims) * color_bar_fraction[0]
+    width = max(surface_dims) * color_bar_fraction[1] / 4
     x_start = surface_dims[0] * (1 - border_fraction) - 3 * width
     y_start = 0.5 * surface_dims[1] - height / 2
     color_bar_dims = (width, height)
@@ -221,6 +221,6 @@ def axis_label(
     y = color_bar_pos[1] + 0.5 * color_bar_dims[1] + 0.5 * width
     ctx.move_to(x, y)
 
-    ctx.rotate(-np.pi / 2)
+    ctx.rotate(-jnp.pi / 2)
     ctx.show_text(str(label))
-    ctx.rotate(np.pi / 2)
+    ctx.rotate(jnp.pi / 2)

@@ -1,7 +1,9 @@
-import badcrossbar.plotting as plotting
 import cairo
+import jax.numpy as jnp
 import numpy as np
-import numpy.typing as npt
+from jax import Array
+
+import badcrossbar.plotting as plotting
 
 
 def draw_word_line(
@@ -50,7 +52,7 @@ def draw_bit_line(
     """
     width = segment_length / 100 * 3 * scaling_factor
     for color in colors:
-        plotting.shapes.line(ctx, segment_length, angle=np.pi / 2)
+        plotting.shapes.line(ctx, segment_length, angle=jnp.pi / 2)
         plotting.utils.complete_path(ctx, rgb=color, width=width)
 
 
@@ -74,7 +76,7 @@ def draw_device_row(
     """
     width = segment_length / 100 * 5 * scaling_factor
     x, y = ctx.get_current_point()
-    device_length = segment_length / 2 * np.sqrt(2)  # Pythagorean theorem
+    device_length = segment_length / 2 * jnp.sqrt(2)  # Pythagorean theorem
 
     device_functions = {
         "memristor": plotting.devices.memristor,
@@ -90,7 +92,7 @@ def draw_device_row(
     for color in colors:
         x += segment_length
         ctx.move_to(x, y)
-        device_function(ctx, length=device_length, angle=np.pi / 4, width=width, rgb=color)
+        device_function(ctx, length=device_length, angle=jnp.pi / 4, width=width, rgb=color)
 
 
 def draw_node_row(
@@ -123,14 +125,14 @@ def draw_node_row(
     for color in colors:
         x += segment_length
         ctx.move_to(x, y)
-        ctx.arc(x, y, radius, 0, 2 * np.pi)
+        ctx.arc(x, y, radius, 0, 2 * jnp.pi)
         ctx.move_to(x, y)
         plotting.utils.complete_fill(ctx, color)
 
 
 def bit_lines(
     ctx: cairo.Context,
-    bit_line_vals: npt.NDArray,
+    bit_line_vals: Array,
     diagram_pos: tuple[float, float],
     low: float,
     high: float,
@@ -158,7 +160,7 @@ def bit_lines(
     ctx.move_to(x, y)
 
     if bit_line_vals is not None:
-        for single_bit_line_vals in np.transpose(bit_line_vals):
+        for single_bit_line_vals in jnp.transpose(bit_line_vals):
             colors = plotting.utils.rgb_interpolation(
                 single_bit_line_vals,
                 low=low,
@@ -194,7 +196,7 @@ def bit_lines(
 
 def word_lines(
     ctx: cairo.Context,
-    word_line_vals: npt.NDArray,
+    word_line_vals: Array,
     diagram_pos: tuple[float, float],
     low: float,
     high: float,
@@ -267,7 +269,7 @@ def word_lines(
 
 def devices(
     ctx: cairo.Context,
-    device_vals: npt.NDArray,
+    device_vals: Array,
     diagram_pos: tuple[float, float],
     low: float,
     high: float,
@@ -331,7 +333,7 @@ def devices(
 
 def nodes(
     ctx: cairo.Context,
-    node_vals: npt.NDArray,
+    node_vals: Array,
     diagram_pos: tuple[float, float],
     low: float,
     high: float,

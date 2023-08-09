@@ -1,5 +1,5 @@
 import cairo
-import numpy as np
+import jax.numpy as jnp
 
 
 def line(ctx: cairo.Context, length: float, angle: float = 0):
@@ -28,7 +28,7 @@ def semicircle(ctx: cairo.Context, diameter: float, angle: float = 0):
     ctx.rotate(angle)
     x, y = ctx.get_current_point()
     radius = diameter / 2
-    ctx.arc(x + radius, y, radius, np.pi, 2 * np.pi)
+    ctx.arc(x + radius, y, radius, jnp.pi, 2 * jnp.pi)
     ctx.rotate(-angle)
 
 

@@ -1,6 +1,6 @@
 import logging
 
-import numpy.typing as npt
+from jax.typing import ArrayLike
 
 from badcrossbar import check, computing
 
@@ -8,8 +8,8 @@ logger = logging.getLogger(__name__)
 
 
 def compute(
-    applied_voltages: npt.ArrayLike,
-    resistances: npt.ArrayLike,
+    applied_voltages: ArrayLike,
+    resistances: ArrayLike,
     r_i: float = None,
     r_i_word_line: float = None,
     r_i_bit_line: float = None,

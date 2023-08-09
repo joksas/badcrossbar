@@ -1,10 +1,12 @@
 import cairo
+import jax.numpy as jnp
 import numpy as np
 import numpy.lib.recfunctions as nlr
-import numpy.typing as npt
-from badcrossbar import utils
+from jax import Array
 from pathvalidate import sanitize_filepath
 from sigfig import round
+
+from badcrossbar import utils
 
 
 def complete_path(
@@ -44,13 +46,13 @@ def complete_fill(ctx: cairo.Context, rgb: tuple[float, float, float] = (0, 0, 0
 
 
 def rgb_interpolation(
-    array: npt.NDArray,
+    array: Array,
     low: float = 0,
     high: float = 1,
     low_rgb: tuple[float, float, float] = (213 / 255, 94 / 255, 0 / 255),
     zero_rgb: tuple[float, float, float] = (235 / 255, 235 / 255, 235 / 255),
     high_rgb: tuple[float, float, float] = (0 / 255, 114 / 255, 178 / 255),
-) -> npt.NDArray[tuple[float, float, float]]:
+) -> Array:
     """Linearly interpolates RGB colors for an array in a specified range.
 
     Args:
@@ -72,7 +74,7 @@ def rgb_interpolation(
 
     for low_x, zero_x, high_x in zip(low_rgb, zero_rgb, high_rgb):
         # linearly interpolate in two intervals (above and below zero)
-        x = np.where(
+        x = jnp.where(
             array > 0,
             zero_x + (array - 0) * (high_x - zero_x) / (high - 0),
             low_x + (array - low) * (zero_x - low_x) / (0 - low),
@@ -81,8 +83,8 @@ def rgb_interpolation(
         rgb.append(x)
 
     # return ndarray of RGB tuples
-    rgb = np.array(rgb)
-    rgb = np.moveaxis(rgb, 0, -1)
+    rgb = jnp.array(rgb)
+    rgb = jnp.moveaxis(rgb, 0, -1)
     rgb = nlr.unstructured_to_structured(rgb)
     if len(rgb.shape) == 0:
         rgb = rgb.reshape(1)
@@ -106,7 +108,7 @@ def rgb_single_color(shape: tuple[int, int], color: tuple[float, float, float] =
     return rgb
 
 
-def arrays_range(*arrays: list[np.ndarray], sf: int = 2) -> tuple[float, float]:
+def arrays_range(*arrays: list[Array], sf: int = 2) -> tuple[float, float]:
     """Finds the color bar range from arbitrary number of arrays.
 
     Args:
@@ -116,16 +118,16 @@ def arrays_range(*arrays: list[np.ndarray], sf: int = 2) -> tuple[float, float]:
     Returns:
         Minimum and maximum values in the color bar.
     """
-    low = np.inf
-    high = -np.inf
+    low = jnp.inf
+    high = -jnp.inf
 
     for array in arrays:
         if array is not None:
-            minimum = np.min(array)
+            minimum = jnp.min(array)
             if minimum < low:
                 low = minimum
 
-            maximum = np.max(array)
+            maximum = jnp.max(array)
             if maximum > high:
                 high = maximum
 
@@ -143,8 +145,8 @@ def arrays_range(*arrays: list[np.ndarray], sf: int = 2) -> tuple[float, float]:
 
     # if the range captures both positive and negative numbers, make it
     # symmetrical around 0
-    if np.sign(low) != np.sign(high) and low != 0 and high != 0:
-        maximum_absolute = np.max([np.abs(low), np.abs(high)])
+    if jnp.sign(low) != jnp.sign(high) and low != 0 and high != 0:
+        maximum_absolute = jnp.max([jnp.abs(low), jnp.abs(high)])
         low = -maximum_absolute
         high = maximum_absolute
     return low, high

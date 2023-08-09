@@ -1,13 +1,13 @@
 import cairo
-import numpy.typing as npt
+from jax.typing import ArrayLike
 
 from badcrossbar import check, computing, plotting, utils
 
 
 def branches(
-    device_vals: npt.ArrayLike = None,
-    word_line_vals: npt.ArrayLike = None,
-    bit_line_vals: npt.ArrayLike = None,
+    device_vals: ArrayLike = None,
+    word_line_vals: ArrayLike = None,
+    bit_line_vals: ArrayLike = None,
     currents: computing.Currents = None,
     **kwargs
 ):
@@ -139,8 +139,8 @@ def branches(
 
 
 def nodes(
-    word_line_vals: npt.ArrayLike = None,
-    bit_line_vals: npt.ArrayLike = None,
+    word_line_vals: ArrayLike = None,
+    bit_line_vals: ArrayLike = None,
     voltages: computing.Voltages = None,
     **kwargs
 ):

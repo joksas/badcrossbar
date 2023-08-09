@@ -2,8 +2,8 @@ import logging
 import os
 import pickle
 
-import numpy as np
-import numpy.typing as npt
+import jax.numpy as jnp
+from jax import Array
 from pathvalidate import sanitize_filepath
 
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ def unique_path(path: str, extension: str = "pdf", sanitize: bool = True) -> str
     return full_path
 
 
-def squeeze_third_axis(array: npt.NDArray) -> npt.NDArray:
+def squeeze_third_axis(array: Array) -> Array:
     """Removes third axis of ndarray if it has shape of 1.
 
     Args:
@@ -51,12 +51,12 @@ def squeeze_third_axis(array: npt.NDArray) -> npt.NDArray:
     """
     if array.ndim == 3:
         if array.shape[2] == 1:
-            array = np.squeeze(array, axis=2)
+            array = jnp.squeeze(array, axis=2)
 
     return array
 
 
-def average_if_3D(array: npt.NDArray) -> npt.NDArray:
+def average_if_3D(array: Array) -> Array:
     """If array is 3D, it is averaged along the third axis.
 
     Args:
@@ -66,12 +66,12 @@ def average_if_3D(array: npt.NDArray) -> npt.NDArray:
         2D array.
     """
     if array.ndim == 3:
-        array = np.mean(array, axis=2)
+        array = jnp.mean(array, axis=2)
 
     return array
 
 
-def arrays_shape(*arrays: npt.NDArray):
+def arrays_shape(*arrays: Array):
     """Returns the shape of the first array that is not None.
 
     Args:
@@ -133,7 +133,7 @@ def load_pickle(path: str, sanitize: bool = True):
     return variable
 
 
-def distributed_array(flattened_array: npt.NDArray, model_array: npt.NDArray) -> npt.NDArray:
+def distributed_array(flattened_array: Array, model_array: Array) -> Array:
     """Reshapes flattened array.
 
     Args:
