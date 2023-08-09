@@ -1,9 +1,8 @@
 import logging
 
 import jax
+from jax import Array
 import jax.numpy as jnp
-import numpy as np
-import numpy.typing as npt
 from badcrossbar.computing import fill
 from jax.scipy.sparse import linalg
 from jax.experimental.sparse import BCOO
@@ -11,7 +10,7 @@ from jax.experimental.sparse import BCOO
 logger = logging.getLogger(__name__)
 
 
-def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
+def v(resistances: Array, r_i, applied_voltages: Array):
     """Solves matrix equation `gv = i`.
 
     Args:
@@ -38,7 +37,7 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         v_matrix, _ = solver(g_matrix, i, tol=1e-12, atol=1e-12)
         logger.info("Solved for v.")
 
-        v_matrix = np.array(v_matrix)
+        v_matrix = jnp.array(v_matrix)
         # if `num_examples == 1`, it can result in 1D array.
         if v_matrix.ndim == 1:
             v_matrix = v_matrix.reshape(v_matrix.shape[0], 1)
@@ -47,26 +46,18 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         # matrix_v had to be solved. The other half can be filled without
         # solving because the node voltages are known.
         if r_i.word_line == 0:
-            new_v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
-            new_v_matrix[
-                : resistances.size,
-            ] = np.repeat(applied_voltages, resistances.shape[1], axis=0)
-            new_v_matrix[
-                resistances.size :,
-            ] = v_matrix
+            new_v_matrix = jnp.zeros((2 * resistances.size, applied_voltages.shape[1]))
+            new_v_matrix = new_v_matrix.at[: resistances.size, ].set(jnp.repeat(applied_voltages, resistances.shape[1], axis=0))
+            new_v_matrix = new_v_matrix.at[resistances.size :,].set(v_matrix)
             v_matrix = new_v_matrix
         if r_i.bit_line == 0:
-            new_v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
-            new_v_matrix[
-                : resistances.size,
-            ] = v_matrix
+            new_v_matrix = jnp.zeros((2 * resistances.size, applied_voltages.shape[1]))
+            new_v_matrix = new_v_matrix.at[:resistances.size, ].set(v_matrix)
             v_matrix = new_v_matrix
     else:
         # if both interconnect resistances are zero, all node voltages are
         # known.
-        v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
-        v_matrix[
-            : resistances.size,
-        ] = np.repeat(applied_voltages, resistances.shape[1], axis=0)
+        v_matrix = jnp.zeros((2 * resistances.size, applied_voltages.shape[1]))
+        v_matrix = v_matrix.at[:resistances.size, ].set(jnp.repeat(applied_voltages, resistances.shape[1], axis=0))
 
     return v_matrix
