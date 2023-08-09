@@ -33,8 +33,9 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         i = fill.i(applied_voltages, resistances, r_i)
         g_matrix = BCOO((g_data, g_indices), shape=(i.shape[0], i.shape[0]))
 
+        solver = jax.jit(linalg.cg)
         logger.info("Started solving for v.")
-        v_matrix, _ = jax.jit(linalg.cg)(g_matrix, i, tol=1e-12, atol=1e-12)
+        v_matrix, _ = solver(g_matrix, i, tol=1e-12, atol=1e-12)
         logger.info("Solved for v.")
 
         v_matrix = np.array(v_matrix)

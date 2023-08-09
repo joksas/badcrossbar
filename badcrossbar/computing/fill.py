@@ -1,11 +1,11 @@
 from collections import defaultdict
 
-import numpy as np
-import numpy.typing as npt
+import jax.numpy as jnp
+from jax import Array
 from badcrossbar.computing import kcl
 
 
-def g(resistances: npt.NDArray, r_i) -> dict[(int, int), float]:
+def g(resistances: Array, r_i) -> dict[(int, int), float]:
     """Creates and fills matrix `g` used in equation `gv = i`.
 
     Args:
@@ -20,7 +20,7 @@ def g(resistances: npt.NDArray, r_i) -> dict[(int, int), float]:
     return g_matrix
 
 
-def i(applied_voltages: npt.NDArray, resistances: npt.NDArray, r_i) -> npt.NDArray:
+def i(applied_voltages: Array, resistances: Array, r_i) -> Array:
     """Creates and fills matrix `i` used in equation `gv = i`.
 
     Values are filled by applying nodal analysis at the leftmost nodes on the
@@ -38,12 +38,12 @@ def i(applied_voltages: npt.NDArray, resistances: npt.NDArray, r_i) -> npt.NDArr
         i_shape = (resistances.size, applied_voltages.shape[1])
     else:
         i_shape = (2 * resistances.size, applied_voltages.shape[1])
-    i_matrix = np.zeros(i_shape)
+    i_matrix = jnp.zeros(i_shape)
     if r_i.word_line > 0:
-        i_matrix[: resistances.size : resistances.shape[1], :] = applied_voltages / r_i.word_line
+        i_matrix = i_matrix.at[: resistances.size : resistances.shape[1], :].set(applied_voltages / r_i.word_line)
     else:
-        i_matrix = np.divide(
-            np.repeat(applied_voltages, resistances.shape[1], axis=0),
-            np.repeat(resistances.reshape(resistances.size, 1), applied_voltages.shape[1], axis=1),
+        i_matrix = jnp.divide(
+            jnp.repeat(applied_voltages, resistances.shape[1], axis=0),
+            jnp.repeat(resistances.reshape(resistances.size, 1), applied_voltages.shape[1], axis=1),
         )
     return i_matrix
