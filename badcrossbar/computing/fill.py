@@ -15,10 +15,6 @@ def g(resistances: npt.NDArray, r_i) -> dict[(int, int), float]:
     Returns:
         Filled matrix `g`.
     """
-    if 0 in r_i:
-        g_shape = tuple(resistances.size for _ in range(2))
-    else:
-        g_shape = tuple(2 * resistances.size for _ in range(2))
     g_matrix = defaultdict(float)
     g_matrix = kcl.apply(g_matrix, resistances, r_i)
     return g_matrix
